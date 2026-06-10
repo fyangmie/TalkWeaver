@@ -10,10 +10,12 @@ speech recognition (ASR), speaker diarization, overlapping speech, and
 constrained LLM correction. Retrieval-augmented generation (RAG) is a
 supporting module used primarily to recover domain terms.
 
-This repository includes the Phase 2 audio preprocessing and ASR baseline.
-It can normalize real meeting audio to mono 16 kHz PCM WAV and run
-faster-whisper when installed. The deterministic mock pipeline remains
-available for development without a GPU, model download, or API credentials.
+This repository includes the Phase 3 audio preprocessing, ASR, speaker
+diarization, word-speaker alignment, and overlap-detection baseline. It can
+normalize real meeting audio to mono 16 kHz PCM WAV, run faster-whisper when
+installed, and run pyannote.audio when both the package and `HF_TOKEN` are
+available. The deterministic mock pipeline remains available without a GPU,
+model download, or external credentials.
 
 ## Research Motivation
 
@@ -81,7 +83,7 @@ can be processed with the Python standard library; `soundfile` handles common
 libsndfile formats, while `pydub` plus FFmpeg provides a fallback for MP3 and
 M4A.
 
-Install the optional ASR and denoising packages when needed:
+Install the optional ASR, denoising, and diarization packages when needed:
 
 ```bash
 pip install -r requirements-optional.txt
@@ -89,6 +91,9 @@ pip install -r requirements-optional.txt
 
 `faster-whisper` model weights are downloaded on first use when a model name is
 selected. GPU execution additionally requires a compatible CUDA/cuDNN setup.
+Real diarization uses
+`pyannote/speaker-diarization-community-1` and requires an accepted model
+license plus a Hugging Face access token in `HF_TOKEN`.
 
 ## Environment Variables
 
@@ -115,6 +120,9 @@ python scripts/run_pipeline.py --mock
 python scripts/run_stage.py --stage preprocess \
   --audio data/demo/demo_meeting.wav --mock
 python scripts/run_stage.py --stage asr --mock
+python scripts/run_stage.py --stage diarization --mock
+python scripts/run_stage.py --stage align --mock
+python scripts/run_stage.py --stage overlap --mock
 python experiments/run_ablation.py --mock
 python experiments/plot_results.py
 ```
@@ -128,9 +136,9 @@ Generated demo outputs are written under `outputs/` and
 streamlit run webapp/streamlit_app.py
 ```
 
-The multipage app demonstrates the full mock workflow. Real audio
-preprocessing and the ASR baseline are currently exposed through the CLI;
-diarization and overlap-aware real-model controls remain later-phase work.
+The multipage app demonstrates the Phase 3 mock workflow. Real audio
+preprocessing, ASR, and diarization are exposed through the CLI. LLM
+correction, RAG term recovery, and summarization are intentionally not run yet.
 
 ## CLI
 
@@ -141,6 +149,8 @@ python scripts/run_stage.py --stage preprocess \
 python scripts/run_stage.py --stage asr \
   --audio data/demo/demo_meeting.wav --mock
 python scripts/run_stage.py --stage diarization --mock
+python scripts/run_stage.py --stage align --mock
+python scripts/run_stage.py --stage overlap --mock
 python scripts/generate_synthetic_overlap.py --mock
 ```
 
@@ -172,15 +182,16 @@ python scripts/run_stage.py \
   --language en
 ```
 
-Run the integrated Phase 2 path:
+Run the integrated Phase 3 path:
 
 ```bash
 python scripts/run_pipeline.py --audio data/demo/demo_meeting.wav
 ```
 
-If `faster-whisper` is absent, ASR does not crash. It emits a warning and
-exports deterministic segments labeled `mock_fallback`, including the fallback
-reason. Use `--mock` to request demo mode explicitly.
+If `faster-whisper` is absent, ASR does not crash. It exports deterministic
+segments labeled `mock_fallback`, including the reason. If `pyannote.audio` or
+`HF_TOKEN` is unavailable, diarization likewise falls back to deterministic
+two-speaker turns. Use `--mock` to request demo mode explicitly.
 
 ### Phase 2 Output
 
@@ -201,6 +212,47 @@ The raw transcript JSON is an array of segments:
 
 Each run also creates a readable Markdown transcript and a metadata JSON file
 recording the ASR mode, model, language, device, and any fallback reason.
+
+### Phase 3 Diarization and Overlap
+
+Mock diarization contains two speakers and one deliberate overlap from
+3.00-3.40 seconds. The output is clearly labeled `mock_demo` and must not be
+treated as a real diarization result.
+
+```bash
+python scripts/run_stage.py --stage diarization --mock
+python scripts/run_stage.py --stage overlap --mock
+python scripts/run_stage.py --stage align --mock
+```
+
+The stage commands create or reuse mock ASR and diarization artifacts when
+needed. Speaker turns and overlap warnings are exported under
+`outputs/diarization/`. Speaker-attributed JSON and Markdown are exported under
+`outputs/transcripts/`.
+
+Alignment assigns each ASR word using the midpoint of its start and end
+timestamps. A midpoint inside one turn receives that speaker; a midpoint
+inside multiple turns receives `speaker: "OVERLAP"` and all active speakers;
+an uncovered midpoint receives `speaker: "UNKNOWN"`.
+
+The temporal-anchor transcript uses this structure:
+
+```json
+{
+  "start": 3.0,
+  "end": 3.2,
+  "speaker": "OVERLAP",
+  "speakers": ["SPEAKER_00", "SPEAKER_01"],
+  "raw_text": "The",
+  "corrected_text": "",
+  "overlap": true,
+  "confidence": 0.55,
+  "retrieved_terms": []
+}
+```
+
+`corrected_text` and `retrieved_terms` remain empty in Phase 3. They are
+reserved for the later constrained LLM and domain-term recovery phases.
 
 ## Experiments
 
@@ -237,7 +289,10 @@ figures in `assets/result_charts/`. Placeholder directories are tracked with
 
 - Real ASR requires the optional `faster-whisper` package and model weights.
 - Denoising is skipped with a warning unless `noisereduce` is installed.
-- Real diarization and LLM APIs are not integrated yet.
+- Real diarization requires `pyannote.audio`, model access, and `HF_TOKEN`.
+- Diarization falls back to clearly labeled mock turns when its dependency or
+  token is unavailable.
+- LLM correction and RAG term recovery are not integrated yet.
 - Mock transcripts and metrics demonstrate interfaces, not model quality.
 - The required `project/xutong_paper.pdf` was not available during Phase 1.
 - Literature metadata and links require verification before final submission.

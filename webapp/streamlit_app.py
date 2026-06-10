@@ -65,7 +65,7 @@ if result is None:
 else:
     segments = result["transcript"]
     metric_columns = st.columns(4)
-    metric_columns[0].metric("Mode", "Mock / demo")
+    metric_columns[0].metric("Mode", result["mode"])
     metric_columns[1].metric("Segments", len(segments))
     metric_columns[2].metric(
         "Speakers",
@@ -82,9 +82,15 @@ else:
     st.subheader("Transcript Audit")
     render_transcript(segments)
 
-    with st.expander("Mock summary and action items"):
-        st.write(result["summary"]["summary"])
-        for item in result["summary"]["action_items"]:
-            st.write(f"- {item}")
+    if result.get("summary") is not None:
+        with st.expander("Summary and action items"):
+            st.write(result["summary"]["summary"])
+            for item in result["summary"]["action_items"]:
+                st.write(f"- {item}")
+    else:
+        st.info(
+            "LLM correction, RAG retrieval, and meeting summarization are not "
+            "run in Phase 3."
+        )
 
     st.warning(result["warning"])

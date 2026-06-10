@@ -57,7 +57,7 @@ def main() -> int:
     summary = {
         "mode": result["mode"],
         "asr_segments": len(result["asr_segments"]),
-        "corrected_segments": len(result["transcript"]),
+        "temporal_anchor_segments": len(result["transcript"]),
         "overlap_regions": len(result["overlap_regions"]),
         "artifacts": result["artifacts"],
         "warning": result["warning"],

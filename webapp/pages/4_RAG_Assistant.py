@@ -26,9 +26,16 @@ else:
     st.write(", ".join(terms) or "No glossary terms retrieved.")
 
     st.subheader("Secondary Meeting Understanding")
-    st.write(result["summary"]["summary"])
-    for item in result["summary"]["action_items"]:
-        st.checkbox(item, value=False)
+    if result.get("summary") is None:
+        st.info(
+            "RAG term recovery and meeting understanding are not run in "
+            "Phase 3. The current transcript contains empty retrieved-term "
+            "and correction fields by design."
+        )
+    else:
+        st.write(result["summary"]["summary"])
+        for item in result["summary"]["action_items"]:
+            st.checkbox(item, value=False)
 
     question = st.text_input("Question about this transcript")
     if question:

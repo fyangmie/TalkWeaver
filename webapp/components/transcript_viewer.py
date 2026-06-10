@@ -26,7 +26,10 @@ def render_transcript(segments: list[dict[str, Any]]) -> None:
             raw_column.markdown("**Raw ASR**")
             raw_column.write(segment["raw_text"])
             corrected_column.markdown("**Corrected**")
-            corrected_column.write(segment["corrected_text"])
+            corrected_column.write(
+                segment["corrected_text"]
+                or "Not run (Phase 4 LLM correction)."
+            )
             st.caption(
                 f"Confidence {segment['confidence']:.2f} | "
                 f"Terms: {', '.join(segment['retrieved_terms']) or 'none'}"

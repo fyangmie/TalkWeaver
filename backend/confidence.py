@@ -1,13 +1,35 @@
-"""Confidence placeholders for temporal-anchor transcript segments."""
+"""Deterministic confidence rules for speaker-attributed transcripts."""
 
 from __future__ import annotations
 
 
-def estimate_confidence(*, overlap: bool, base_confidence: float = 0.91) -> float:
-    """Apply a deterministic uncertainty penalty to overlap segments."""
+NORMAL_CONFIDENCE = 0.90
+UNKNOWN_CONFIDENCE = 0.50
+OVERLAP_CONFIDENCE = 0.55
 
-    confidence = base_confidence - (0.29 if overlap else 0.0)
-    return round(max(0.0, min(1.0, confidence)), 2)
+
+def estimate_confidence(
+    *,
+    overlap: bool,
+    unknown: bool = False,
+    base_confidence: float = NORMAL_CONFIDENCE,
+) -> float:
+    """Return a stable confidence value for one alignment assignment."""
+
+    if overlap:
+        return OVERLAP_CONFIDENCE
+    if unknown:
+        return UNKNOWN_CONFIDENCE
+    return round(max(0.0, min(1.0, base_confidence)), 2)
+
+
+def confidence_for_assignment(speaker: str, *, overlap: bool) -> float:
+    """Map an alignment assignment to its deterministic confidence."""
+
+    return estimate_confidence(
+        overlap=overlap,
+        unknown=speaker == "UNKNOWN",
+    )
 
 
 def uncertainty_label(confidence: float) -> str:

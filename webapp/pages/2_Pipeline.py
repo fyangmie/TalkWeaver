@@ -25,33 +25,29 @@ mode = st.segmented_control(
 )
 
 st.subheader("Stages")
-columns = st.columns(3)
+columns = st.columns(2)
 preprocessing = columns[0].checkbox("Preprocessing", value=True)
 asr = columns[0].checkbox("ASR", value=True)
 diarization = columns[1].checkbox("Diarization", value=True)
 overlap = columns[1].checkbox("Overlap detection", value=True)
-rag = columns[2].checkbox("RAG term recovery", value=True)
-llm = columns[2].checkbox("LLM correction", value=True)
 
 selected = {
     "preprocessing": preprocessing,
     "asr": asr,
     "diarization": diarization,
     "overlap": overlap,
-    "rag": rag,
-    "llm": llm,
 }
 
 if st.button("Run pipeline", type="primary"):
     if mode == "Real models":
         st.error(
-            "Real model execution is not available in Phase 1. "
-            "Use Mock / demo."
+            "Use the CLI for real Phase 3 audio execution so an audio path "
+            "and pyannote credentials can be supplied."
         )
     elif not all(selected.values()):
         st.warning(
-            "Phase 1 mock orchestration currently runs the complete pipeline. "
-            "Stage toggles become active in later phases."
+            "The Phase 3 mock orchestrator runs preprocessing, ASR, "
+            "diarization, overlap detection, and alignment together."
         )
     else:
         with st.spinner("Running pipeline..."):
@@ -67,9 +63,6 @@ if result:
         "diarization",
         "alignment",
         "overlap",
-        "rag",
-        "correction",
-        "summary",
     ]:
         st.write(f"`{stage}`: complete (mock/demo)")
     st.json(result["artifacts"])
