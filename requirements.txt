@@ -1,0 +1,5 @@
+# Phase 1 lightweight runtime. Heavy ML packages are optional in later phases.
+streamlit>=1.40,<2
+pandas>=2.0,<3
+matplotlib>=3.7,<4
+python-dotenv>=1.0,<2

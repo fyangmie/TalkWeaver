@@ -1,0 +1,57 @@
+# Credentials and local configuration
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+
+# Editors and operating systems
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Models and large binary artifacts
+*.ckpt
+*.onnx
+*.pt
+*.pth
+*.safetensors
+models/
+
+# Local audio and generated data
+data/raw/*
+data/processed/*
+data/reference/*
+data/synthetic/*
+data/demo/*
+!data/**/.gitkeep
+*.wav
+*.mp3
+*.m4a
+*.flac
+
+# Generated outputs; keep directory markers and optional documented demos.
+outputs/**/*.json
+outputs/**/*.md
+outputs/**/*.csv
+outputs/**/*.txt
+!outputs/**/.gitkeep
+
+# Generated experiment and UI assets
+experiments/results/*.csv
+!experiments/results/.gitkeep
+assets/result_charts/*.png
+assets/screenshots/*
+assets/demo_gifs/*
+!assets/**/.gitkeep
