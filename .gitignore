@@ -40,6 +40,9 @@ data/demo/*
 *.mp3
 *.m4a
 *.flac
+*.ogg
+outputs/uploads/*
+!outputs/uploads/.gitkeep
 
 # Generated outputs; keep directory markers and optional documented demos.
 outputs/**/*.json

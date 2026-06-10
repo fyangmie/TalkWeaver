@@ -10,12 +10,13 @@ speech recognition (ASR), speaker diarization, overlapping speech, and
 constrained LLM correction. Retrieval-augmented generation (RAG) is a
 supporting module used primarily to recover domain terms.
 
-This repository includes the Phase 5 pipeline: audio preprocessing, ASR,
-speaker diarization, word-speaker alignment, overlap detection, local TF-IDF
-domain-term retrieval, diarization-structured correction, and extractive
-meeting understanding. It can run faster-whisper and pyannote.audio when their
-dependencies and credentials are available. The deterministic mock pipeline
-requires no GPU, model download, vector database, or external API key.
+This repository includes the Phase 6 pipeline and review dashboard: audio
+preprocessing, ASR, speaker diarization, word-speaker alignment, overlap
+detection, local TF-IDF domain-term retrieval, diarization-structured
+correction, and extractive meeting understanding. It can run faster-whisper
+and pyannote.audio when their dependencies and credentials are available. The
+deterministic mock pipeline requires no GPU, model download, vector database,
+or external API key.
 
 ## Research Motivation
 
@@ -143,9 +144,45 @@ Generated demo outputs are written under `outputs/` and
 streamlit run webapp/streamlit_app.py
 ```
 
-The multipage app demonstrates the full mock workflow, including retrieved
-terms, raw-versus-corrected transcript review, overlap uncertainty, an
-extractive summary, and sourced action items.
+The multipage app is a review dashboard for the research pipeline rather than
+a generic meeting chatbot. It starts without a GPU, Hugging Face token, or LLM
+API key and can generate all required artifacts in deterministic mock mode.
+
+### UI Workflow
+
+1. Open **Audio Input** to upload WAV, MP3, M4A, FLAC, or OGG audio. Uploads
+   are saved locally under `outputs/uploads/`, played in the browser, decoded
+   for metadata, and displayed as a downsampled waveform.
+2. Open **Pipeline** and choose `Mock / demo` or `Real audio`. The stage
+   toggles define the requested review plan; the integrated runner preserves
+   required intermediate dependencies.
+3. Select **Run Pipeline**. Real mode uses the uploaded path and falls back to
+   clearly labeled mock ASR or diarization components if optional packages or
+   credentials are unavailable.
+4. Open **Transcript Review** to compare raw ASR, speaker-attributed temporal
+   anchors, overlap intervals, and constrained corrections.
+5. Use **RAG Domain-Term Recovery** for retrieved glossary terms, the
+   extractive summary, sourced action items, and transcript-grounded QA.
+6. Open **Metrics** to inspect result CSVs and generated charts. Mock scaffold
+   rows remain explicitly unmeasured.
+
+### Pages
+
+- **Overview:** current execution mode, speaker timeline, overlap count, and
+  correction audit.
+- **Audio Input:** persisted upload, playback, metadata, and waveform.
+- **Pipeline:** mock/real controls, stage selection, fallback status, and
+  exported artifact paths.
+- **Transcript Review:** raw ASR, diarization turns, overlap warnings,
+  temporal-anchor fields, and raw-versus-corrected text.
+- **RAG Domain-Term Recovery:** auxiliary terminology evidence and secondary
+  transcript understanding.
+- **Metrics:** WER, WDER or speaker attribution error, Term Error Rate,
+  overlap analysis, latency, CSV tables, and result charts.
+
+Mock mode can be started either from the Overview page, the Audio Input empty
+state, or the Pipeline page. Its transcript, overlap, and correction outputs
+are deterministic demo data and must not be reported as model evaluation.
 
 ## CLI
 
@@ -341,6 +378,14 @@ CSV output is labeled `mock_demo` and must not be cited as a real result.
 Place final UI captures in `assets/screenshots/` and generated evaluation
 figures in `assets/result_charts/`. Placeholder directories are tracked with
 `.gitkeep`.
+
+Planned final captures:
+
+- `assets/screenshots/01_upload.png`
+- `assets/screenshots/02_pipeline.png`
+- `assets/screenshots/03_overlap_review.png`
+- `assets/screenshots/04_rag_terms.png`
+- `assets/screenshots/05_metrics.png`
 
 ## Limitations
 
