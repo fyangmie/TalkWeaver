@@ -26,11 +26,11 @@ def render_transcript(segments: list[dict[str, Any]]) -> None:
             raw_column.markdown("**Raw ASR**")
             raw_column.write(segment["raw_text"])
             corrected_column.markdown("**Corrected**")
-            corrected_column.write(
-                segment["corrected_text"]
-                or "Not run (Phase 4 LLM correction)."
-            )
+            corrected_column.write(segment["corrected_text"])
             st.caption(
                 f"Confidence {segment['confidence']:.2f} | "
-                f"Terms: {', '.join(segment['retrieved_terms']) or 'none'}"
+                f"Terms: {', '.join(segment['retrieved_terms']) or 'none'} | "
+                f"Correction: {segment.get('correction_mode', 'not run')}"
             )
+            if segment.get("correction_uncertain"):
+                st.warning(segment.get("correction_note", "Review required."))

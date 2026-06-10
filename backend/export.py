@@ -342,3 +342,211 @@ def export_temporal_anchor_transcript(
             mode=mode,
         ),
     }
+
+
+def write_rag_markdown(
+    path: str | Path,
+    segments: list[dict[str, Any]],
+    *,
+    metadata: dict[str, Any],
+) -> Path:
+    """Write retrieved terms and local source files for each segment."""
+
+    lines = [
+        "# TalkWeaver RAG Domain-Term Retrieval",
+        "",
+        f"**Mode:** `{metadata.get('mode', 'unknown')}`",
+        "",
+        (
+            "**Knowledge base:** "
+            f"`{metadata.get('knowledge_base_dir', 'unknown')}`"
+        ),
+        "",
+        "> Retrieved terms are correction candidates, not new meeting facts.",
+        "",
+    ]
+    for segment in segments:
+        terms = ", ".join(segment.get("retrieved_terms", [])) or "none"
+        sources = ", ".join(segment.get("retrieval_sources", [])) or "none"
+        lines.extend(
+            [
+                (
+                    f"## {float(segment['start']):.2f}-"
+                    f"{float(segment['end']):.2f} {segment['speaker']}"
+                ),
+                "",
+                f"**Raw:** {segment['raw_text']}",
+                "",
+                f"**Retrieved terms:** {terms}",
+                "",
+                f"**Sources:** {sources}",
+                "",
+            ]
+        )
+    output = Path(path)
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text("\n".join(lines), encoding="utf-8")
+    return output
+
+
+def export_rag_transcript(
+    output_dir: str | Path,
+    stem: str,
+    segments: list[dict[str, Any]],
+    *,
+    metadata: dict[str, Any],
+) -> dict[str, Path]:
+    """Export RAG-enriched temporal anchors and retrieval metadata."""
+
+    directory = Path(output_dir)
+    safe_stem = _safe_stem(stem)
+    return {
+        "json": write_json(
+            directory / f"{safe_stem}_rag_enriched.json",
+            segments,
+        ),
+        "markdown": write_rag_markdown(
+            directory / f"{safe_stem}_rag_retrieval.md",
+            segments,
+            metadata=metadata,
+        ),
+        "metadata": write_json(
+            directory / f"{safe_stem}_rag.metadata.json",
+            metadata,
+        ),
+    }
+
+
+def write_corrected_transcript_markdown(
+    path: str | Path,
+    segments: list[dict[str, Any]],
+    *,
+    mode: str,
+) -> Path:
+    """Write raw-versus-corrected segments with correction audit data."""
+
+    lines = [
+        "# TalkWeaver Corrected Transcript",
+        "",
+        f"**Pipeline mode:** `{mode}`",
+        "",
+        "> Timestamps and speaker labels are preserved from alignment.",
+        "",
+    ]
+    for segment in segments:
+        overlap = " [OVERLAP - UNCERTAIN]" if segment["overlap"] else ""
+        terms = ", ".join(segment.get("retrieved_terms", [])) or "none"
+        lines.extend(
+            [
+                (
+                    f"## {float(segment['start']):.2f}-"
+                    f"{float(segment['end']):.2f} "
+                    f"{segment['speaker']}{overlap}"
+                ),
+                "",
+                f"**Raw:** {segment['raw_text']}",
+                "",
+                f"**Corrected:** {segment['corrected_text']}",
+                "",
+                f"**Retrieved terms:** {terms}",
+                "",
+                (
+                    "**Correction mode:** "
+                    f"`{segment.get('correction_mode', 'unknown')}`"
+                ),
+                "",
+                f"**Audit note:** {segment.get('correction_note', '')}",
+                "",
+            ]
+        )
+    output = Path(path)
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text("\n".join(lines), encoding="utf-8")
+    return output
+
+
+def export_corrected_transcript(
+    output_dir: str | Path,
+    stem: str,
+    segments: list[dict[str, Any]],
+    *,
+    mode: str,
+) -> dict[str, Path]:
+    """Export corrected temporal anchors as JSON and Markdown."""
+
+    directory = Path(output_dir)
+    safe_stem = _safe_stem(stem)
+    return {
+        "json": write_json(
+            directory / f"{safe_stem}_corrected.json",
+            segments,
+        ),
+        "markdown": write_corrected_transcript_markdown(
+            directory / f"{safe_stem}_corrected.md",
+            segments,
+            mode=mode,
+        ),
+    }
+
+
+def write_summary_markdown(
+    path: str | Path,
+    summary: dict[str, Any],
+) -> Path:
+    """Write an extractive meeting summary and sourced action items."""
+
+    lines = [
+        "# TalkWeaver Meeting Summary",
+        "",
+        f"**Mode:** `{summary.get('mode', 'unknown')}`",
+        "",
+        "## Summary",
+        "",
+        str(summary.get("summary", "")),
+        "",
+        "## Action Items",
+        "",
+    ]
+    action_items = summary.get("action_items", [])
+    if not action_items:
+        lines.extend(["No explicit action items were found.", ""])
+    for item in action_items:
+        warning = " [OVERLAP - VERIFY]" if item.get("uncertain") else ""
+        lines.append(
+            f"- {item['text']} "
+            f"({item['speaker']}, {float(item['start']):.2f}-"
+            f"{float(item['end']):.2f}){warning}"
+        )
+    lines.extend(
+        [
+            "",
+            "## Keywords",
+            "",
+            ", ".join(summary.get("keywords", [])) or "none",
+            "",
+            f"> {summary.get('note', '')}",
+            "",
+        ]
+    )
+    output = Path(path)
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text("\n".join(lines), encoding="utf-8")
+    return output
+
+
+def export_summary(
+    output_dir: str | Path,
+    stem: str,
+    summary: dict[str, Any],
+) -> dict[str, Path]:
+    """Export a meeting summary as JSON and Markdown."""
+
+    directory = Path(output_dir)
+    safe_stem = _safe_stem(stem)
+    return {
+        "json": write_json(directory / f"{safe_stem}_summary.json", summary),
+        "markdown": write_summary_markdown(
+            directory / f"{safe_stem}_summary.md",
+            summary,
+        ),
+    }

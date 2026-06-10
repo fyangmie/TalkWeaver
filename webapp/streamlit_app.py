@@ -86,11 +86,9 @@ else:
         with st.expander("Summary and action items"):
             st.write(result["summary"]["summary"])
             for item in result["summary"]["action_items"]:
-                st.write(f"- {item}")
-    else:
-        st.info(
-            "LLM correction, RAG retrieval, and meeting summarization are not "
-            "run in Phase 3."
-        )
+                st.write(
+                    f"- {item['text']} "
+                    f"({item['speaker']}, {item['start']:.2f}s)"
+                )
 
     st.warning(result["warning"])

@@ -10,12 +10,12 @@ speech recognition (ASR), speaker diarization, overlapping speech, and
 constrained LLM correction. Retrieval-augmented generation (RAG) is a
 supporting module used primarily to recover domain terms.
 
-This repository includes the Phase 3 audio preprocessing, ASR, speaker
-diarization, word-speaker alignment, and overlap-detection baseline. It can
-normalize real meeting audio to mono 16 kHz PCM WAV, run faster-whisper when
-installed, and run pyannote.audio when both the package and `HF_TOKEN` are
-available. The deterministic mock pipeline remains available without a GPU,
-model download, or external credentials.
+This repository includes the Phase 5 pipeline: audio preprocessing, ASR,
+speaker diarization, word-speaker alignment, overlap detection, local TF-IDF
+domain-term retrieval, diarization-structured correction, and extractive
+meeting understanding. It can run faster-whisper and pyannote.audio when their
+dependencies and credentials are available. The deterministic mock pipeline
+requires no GPU, model download, vector database, or external API key.
 
 ## Research Motivation
 
@@ -102,6 +102,10 @@ HF_TOKEN=
 OPENAI_API_KEY=
 DEEPSEEK_API_KEY=
 QWEN_API_KEY=
+LLM_PROVIDER=auto
+OPENAI_MODEL=gpt-4.1-mini
+DEEPSEEK_MODEL=deepseek-v4-pro
+QWEN_MODEL=qwen-plus
 ASR_MODEL_SIZE=medium
 USE_MOCK_ASR=false
 USE_MOCK_DIARIZATION=false
@@ -123,6 +127,9 @@ python scripts/run_stage.py --stage asr --mock
 python scripts/run_stage.py --stage diarization --mock
 python scripts/run_stage.py --stage align --mock
 python scripts/run_stage.py --stage overlap --mock
+python scripts/run_stage.py --stage rag --mock
+python scripts/run_stage.py --stage correction --mock
+python scripts/run_stage.py --stage summarize --mock
 python experiments/run_ablation.py --mock
 python experiments/plot_results.py
 ```
@@ -136,9 +143,9 @@ Generated demo outputs are written under `outputs/` and
 streamlit run webapp/streamlit_app.py
 ```
 
-The multipage app demonstrates the Phase 3 mock workflow. Real audio
-preprocessing, ASR, and diarization are exposed through the CLI. LLM
-correction, RAG term recovery, and summarization are intentionally not run yet.
+The multipage app demonstrates the full mock workflow, including retrieved
+terms, raw-versus-corrected transcript review, overlap uncertainty, an
+extractive summary, and sourced action items.
 
 ## CLI
 
@@ -151,6 +158,9 @@ python scripts/run_stage.py --stage asr \
 python scripts/run_stage.py --stage diarization --mock
 python scripts/run_stage.py --stage align --mock
 python scripts/run_stage.py --stage overlap --mock
+python scripts/run_stage.py --stage rag --mock
+python scripts/run_stage.py --stage correction --mock
+python scripts/run_stage.py --stage summarize --mock
 python scripts/generate_synthetic_overlap.py --mock
 ```
 
@@ -254,6 +264,53 @@ The temporal-anchor transcript uses this structure:
 `corrected_text` and `retrieved_terms` remain empty in Phase 3. They are
 reserved for the later constrained LLM and domain-term recovery phases.
 
+### Phase 4/5 RAG and Correction
+
+TalkWeaver loads every Markdown file under `docs/knowledge_base/`, splits
+glossary rows and explanatory paragraphs into local chunks, and ranks them
+with an in-process TF-IDF cosine index. No external vector database is
+required.
+
+```bash
+python scripts/run_stage.py --stage rag --mock
+python scripts/run_stage.py --stage correction --mock
+python scripts/run_stage.py --stage summarize --mock
+python scripts/run_pipeline.py --mock
+```
+
+Each correction prompt contains the timestamp, speaker label, active speakers,
+overlap flag, confidence, raw text, and retrieved terms. Correction runs
+segment by segment and keeps an audit trail. The deterministic fallback
+supports:
+
+```text
+piano note -> pyannote
+diary station -> diarization
+where -> WER
+the ear -> DER
+rack -> RAG
+```
+
+If `USE_MOCK_LLM=true`, `--mock` is supplied, or no configured provider key is
+available, correction uses deterministic glossary rules. When API correction
+is enabled, TalkWeaver supports OpenAI-compatible chat-completion endpoints
+for OpenAI, DeepSeek, and Qwen. Returned text is rejected if it adds
+unsupported vocabulary or excessive content, then falls back to deterministic
+rules.
+
+Outputs are written to:
+
+- `outputs/transcripts/*_rag_enriched.json`
+- `outputs/corrected_transcripts/*_corrected.json`
+- `outputs/corrected_transcripts/*_corrected.md`
+- `outputs/summaries/*_summary.json`
+- `outputs/summaries/*_summary.md`
+
+Overlap segments remain uncertain even after correction. Meeting summaries
+are extractive, action items retain their source speaker and timestamp, and
+the secondary QA helper returns a supporting transcript segment rather than
+generating unsupported answers.
+
 ## Experiments
 
 The planned ablation groups are:
@@ -292,7 +349,11 @@ figures in `assets/result_charts/`. Placeholder directories are tracked with
 - Real diarization requires `pyannote.audio`, model access, and `HF_TOKEN`.
 - Diarization falls back to clearly labeled mock turns when its dependency or
   token is unavailable.
-- LLM correction and RAG term recovery are not integrated yet.
+- TF-IDF retrieval is intentionally lightweight and does not perform semantic
+  embedding retrieval.
+- API correction requires a configured provider key and network access.
+- Lexical grounding reduces hallucination risk but does not replace human
+  review, especially for overlapping speech.
 - Mock transcripts and metrics demonstrate interfaces, not model quality.
 - The required `project/xutong_paper.pdf` was not available during Phase 1.
 - Literature metadata and links require verification before final submission.

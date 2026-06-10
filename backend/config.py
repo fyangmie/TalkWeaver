@@ -27,6 +27,15 @@ class Settings:
     openai_api_key: str = ""
     deepseek_api_key: str = ""
     qwen_api_key: str = ""
+    llm_provider: str = "auto"
+    openai_model: str = "gpt-4.1-mini"
+    deepseek_model: str = "deepseek-v4-pro"
+    qwen_model: str = "qwen-plus"
+    openai_base_url: str = "https://api.openai.com/v1"
+    deepseek_base_url: str = "https://api.deepseek.com"
+    qwen_base_url: str = (
+        "https://dashscope.aliyuncs.com/compatible-mode/v1"
+    )
     use_mock_asr: bool = False
     use_mock_diarization: bool = False
     use_mock_llm: bool = True
@@ -49,6 +58,22 @@ def get_settings() -> Settings:
         openai_api_key=os.getenv("OPENAI_API_KEY", ""),
         deepseek_api_key=os.getenv("DEEPSEEK_API_KEY", ""),
         qwen_api_key=os.getenv("QWEN_API_KEY", ""),
+        llm_provider=os.getenv("LLM_PROVIDER", "auto"),
+        openai_model=os.getenv("OPENAI_MODEL", "gpt-4.1-mini"),
+        deepseek_model=os.getenv("DEEPSEEK_MODEL", "deepseek-v4-pro"),
+        qwen_model=os.getenv("QWEN_MODEL", "qwen-plus"),
+        openai_base_url=os.getenv(
+            "OPENAI_BASE_URL",
+            "https://api.openai.com/v1",
+        ),
+        deepseek_base_url=os.getenv(
+            "DEEPSEEK_BASE_URL",
+            "https://api.deepseek.com",
+        ),
+        qwen_base_url=os.getenv(
+            "QWEN_BASE_URL",
+            "https://dashscope.aliyuncs.com/compatible-mode/v1",
+        ),
         use_mock_asr=_env_bool("USE_MOCK_ASR", False),
         use_mock_diarization=_env_bool("USE_MOCK_DIARIZATION", False),
         use_mock_llm=_env_bool("USE_MOCK_LLM", True),

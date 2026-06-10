@@ -149,17 +149,16 @@ class AlignmentTests(unittest.TestCase):
 
 
 class PipelineTests(unittest.TestCase):
-    def test_mock_pipeline_stops_before_llm_and_rag(self) -> None:
+    def test_mock_pipeline_preserves_phase3_temporal_anchors(self) -> None:
         result = run_pipeline(mock=True)
 
         self.assertEqual(result["mode"], "mock_demo")
         self.assertEqual(len(result["overlap_regions"]), 1)
-        self.assertIsNone(result["summary"])
         self.assertTrue(
             all(
                 segment["corrected_text"] == ""
                 and segment["retrieved_terms"] == []
-                for segment in result["transcript"]
+                for segment in result["temporal_transcript"]
             )
         )
         self.assertTrue(

@@ -2,7 +2,17 @@
 
 from __future__ import annotations
 
+import sys
+from pathlib import Path
+
 import streamlit as st
+
+
+ROOT_DIR = Path(__file__).resolve().parents[2]
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
+
+from backend.summarizer import answer_question
 
 
 st.set_page_config(page_title="Domain Terms | TalkWeaver", layout="wide")
@@ -26,20 +36,22 @@ else:
     st.write(", ".join(terms) or "No glossary terms retrieved.")
 
     st.subheader("Secondary Meeting Understanding")
-    if result.get("summary") is None:
-        st.info(
-            "RAG term recovery and meeting understanding are not run in "
-            "Phase 3. The current transcript contains empty retrieved-term "
-            "and correction fields by design."
+    st.write(result["summary"]["summary"])
+    for item in result["summary"]["action_items"]:
+        st.checkbox(
+            (
+                f"{item['text']} "
+                f"({item['speaker']}, {item['start']:.2f}s)"
+            ),
+            value=False,
         )
-    else:
-        st.write(result["summary"]["summary"])
-        for item in result["summary"]["action_items"]:
-            st.checkbox(item, value=False)
 
     question = st.text_input("Question about this transcript")
     if question:
-        st.info(
-            "Transcript-grounded QA is a later-phase feature. "
-            "No answer is generated in the Phase 1 placeholder."
-        )
+        answer = answer_question(question, result["transcript"])
+        st.write(answer["answer"])
+        if answer["source"]:
+            st.caption(
+                f"{answer['source']['timestamp']} | "
+                f"{answer['source']['speaker']}"
+            )

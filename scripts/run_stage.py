@@ -20,14 +20,20 @@ from backend.asr import transcribe_with_metadata
 from backend.config import get_settings
 from backend.diarization import diarize_with_metadata
 from backend.export import (
+    export_corrected_transcript,
     export_diarization,
     export_overlap_regions,
+    export_rag_transcript,
     export_raw_transcript,
+    export_summary,
     export_temporal_anchor_transcript,
     read_json,
 )
+from backend.llm_correction import correct_segments
 from backend.overlap import detect_overlap_regions
 from backend.preprocessing import preprocess_audio
+from backend.rag import enrich_segments_with_terms
+from backend.summarizer import summarize_segments
 
 
 STAGES = (
@@ -37,6 +43,9 @@ STAGES = (
     "diarization",
     "align",
     "overlap",
+    "rag",
+    "correction",
+    "summarize",
 )
 
 
@@ -64,6 +73,11 @@ def build_parser() -> argparse.ArgumentParser:
         "--diarization-json",
         type=Path,
         help="Existing speaker-turn JSON for align or overlap.",
+    )
+    parser.add_argument(
+        "--transcript-json",
+        type=Path,
+        help="Existing temporal-anchor or corrected transcript JSON.",
     )
     parser.add_argument("--model-size", help="faster-whisper model size.")
     parser.add_argument("--language", help="Optional ASR language code.")
@@ -244,6 +258,158 @@ def _align_stage(args: argparse.Namespace) -> dict[str, Any]:
     }
 
 
+def _ensure_temporal_json(args: argparse.Namespace) -> Path:
+    if args.transcript_json is not None:
+        if not args.transcript_json.exists():
+            raise FileNotFoundError(
+                f"Transcript JSON not found: {args.transcript_json}"
+            )
+        return args.transcript_json
+
+    settings = get_settings()
+    default_path = (
+        settings.output_dir / "transcripts" / "mock_temporal_anchor.json"
+    )
+    if args.mock:
+        if not default_path.exists():
+            payload = _align_stage(args)
+            return Path(payload["artifacts"]["temporal_anchor_json"])
+        return default_path
+
+    if args.audio is None:
+        raise ValueError(
+            "Provide --transcript-json or --audio outside mock mode."
+        )
+    inferred = (
+        settings.output_dir
+        / "transcripts"
+        / f"{args.audio.stem}_temporal_anchor.json"
+    )
+    if not inferred.exists():
+        payload = _align_stage(args)
+        return Path(payload["artifacts"]["temporal_anchor_json"])
+    return inferred
+
+
+def _source_stem(args: argparse.Namespace, source_path: Path) -> str:
+    if args.mock:
+        return "mock"
+    stem = source_path.stem
+    for suffix in (
+        "_temporal_anchor",
+        "_rag_enriched",
+        "_corrected",
+    ):
+        stem = stem.removesuffix(suffix)
+    return stem
+
+
+def _rag_stage(args: argparse.Namespace) -> dict[str, Any]:
+    settings = get_settings()
+    transcript_path = _ensure_temporal_json(args)
+    segments = read_json(transcript_path)
+    enriched, metadata = enrich_segments_with_terms(
+        segments,
+        directory=settings.knowledge_base_dir,
+    )
+    stem = _source_stem(args, transcript_path)
+    paths = export_rag_transcript(
+        settings.output_dir / "transcripts",
+        stem,
+        enriched,
+        metadata=metadata,
+    )
+    return {
+        "mode": metadata["mode"],
+        "transcript_path": str(transcript_path),
+        "segments": enriched,
+        "metadata": metadata,
+        "artifacts": {name: str(path) for name, path in paths.items()},
+    }
+
+
+def _correction_stage(args: argparse.Namespace) -> dict[str, Any]:
+    settings = get_settings()
+    rag_result = _rag_stage(args)
+    correction_mock = args.mock or settings.use_mock_llm
+    corrected = correct_segments(
+        rag_result["segments"],
+        mock=correction_mock,
+        provider=settings.llm_provider,
+        openai_api_key=settings.openai_api_key,
+        deepseek_api_key=settings.deepseek_api_key,
+        qwen_api_key=settings.qwen_api_key,
+        openai_model=settings.openai_model,
+        deepseek_model=settings.deepseek_model,
+        qwen_model=settings.qwen_model,
+        openai_base_url=settings.openai_base_url,
+        deepseek_base_url=settings.deepseek_base_url,
+        qwen_base_url=settings.qwen_base_url,
+    )
+    transcript_path = Path(rag_result["transcript_path"])
+    stem = _source_stem(args, transcript_path)
+    mode = (
+        "mock_rule_based"
+        if correction_mock
+        else (
+            corrected[0].get("correction_mode", "no_segments")
+            if corrected
+            else "no_segments"
+        )
+    )
+    paths = export_corrected_transcript(
+        settings.output_dir / "corrected_transcripts",
+        stem,
+        corrected,
+        mode=mode,
+    )
+    return {
+        "mode": mode,
+        "segments": corrected,
+        "rag": rag_result["metadata"],
+        "artifacts": {name: str(path) for name, path in paths.items()},
+    }
+
+
+def _summarize_stage(args: argparse.Namespace) -> dict[str, Any]:
+    settings = get_settings()
+    if args.transcript_json is not None:
+        if not args.transcript_json.exists():
+            raise FileNotFoundError(
+                f"Transcript JSON not found: {args.transcript_json}"
+            )
+        segments = read_json(args.transcript_json)
+        stem = _source_stem(args, args.transcript_json)
+        correction_artifacts: dict[str, str] = {}
+    else:
+        correction_result = _correction_stage(args)
+        segments = correction_result["segments"]
+        stem = "mock" if args.mock else Path(str(args.audio)).stem
+        correction_artifacts = {
+            "corrected_transcript_json": correction_result["artifacts"][
+                "json"
+            ],
+            "corrected_transcript_markdown": correction_result["artifacts"][
+                "markdown"
+            ],
+        }
+
+    summary = summarize_segments(segments)
+    paths = export_summary(
+        settings.output_dir / "summaries",
+        stem,
+        summary,
+    )
+    return {
+        **summary,
+        "artifacts": {
+            **correction_artifacts,
+            "summary_json": str(paths["json"]),
+            "summary_markdown": str(paths["markdown"]),
+        },
+    }
+
+
 def main() -> int:
     args = build_parser().parse_args()
     logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
@@ -263,8 +429,14 @@ def main() -> int:
             payload = _diarization_stage(args)
         elif stage == "align":
             payload = _align_stage(args)
-        else:
+        elif stage == "overlap":
             payload = _overlap_stage(args)
+        elif stage == "rag":
+            payload = _rag_stage(args)
+        elif stage == "correction":
+            payload = _correction_stage(args)
+        else:
+            payload = _summarize_stage(args)
     except (FileNotFoundError, RuntimeError, ValueError) as exc:
         print(f"TalkWeaver stage error: {exc}", file=sys.stderr)
         return 2
