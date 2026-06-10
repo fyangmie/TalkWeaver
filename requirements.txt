@@ -1,5 +1,10 @@
-# Phase 1 lightweight runtime. Heavy ML packages are optional in later phases.
+# Core UI and Phase 2 audio preprocessing dependencies.
 streamlit>=1.40,<2
 pandas>=2.0,<3
 matplotlib>=3.7,<4
 python-dotenv>=1.0,<2
+numpy>=1.24,<3
+scipy>=1.10,<2
+soundfile>=0.12,<1
+pydub>=0.25,<1
+audioop-lts>=0.2; python_version >= "3.13"

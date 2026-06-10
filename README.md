@@ -10,9 +10,10 @@ speech recognition (ASR), speaker diarization, overlapping speech, and
 constrained LLM correction. Retrieval-augmented generation (RAG) is a
 supporting module used primarily to recover domain terms.
 
-This repository is in Phase 1. It contains the project structure, research
-foundation, deterministic mock pipeline, and UI placeholders. Heavy model
-integration and real experiments are intentionally deferred.
+This repository includes the Phase 2 audio preprocessing and ASR baseline.
+It can normalize real meeting audio to mono 16 kHz PCM WAV and run
+faster-whisper when installed. The deterministic mock pipeline remains
+available for development without a GPU, model download, or API credentials.
 
 ## Research Motivation
 
@@ -75,9 +76,19 @@ pip install -r requirements.txt
 cp .env.example .env
 ```
 
-`ffmpeg` and `libsndfile` are listed in `packages.txt` for later audio support.
-Heavy packages such as `faster-whisper`, `pyannote.audio`, and LLM SDKs will be
-optional and lazily imported in later phases.
+`ffmpeg` and `libsndfile` are listed in `packages.txt`. Standard PCM WAV files
+can be processed with the Python standard library; `soundfile` handles common
+libsndfile formats, while `pydub` plus FFmpeg provides a fallback for MP3 and
+M4A.
+
+Install the optional ASR and denoising packages when needed:
+
+```bash
+pip install -r requirements-optional.txt
+```
+
+`faster-whisper` model weights are downloaded on first use when a model name is
+selected. GPU execution additionally requires a compatible CUDA/cuDNN setup.
 
 ## Environment Variables
 
@@ -101,6 +112,8 @@ its artifacts as demo data.
 
 ```bash
 python scripts/run_pipeline.py --mock
+python scripts/run_stage.py --stage preprocess \
+  --audio data/demo/demo_meeting.wav --mock
 python scripts/run_stage.py --stage asr --mock
 python experiments/run_ablation.py --mock
 python experiments/plot_results.py
@@ -115,24 +128,79 @@ Generated demo outputs are written under `outputs/` and
 streamlit run webapp/streamlit_app.py
 ```
 
-The multipage app currently demonstrates the intended workflow and can run the
-deterministic mock pipeline. Audio processing and real model controls are
-Phase 2 and Phase 3 work.
+The multipage app demonstrates the full mock workflow. Real audio
+preprocessing and the ASR baseline are currently exposed through the CLI;
+diarization and overlap-aware real-model controls remain later-phase work.
 
 ## CLI
 
 ```bash
 python scripts/run_pipeline.py --mock
-python scripts/run_stage.py --stage asr --mock
+python scripts/run_stage.py --stage preprocess \
+  --audio data/demo/demo_meeting.wav --mock
+python scripts/run_stage.py --stage asr \
+  --audio data/demo/demo_meeting.wav --mock
 python scripts/run_stage.py --stage diarization --mock
 python scripts/generate_synthetic_overlap.py --mock
 ```
 
-Real-audio mode is reserved for the next implementation phases:
+Process a real audio file and save `data/processed/demo_meeting_mono_16k.wav`:
+
+```bash
+python scripts/run_stage.py \
+  --stage preprocess \
+  --audio data/demo/demo_meeting.wav
+```
+
+Request optional spectral-gating denoising:
+
+```bash
+python scripts/run_stage.py \
+  --stage preprocess \
+  --audio data/demo/demo_meeting.wav \
+  --denoise
+```
+
+Run the ASR baseline directly and export raw JSON, Markdown, and metadata under
+`outputs/transcripts/`:
+
+```bash
+python scripts/run_stage.py \
+  --stage asr \
+  --audio data/processed/demo_meeting_mono_16k.wav \
+  --model-size medium \
+  --language en
+```
+
+Run the integrated Phase 2 path:
 
 ```bash
 python scripts/run_pipeline.py --audio data/demo/demo_meeting.wav
 ```
+
+If `faster-whisper` is absent, ASR does not crash. It emits a warning and
+exports deterministic segments labeled `mock_fallback`, including the fallback
+reason. Use `--mock` to request demo mode explicitly.
+
+### Phase 2 Output
+
+The raw transcript JSON is an array of segments:
+
+```json
+[
+  {
+    "start": 0.0,
+    "end": 3.2,
+    "text": "Today we are testing speaker diarization.",
+    "words": [
+      {"word": "Today", "start": 0.0, "end": 0.4}
+    ]
+  }
+]
+```
+
+Each run also creates a readable Markdown transcript and a metadata JSON file
+recording the ASR mode, model, language, device, and any fallback reason.
 
 ## Experiments
 
@@ -167,7 +235,9 @@ figures in `assets/result_charts/`. Placeholder directories are tracked with
 
 ## Limitations
 
-- Real ASR, diarization, denoising, and LLM APIs are not integrated yet.
+- Real ASR requires the optional `faster-whisper` package and model weights.
+- Denoising is skipped with a warning unless `noisereduce` is installed.
+- Real diarization and LLM APIs are not integrated yet.
 - Mock transcripts and metrics demonstrate interfaces, not model quality.
 - The required `project/xutong_paper.pdf` was not available during Phase 1.
 - Literature metadata and links require verification before final submission.

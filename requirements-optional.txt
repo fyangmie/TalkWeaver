@@ -1,0 +1,3 @@
+# Optional Phase 2 model and enhancement dependencies.
+faster-whisper>=1.1,<2
+noisereduce>=3.0,<4
