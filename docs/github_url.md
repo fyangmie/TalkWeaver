@@ -3,7 +3,7 @@
 Repository URL:
 
 ```text
-https://github.com/REPLACE_WITH_OWNER/TalkWeaver
+https://github.com/fyangmie/TalkWeaver
 ```
 
 The final repository should expose a meaningful incremental commit history.
