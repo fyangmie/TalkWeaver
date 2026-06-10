@@ -2,27 +2,34 @@
 
 ## Source
 
-Preprint or publication status, year, authors, and stable link must be verified
-from the original source.
+Mingyue Huo, Yiwen Shao, and Yuheng Zhang. *TagSpeech: End-to-End
+Multi-Speaker ASR and Diarization with Fine-Grained Temporal Grounding*.
+arXiv preprint, submitted January 11, 2026.
+
+<https://arxiv.org/abs/2601.06896>
 
 ## Problem
 
-Ground multi-speaker transcript content in speaker identity and time.
+Multi-speaker systems need fine-grained synchronization among lexical content,
+speaker identity, and time, particularly during complex overlap.
 
 ## Key Idea
 
-The project requirements identify temporal anchors as the motivating idea.
-Verify the paper's terminology and technical mechanism.
+TagSpeech uses Temporal Anchor Grounding, decoupled semantic and speaker
+streams, Serialized Output Training, and interleaved time anchors. The design
+explicitly models who spoke what and when.
 
 ## Limitation
 
-Record training requirements, timestamp precision, speaker assumptions, and
-overlap results after source review.
+The paper is an end-to-end trained framework evaluated on AMI and AliMeeting.
+Its training setup and benchmark results are outside TalkWeaver's lightweight
+post-processing scope.
 
 ## Our Adaptation
 
-Use a temporal-anchor JSON record that preserves start, end, speaker, raw and
-corrected text, overlap, confidence, and retrieved terms.
+TalkWeaver exports a temporal-anchor JSON record connecting start/end time,
+speaker identities, raw and corrected text, overlap, confidence, and retrieved
+terms.
 
 ## Implementation Mapping
 
@@ -30,3 +37,4 @@ corrected text, overlap, confidence, and retrieved terms.
 - `backend/overlap.py`
 - `backend/export.py`
 - `webapp/components/speaker_timeline.py`
+- `experiments/evaluate_wder.py`

@@ -4,8 +4,8 @@
 
 Expected local file: `project/xutong_paper.pdf`
 
-The file was not available when the Phase 1 skeleton was created on
-June 10, 2026. The student must add the course-provided PDF locally before this
+The file was checked again during Phase 8 on June 10, 2026 and was still not
+available. The student must add the course-provided PDF locally before this
 note can be completed. Do not commit the PDF unless redistribution is allowed.
 
 ## Problem
@@ -22,8 +22,8 @@ Not documented because the source was unavailable.
 
 ## Our Adaptation
 
-To be written only after reading the paper.
+No adaptation is attributed to this paper until the source is available.
 
 ## Implementation Mapping
 
-To be mapped to concrete modules after the paper is reviewed.
+To be mapped to concrete modules only after the paper is reviewed.

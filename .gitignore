@@ -54,7 +54,15 @@ outputs/**/*.txt
 # Generated experiment and UI assets
 experiments/results/*.csv
 !experiments/results/.gitkeep
+!experiments/results/ablation_results.csv
+!experiments/results/term_error_results.csv
+!experiments/results/latency_results.csv
 assets/result_charts/*.png
+!assets/result_charts/wer_comparison.png
+!assets/result_charts/wder_comparison.png
+!assets/result_charts/term_error_comparison.png
+!assets/result_charts/latency_comparison.png
+!assets/result_charts/hallucination_comparison.png
 assets/screenshots/*
 assets/demo_gifs/*
 !assets/**/.gitkeep

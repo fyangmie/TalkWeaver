@@ -1,0 +1,9 @@
+stage,latency_seconds,is_mock,mode,notes
+preprocessing,1e-06,true,mock_demo,Measured elapsed time on deterministic mock/demo data.
+asr,3.7e-05,true,mock_demo,Measured elapsed time on deterministic mock/demo data.
+diarization,7e-06,true,mock_demo,Measured elapsed time on deterministic mock/demo data.
+alignment,5.7e-05,true,deterministic_timestamp_midpoint,Measured elapsed time on deterministic mock/demo data.
+overlap_detection,1.1e-05,true,interval_intersection,Measured elapsed time on deterministic mock/demo data.
+rag_retrieval,0.001512,true,local_tfidf,Measured elapsed time on deterministic mock/demo data.
+llm_correction,3.7e-05,true,mock_rule_based,Measured elapsed time on deterministic mock/demo data.
+summary,1e-05,true,deterministic_extractive,Measured elapsed time on deterministic mock/demo data.

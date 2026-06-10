@@ -1,43 +1,86 @@
 # When Whisper Meets a Noisy Meeting
 
-## Building an Overlap-Aware Multi-Speaker ASR System
+## Building TalkWeaver, an Overlap-Aware Multi-Speaker ASR System
 
-> Draft foundation for the final presentation-friendly article.
+A clean paragraph is often the wrong representation of a meeting. It hides
+interruptions, speaker changes, uncertain boundaries, and the difference
+between what the recognizer heard and what a language model later rewrote.
+TalkWeaver was built around a stricter question:
 
-A clean transcript hides the hardest parts of a meeting. Several people may
-interrupt one another, technical names may be rare, and a recognizer may
-produce fluent text while assigning it to the wrong speaker. TalkWeaver starts
-from the premise that a meeting system should preserve this uncertainty rather
-than smoothing it away.
+> Can we improve a transcript without losing who spoke, when they spoke, or
+> where the evidence became ambiguous?
 
 ## Beyond "What Was Said?"
 
-The central questions are who spoke, when they spoke, what evidence overlaps,
-and which corrections are justified. TalkWeaver combines ASR output with
-speaker turns and temporal anchors before any LLM correction is attempted.
+Automatic speech recognition handles lexical content. Speaker diarization
+estimates who spoke when. In real meetings those outputs do not always agree,
+especially around cross-speech. A fluent correction can make the final text
+look better while assigning it to the wrong speaker or hiding uncertainty.
 
-## A Structured Correction Record
+TalkWeaver therefore keeps ASR and diarization separate long enough to audit
+them, then combines them through timestamp alignment. Every word is assigned
+using its temporal midpoint. If two turns contain that midpoint, the result is
+not forced to one speaker: it becomes an explicit overlap segment.
 
-Each segment keeps its start and end time, speaker label, raw transcript,
-overlap flag, confidence, retrieved terms, and corrected text. This makes the
-correction auditable and allows overlap regions to receive more conservative
-handling.
+## A Transcript with Temporal Anchors
 
-## RAG Has a Narrow Job
+The central data structure stores start and end times, speaker labels, all
+active speakers, raw text, corrected text, overlap state, confidence, and
+retrieved terminology. That record connects the backend, exports, experiments,
+and Streamlit interface.
 
-The local knowledge base retrieves likely domain terms such as
-`pyannote.audio`, `speaker diarization`, `WER`, and `RAG`. It supports ASR
-correction; it does not turn the project into a generic meeting chatbot.
+This design is inspired by several research directions. DiarizationLM shows
+that compact ASR and diarization representations can support LLM
+post-processing. DM-ASR uses speaker- and time-conditioned subtasks.
+TagSpeech emphasizes fine-grained temporal grounding for who spoke what and
+when. TalkWeaver does not reproduce those trained models; it adapts their
+structural ideas into a lightweight pipeline.
 
-## How We Will Evaluate It
+## Correction Has Constraints
 
-The final study will compare preprocessing, diarization and alignment,
-structured correction, glossary retrieval, and overlap-aware constraints.
-Metrics will include WER, speaker-attribution error, Term Error Rate,
-hallucinated corrections, overlap errors, and latency.
+Correction is performed per speaker-time segment. Timestamps and speaker
+labels are preserved. Overlap segments receive conservative instructions and
+remain uncertain. An output validator rejects empty text, unsupported words,
+and rearrangements beyond glossary-backed substitutions.
 
-## Current Status
+Without an API key, the same interface runs deterministic rules. This is
+important for reproducibility: the project can demonstrate the complete
+workflow without presenting mock behavior as a real model result.
 
-The Phase 1 repository provides the research structure, deterministic mock
-pipeline, and Streamlit review workflow. Real model integration and measured
-experiments are the next steps. Mock outputs are demonstrations only.
+## RAG Has One Narrow Job
+
+The local TF-IDF index retrieves terms such as `pyannote`, `diarization`,
+`WER`, `DER`, and `RAG`. It helps recover technical terms from errors like
+`piano note`, `diary station`, and `the ear`.
+
+RAG does not become the main application. It supplies correction candidates
+and supports secondary transcript search. Speaker attribution, overlap, and
+LLM + ASR interaction remain the research center.
+
+## Measuring the Pipeline
+
+Phase 7 adds WER, a clearly labeled temporal speaker-error approximation, Term
+Error Rate, overlap error, hallucinated correction checks, and per-stage
+latency. The ablation runner produces six rows from Whisper-only through
+overlap-aware correction, and the plotting script creates five presentation
+charts.
+
+The included values are deterministic mock/demo metrics. They prove that the
+evaluators, CSV schema, dashboard, and charts work. They do not prove that the
+system generalizes. A real study still needs consented or licensed audio,
+reference transcripts, speaker labels, overlap annotations, fixed model
+versions, and a held-out test set.
+
+## What the Project Demonstrates
+
+TalkWeaver is not a claim of state-of-the-art speech recognition. It is a
+research-driven engineering project showing that:
+
+- speaker and time structure can remain visible through correction;
+- overlap uncertainty can be represented instead of silently erased;
+- retrieval can be restricted to domain-term recovery;
+- every correction can retain its raw evidence;
+- mock and real evaluation can share one reproducible interface.
+
+The next step is not another UI feature. It is the careful annotation and
+execution of the real A-F ablation study.

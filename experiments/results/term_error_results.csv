@@ -1,0 +1,4 @@
+pipeline,term_error_rate,precision,recall,required_terms,missing_terms,is_mock,notes
+Whisper only,1.0,0.0,0.0,pyannote; diarization; WER; DER; RAG,pyannote; diarization; WER; DER; RAG,true,Deterministic mock/demo domain-term comparison.
+Structured LLM correction,1.0,0.0,0.0,pyannote; diarization; WER; DER; RAG,pyannote; diarization; WER; DER; RAG,true,Deterministic mock/demo domain-term comparison.
+Structured LLM correction + RAG glossary,0.0,1.0,1.0,pyannote; diarization; WER; DER; RAG,,true,Deterministic mock/demo domain-term comparison.

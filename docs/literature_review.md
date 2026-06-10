@@ -1,73 +1,91 @@
 # Literature Review
 
-> Phase 1 research map. Verify bibliographic metadata, links, datasets, and
-> technical claims against the original papers before final submission.
-
 ## Scope
 
-TalkWeaver studies recent work at the intersection of:
+TalkWeaver reviews work on speaker diarization, multi-speaker ASR,
+overlapping speech, LLM-assisted correction, temporal grounding, and
+retrieval-assisted recovery of rare terms. Meeting summarization and QA are
+secondary outputs.
 
-- speaker diarization and speaker attribution;
-- overlapping or cross-speech;
-- ASR and LLM post-processing;
-- temporal grounding of multi-speaker transcripts;
-- retrieval-assisted recovery of rare domain terms.
+## Source Status
 
-Meeting summarization and QA are secondary outputs. They are not the central
-research contribution.
-
-## Anchor Course Paper
-
-The required `project/xutong_paper.pdf` was not available during repository
-initialization. No claims about this paper are included. See
-`paper_reading_notes/00_xutong_paper.md`.
+The required local course paper, `project/xutong_paper.pdf`, was not available
+on June 10, 2026. It is not summarized or cited. The remaining entries below
+were checked against their primary arXiv records.
 
 ## Research Map
 
-| Work area | Problem addressed | TalkWeaver adaptation | Verification status |
-| --- | --- | --- | --- |
-| DiarizationLM | LLM post-processing of ASR and diarization output | Compact speaker-time prompt with overlap, confidence, and terms | Original source required |
-| Diarization-aware multi-speaker ASR | Jointly reason about speech and speaker structure | Reproducible modular ASR, diarization, and correction pipeline | Original source required |
-| DM-ASR | Speaker- and time-conditioned multi-speaker queries | Correct each temporal speaker segment independently | Original source required |
-| TagSpeech / temporal anchors | Ground who spoke what and when | Temporal-anchor JSON transcript | Original source required |
-| Retrieval-augmented ASR correction | Recover rare entities and terminology | Local domain glossary candidates for constrained correction | Original source required |
+| Paper | Status | Key idea | Limitation relevant to TalkWeaver | TalkWeaver adaptation |
+| --- | --- | --- | --- | --- |
+| Course `xutong_paper.pdf` | Local source unavailable | Unknown | No claims can be made without the PDF | Placeholder note only |
+| DiarizationLM | Interspeech 2024 | Compact text representation of ASR and diarization for LLM post-processing | Post-processing depends on upstream ASR/diarization and an appropriate LLM; overlap remains an upstream evidence problem | Structured speaker-time prompts with overlap, confidence, and audit fields |
+| DM-ASR | arXiv preprint, submitted April 24, 2026 | Speaker- and time-conditioned queries use diarization as an explicit prior | Full method is a trained multi-speaker speech-LLM system and is not reproduced here | Correct one diarized temporal segment at a time |
+| TagSpeech | arXiv preprint, submitted January 11, 2026 | Temporal Anchor Grounding synchronizes semantic and speaker streams | End-to-end training and benchmark-scale evaluation exceed this project scope | Temporal-anchor JSON for who spoke what and when |
+| Retrieval Augmented Correction of Named Entity Speech Recognition Errors | arXiv preprint, submitted September 9, 2024; submitted to ICASSP 2025 | Retrieve relevant entities and provide them to an adapted LLM for ASR correction | Candidate retrieval can add distractors and the reported setting targets named entities | Local TF-IDF glossary retrieval for constrained technical-term correction |
 
-## Practical Gaps
+## Paper Notes
 
-### ASR and Diarization Misalignment
+### DiarizationLM
 
-Independent systems may disagree at speaker boundaries. TalkWeaver will test a
-timestamp-based alignment baseline and record unknown or ambiguous assignments.
+Wang et al. represent ASR and diarization outputs in a compact textual form
+that can be post-processed by an optionally fine-tuned LLM. The paper reports
+WDER reductions on Fisher and Callhome, but those paper results are not
+TalkWeaver results. The transferable idea is the interface: independent
+speech components can be converted into a structured textual correction task.
 
-### Overlap Uncertainty
+Source: <https://arxiv.org/abs/2401.03506>
 
-A fluent correction may be unsupported when two speakers overlap. TalkWeaver
-will compare correction with and without explicit overlap constraints and count
-unsupported changes.
+### DM-ASR
 
-### Domain-Term Recognition
+Li et al. frame multi-speaker ASR as a sequence of speaker- and
+time-conditioned queries. Diarization supplies reliable speaker identity and
+segment boundaries, while an LLM handles linguistic content and longer-range
+context. TalkWeaver adopts the decomposition but uses post-ASR correction
+instead of a trained speech-LLM recognizer.
 
-Rare terms such as `pyannote.audio`, `WDER`, and `RAG` can be replaced by
-common words. TalkWeaver restricts retrieval to plausible correction
-candidates from a local project glossary.
+Source: <https://arxiv.org/abs/2604.22467>
 
-### Reproducibility
+### TagSpeech
 
-Frontier multi-speaker systems may require substantial training and compute.
-TalkWeaver adapts their structural ideas into a modular pipeline with mock
-fallbacks and explicit ablations.
+Huo et al. introduce Temporal Anchor Grounding, decoupled semantic and speaker
+streams, and interleaved time anchors. The relevant insight is that time can
+act as a synchronization signal between what was said and who said it.
+TalkWeaver implements a transparent temporal-anchor export rather than the
+paper's end-to-end model.
 
-## Synthesis
+Source: <https://arxiv.org/abs/2601.06896>
 
-The proposed contribution is not a new foundation model. It is a controlled
-study of whether structured speaker-time context, overlap-aware uncertainty,
-and narrow glossary retrieval improve an auditable meeting-ASR workflow.
+### Retrieval-Augmented ASR Correction
 
-## Citation Checklist
+Pusateri et al. retrieve entities using queries derived from errorful ASR
+hypotheses and supply those entities to an adapted LLM. TalkWeaver narrows the
+idea to a local project glossary. Retrieved terms are correction candidates,
+not new meeting facts.
 
-- [ ] Add complete citations and stable links.
-- [ ] Read and summarize the provided course paper.
-- [ ] Distinguish peer-reviewed papers from arXiv preprints.
-- [ ] Record datasets, metrics, and model assumptions from each source.
-- [ ] Connect every implemented component to a verified source or baseline.
-- [ ] Avoid claiming that TalkWeaver reproduces a paper's full model.
+Source: <https://arxiv.org/abs/2409.06062>
+
+## Cross-Paper Synthesis
+
+The papers suggest complementary roles:
+
+- diarization provides speaker and time structure;
+- ASR provides lexical hypotheses and word timestamps;
+- temporal anchors keep speaker and content synchronized;
+- LLMs can revise text when constrained by structure;
+- retrieval can improve rare-term context but introduces candidate noise.
+
+TalkWeaver's research gap is not a missing foundation model. It is the lack of
+a lightweight, auditable workflow that combines these roles while exposing
+overlap uncertainty and supporting controlled ablation.
+
+## Evaluation Implications
+
+The literature leads directly to four experiments:
+
+- structured versus unstructured correction for RQ1;
+- overlap-aware versus overlap-agnostic correction for RQ2;
+- correction with and without glossary retrieval for RQ3;
+- raw versus locally preprocessed audio for RQ4.
+
+WER alone is insufficient. Speaker attribution, overlap behavior, term
+recovery, hallucination, and latency must also be recorded.

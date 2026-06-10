@@ -10,7 +10,8 @@ speech recognition (ASR), speaker diarization, overlapping speech, and
 constrained LLM correction. Retrieval-augmented generation (RAG) is a
 supporting module used primarily to recover domain terms.
 
-This repository includes the Phase 6 pipeline and review dashboard: audio
+This repository includes the Phase 8 research pipeline, evaluation suite, and
+review dashboard: audio
 preprocessing, ASR, speaker diarization, word-speaker alignment, overlap
 detection, local TF-IDF domain-term retrieval, diarization-structured
 correction, and extractive meeting understanding. It can run faster-whisper
@@ -47,8 +48,10 @@ temporal-anchor transcript.
 - **Retrieval-augmented ASR correction:** glossary candidates for rare and
   technical terms.
 
-The literature files are research templates at this stage. Sources and claims
-must be verified before the final report.
+The literature notes link the verified primary records for DiarizationLM,
+DM-ASR, TagSpeech, and retrieval-augmented ASR correction. The required local
+`project/xutong_paper.pdf` is still unavailable and is explicitly left
+unsummarized.
 
 ## Architecture
 
@@ -350,7 +353,15 @@ generating unsupported answers.
 
 ## Experiments
 
-The planned ablation groups are:
+Run the deterministic experiment workflow:
+
+```bash
+python experiments/run_ablation.py --mock
+python experiments/plot_results.py
+pytest
+```
+
+The ablation groups are:
 
 - A: Whisper only
 - B: preprocessing + Whisper
@@ -360,8 +371,62 @@ The planned ablation groups are:
 - F: overlap-aware correction versus correction without overlap flags
 
 Required metrics are WER, WDER or speaker-attribution error, Term Error Rate,
-overlap error analysis, hallucinated correction count, and latency. Current
-CSV output is labeled `mock_demo` and must not be cited as a real result.
+overlap error analysis, hallucinated correction count, and latency. The WDER
+column is a clearly documented project-level temporal speaker-error
+approximation, not a full DER/WDER implementation.
+
+Use the individual evaluators with real references:
+
+```bash
+python experiments/evaluate_wer.py \
+  --reference data/reference/meeting.txt \
+  --hypothesis outputs/corrected_transcripts/meeting_corrected.json
+
+python experiments/evaluate_wder.py \
+  --reference data/reference/meeting_temporal.json \
+  --hypothesis outputs/corrected_transcripts/meeting_corrected.json
+
+python experiments/evaluate_terms.py \
+  --reference data/reference/meeting.txt \
+  --whisper outputs/transcripts/meeting_raw_asr.json \
+  --rag outputs/corrected_transcripts/meeting_corrected.json
+
+python experiments/evaluate_latency.py --audio data/demo/meeting.wav
+```
+
+Generated result files:
+
+- `experiments/results/ablation_results.csv`
+- `experiments/results/term_error_results.csv`
+- `experiments/results/latency_results.csv`
+- `assets/result_charts/wer_comparison.png`
+- `assets/result_charts/wder_comparison.png`
+- `assets/result_charts/term_error_comparison.png`
+- `assets/result_charts/latency_comparison.png`
+- `assets/result_charts/hallucination_comparison.png`
+
+Every included row currently uses `is_mock=true`. The numbers are calculated
+from the deterministic built-in reference, so they test metric direction and
+artifact plumbing only. Real experiments must replace or separately store
+results from annotated audio; mock charts must not be cited as model quality.
+
+## Final Project Status
+
+- [x] Research-oriented repository structure
+- [x] Audio preprocessing and faster-whisper integration
+- [x] Pyannote diarization with deterministic fallback
+- [x] Word-speaker alignment and overlap detection
+- [x] Temporal-anchor transcript export
+- [x] Diarization-structured correction and audit trail
+- [x] Local TF-IDF domain-term recovery
+- [x] Multi-page Streamlit review dashboard
+- [x] WER, speaker-error approximation, TER, overlap, hallucination, latency
+- [x] Mock ablation CSVs and five labeled charts
+- [x] Project report, blog article, literature notes, and video script
+- [ ] Add and review `project/xutong_paper.pdf`
+- [ ] Collect or license real evaluation audio and annotations
+- [ ] Run reference-backed groups A-F and replace demo-only conclusions
+- [ ] Add final screenshots, member contributions, and recorded video
 
 ## Repository Guide
 
@@ -400,7 +465,8 @@ Planned final captures:
 - Lexical grounding reduces hallucination risk but does not replace human
   review, especially for overlapping speech.
 - Mock transcripts and metrics demonstrate interfaces, not model quality.
-- The required `project/xutong_paper.pdf` was not available during Phase 1.
+- The required `project/xutong_paper.pdf` was still unavailable when Phase 8
+  documentation was completed on June 10, 2026.
 - Literature metadata and links require verification before final submission.
 - Meeting summarization is secondary and must not replace the main
   diarization/overlap research evaluation.

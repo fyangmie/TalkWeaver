@@ -12,6 +12,7 @@ import streamlit as st
 METRIC_ALIASES = {
     "WER": ("wer",),
     "WDER / speaker error": (
+        "speaker_error_or_wder",
         "wder",
         "speaker_attribution_error",
         "speaker_error",
@@ -52,6 +53,10 @@ def load_result_frames(paths: Iterable[str | Path]) -> pd.DataFrame:
 def contains_mock_metrics(frame: pd.DataFrame) -> bool:
     """Return whether any row is explicitly labeled mock or demo."""
 
+    if "is_mock" in frame:
+        values = frame["is_mock"].fillna(False).astype(str).str.lower()
+        if values.isin({"true", "1", "yes"}).any():
+            return True
     for column in ("result_type", "mode", "status"):
         if column in frame:
             values = frame[column].fillna("").astype(str).str.lower()

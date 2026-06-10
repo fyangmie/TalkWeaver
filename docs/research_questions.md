@@ -5,59 +5,73 @@
 **Question:** Can diarization-structured prompting improve speaker-attributed
 transcript readability and speaker consistency?
 
-**Comparison:** plain transcript correction versus correction conditioned on
-speaker, timestamp, confidence, overlap state, and retrieved terms.
+**Experiment mapping:** Compare group C, diarization plus alignment, with group
+D, segment-level correction conditioned on speaker, timestamp, overlap, and
+confidence. A stricter real study should also compare D with a whole-transcript
+unstructured prompt.
 
-**Measures:** speaker-attribution error or WDER proxy, unsupported speaker-label
-changes, correction edit rate, and a documented human readability rubric.
+**Measures:** simplified WDER or speaker-attribution error, unsupported
+speaker-label changes, correction edit rate, WER, and a documented human
+readability rubric.
 
-**Risk:** a language model may make text more fluent without improving speaker
-consistency. Readability and attribution must therefore be measured separately.
+**Interpretation rule:** improved fluency is not evidence of improved speaker
+consistency. Speaker and lexical outcomes must be reported separately.
 
 ## RQ2: Overlap-Aware Uncertainty
 
 **Question:** Can overlap-aware uncertainty control reduce hallucinated
 corrections in overlapping speech regions?
 
-**Comparison:** identical correction pipeline with and without overlap flags
-and conservative instructions.
+**Experiment mapping:** Compare group F with an otherwise identical correction
+run where overlap flags and conservative instructions are removed.
 
-**Measures:** hallucinated correction count, overlap-region WER, preserved
-uncertain spans, and manual error categories.
+**Measures:** overlap-region WER, overlap-flag error, hallucinated correction
+count, preserved uncertain spans, and manual error categories.
 
-**Risk:** conservative correction may reduce hallucinations while leaving more
-ASR errors. Both effects must be reported.
+**Interpretation rule:** conservative correction may reduce unsupported edits
+while leaving more lexical errors. Both outcomes must be reported.
 
 ## RQ3: RAG-Based Domain Term Recovery
 
-**Question:** Can RAG-based domain glossary retrieval reduce ASR errors on
-technical terms?
+**Question:** Can local glossary retrieval reduce ASR errors on technical
+terms?
 
-**Comparison:** ASR only, structured correction, and structured correction plus
-glossary retrieval.
+**Experiment mapping:** Compare group A, group D, and group E:
 
-**Measures:** Term Error Rate, term precision/recall, WER, and incorrect
+```text
+Whisper only
+-> structured correction without retrieved terms
+-> structured correction plus RAG glossary
+```
+
+**Measures:** Term Error Rate, term precision, term recall, WER, and incorrect
 glossary substitutions.
 
-**Risk:** irrelevant candidates may bias correction. Retrieval quality must be
-evaluated independently from correction quality.
+**Interpretation rule:** a term improvement is valid only when the reference
+contains that term. Retrieval must not authorize unrelated content.
 
 ## RQ4: Audio Preprocessing
 
-**Question:** Does local audio preprocessing improve ASR robustness under noisy
-meeting conditions?
+**Question:** Does local mono 16 kHz preprocessing improve noisy-meeting ASR?
 
-**Comparison:** raw audio versus mono 16 kHz normalized audio, with optional
-denoising and VAD as separately controlled variants.
+**Experiment mapping:** Compare group A with group B on identical real audio.
+Optional denoising is a separately controlled variant.
 
-**Measures:** WER, latency, audio duration retained, and failure analysis by
-noise and overlap condition.
+**Measures:** WER, retained audio duration, latency, failure rate, and analysis
+by noise and overlap condition.
 
-**Risk:** denoising or silence trimming may remove quiet speech and harm
-diarization.
+**Interpretation rule:** mock mode does not contain a real waveform, so groups
+A and B are expected to match. RQ4 cannot be answered from mock results.
 
 ## Evidence Policy
 
-Mock outputs validate interfaces only. Research conclusions require reference
-transcripts, reference speakers, documented audio conditions, repeatable
-commands, and results labeled with model and hardware versions.
+The built-in ablation calculates demonstration metrics from a fixed mock
+reference and labels every row `is_mock=true`. It validates the experiment
+code and expected metric direction only. Research conclusions require:
+
+- reference text;
+- reference speaker and overlap labels;
+- fixed model and decoding versions;
+- documented hardware;
+- a held-out test manifest;
+- raw artifacts retained for audit.
