@@ -1,0 +1,13 @@
+[
+  {
+    "start": 0.0,
+    "end": 14.46,
+    "speaker": "SPEAKER_00",
+    "speakers": [
+      "SPEAKER_00"
+    ],
+    "text": "Il y a de nombreuses répercussions sociales et politiques telles que l'utilisation du système métrique, le passage de l'absolutisme au républicanisme, le nationalisme et la conviction que le pays appartient au peuple et non à un seul dirigeant.",
+    "overlap": false,
+    "annotation_source": "generated_single_speaker_anchor"
+  }
+]

@@ -1,0 +1,13 @@
+[
+  {
+    "start": 0.0,
+    "end": 16.38,
+    "speaker": "SPEAKER_00",
+    "speakers": [
+      "SPEAKER_00"
+    ],
+    "text": "Now widely available throughout the archipelago, Javanese cuisine features an array of simply seasoned dishes, the predominant flavorings the Javanese favor being peanuts, chillies, sugar (especially Javanese coconut sugar) and various aromatic spices.",
+    "overlap": false,
+    "annotation_source": "generated_single_speaker_anchor"
+  }
+]

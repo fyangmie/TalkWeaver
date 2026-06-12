@@ -1,0 +1,13 @@
+[
+  {
+    "start": 0.0,
+    "end": 4.92,
+    "speaker": "SPEAKER_00",
+    "speakers": [
+      "SPEAKER_00"
+    ],
+    "text": "The major religion in Moldova is Orthodox Christian.",
+    "overlap": false,
+    "annotation_source": "generated_single_speaker_anchor"
+  }
+]

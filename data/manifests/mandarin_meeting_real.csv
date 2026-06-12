@@ -1,0 +1,1 @@
+clip_id,audio_path,source_type,dataset_name,dataset_version,split,language,duration_seconds,speaker_count,has_overlap,has_interruptions,has_domain_terms,recording_device,noise_condition,consent_status,redistribution_status,license_or_access,transcript_path,anchors_path,terms_path,events_path,download_status,notes

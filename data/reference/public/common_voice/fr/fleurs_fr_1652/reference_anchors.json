@@ -1,0 +1,13 @@
+[
+  {
+    "start": 0.0,
+    "end": 8.52,
+    "speaker": "SPEAKER_00",
+    "speakers": [
+      "SPEAKER_00"
+    ],
+    "text": "La principale religion en Moldavie est le christianisme orthodoxe.",
+    "overlap": false,
+    "annotation_source": "generated_single_speaker_anchor"
+  }
+]

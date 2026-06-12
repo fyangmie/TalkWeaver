@@ -1,0 +1,13 @@
+[
+  {
+    "start": 0.0,
+    "end": 6.54,
+    "speaker": "SPEAKER_00",
+    "speakers": [
+      "SPEAKER_00"
+    ],
+    "text": "When you call someone who is thousands of miles away, you are using a satellite.",
+    "overlap": false,
+    "annotation_source": "generated_single_speaker_anchor"
+  }
+]

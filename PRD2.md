@@ -1552,6 +1552,36 @@ Exit criteria:
 
 **Goal:** Create the evidence base for real evaluation.
 
+#### Phase 2A-REAL Status
+
+**Partially implemented on June 12, 2026.**
+
+Implemented:
+
+- size-capped official-source acquisition scripts;
+- 15 real Google FLEURS validation clips: five English, five French, and five
+  Mandarin Chinese clips, used as a clearly labeled Common Voice fallback;
+- two real 20-second AMI `ES2002a` excerpts with reference transcripts,
+  speaker anchors, and derived overlap events;
+- source-specific and combined manifests with SHA-256 inventories;
+- strict local-file and JSON manifest validation;
+- 17 complete rows in `data/manifests/formal_eval_real.csv`;
+- raw audio and archives excluded from Git.
+
+Remaining blockers:
+
+- Mozilla Common Voice partial access was unavailable through the attempted
+  official Hugging Face endpoint; the current Mozilla Data Collective route
+  requires credentials, terms acceptance, and archive-level downloads;
+- AISHELL-4 official archives exceed the 500 MB acquisition ceiling;
+- no verified file-level AliMeeting route for a few clips plus matching
+  annotations has been established;
+- demo/mobile data remains pending.
+
+These blockers are documented in `docs/dataset_acquisition.md` and
+`docs/manual_dataset_steps.md`. No missing or planned rows are included in the
+combined real manifest.
+
 Tasks:
 
 - define and validate `manifest.csv`;

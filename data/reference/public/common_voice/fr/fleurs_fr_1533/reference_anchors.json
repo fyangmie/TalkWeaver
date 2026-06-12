@@ -1,0 +1,13 @@
+[
+  {
+    "start": 0.0,
+    "end": 7.86,
+    "speaker": "SPEAKER_00",
+    "speakers": [
+      "SPEAKER_00"
+    ],
+    "text": "De nombreux formats courants (famille de formats APS, par exemple) sont égaux à ce rapport d’aspect ou s’en approchent de près.",
+    "overlap": false,
+    "annotation_source": "generated_single_speaker_anchor"
+  }
+]

@@ -1,0 +1,13 @@
+[
+  {
+    "start": 0.0,
+    "end": 4.14,
+    "speaker": "SPEAKER_00",
+    "speakers": [
+      "SPEAKER_00"
+    ],
+    "text": "Then, Lakkha Singh took the lead in singing the bhajans.",
+    "overlap": false,
+    "annotation_source": "generated_single_speaker_anchor"
+  }
+]

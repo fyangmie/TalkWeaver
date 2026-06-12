@@ -135,6 +135,42 @@ USE_MOCK_LLM=true
 
 Never commit `.env` or credentials.
 
+## Downloading Small Formal Evaluation Subsets
+
+Phase 2A-REAL provides size-capped acquisition scripts for real public
+evaluation data. Raw audio and archives stay under `data/raw/public/` and are
+ignored by Git.
+
+```bash
+python scripts/download_common_voice_subset.py \
+  --languages en fr zh-CN --max-clips-per-language 5
+python scripts/download_meeting_subset.py --dataset auto --max-clips 2
+python scripts/download_mandarin_meeting_subset.py --dataset auto --max-clips 2
+
+python scripts/build_formal_eval_manifest.py \
+  --inputs \
+    data/manifests/common_voice_multilingual_real.csv \
+    data/manifests/english_meeting_real.csv \
+    data/manifests/mandarin_meeting_real.csv \
+  --output data/manifests/formal_eval_real.csv
+
+python experiments/validate_manifest.py \
+  --manifest data/manifests/formal_eval_real.csv \
+  --require-real-files
+```
+
+The current reproducible subset contains 15 Google FLEURS clips, five each
+for English, French, and Mandarin Chinese, plus two 20-second AMI meeting
+excerpts with speaker anchors and overlap events. Common Voice partial access
+was unavailable through the attempted official endpoint, so FLEURS is
+explicitly labeled as the multilingual fallback. AISHELL-4 exceeds the 500 MB
+download cap and AliMeeting still requires a verified manual subset route.
+
+See [`docs/dataset_acquisition.md`](docs/dataset_acquisition.md) for exact
+sources, licenses, commands, checksums, and current results, and
+[`docs/manual_dataset_steps.md`](docs/manual_dataset_steps.md) for access
+blockers. No raw dataset audio is committed.
+
 ## Quickstart: Mock Mode
 
 Mock mode is deterministic, requires no GPU or external API keys, and labels

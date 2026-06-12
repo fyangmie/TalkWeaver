@@ -1,0 +1,13 @@
+[
+  {
+    "start": 0.0,
+    "end": 15.46,
+    "speaker": "SPEAKER_00",
+    "speakers": [
+      "SPEAKER_00"
+    ],
+    "text": "据警方称，撞倒摄影师的汽车司机未必会面临刑事指控。",
+    "overlap": false,
+    "annotation_source": "generated_single_speaker_anchor"
+  }
+]

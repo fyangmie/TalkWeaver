@@ -1,0 +1,13 @@
+[
+  {
+    "start": 0.0,
+    "end": 15.36,
+    "speaker": "SPEAKER_00",
+    "speakers": [
+      "SPEAKER_00"
+    ],
+    "text": "Maintenant, largement disponible dans tout l’archipel, la cuisine javanaise propose un éventail de plats simplement assaisonnés, les saveurs prédominantes que les Javanais privilégient étant les cacahuètes, les piments, le sucre (en particulier le sucre de coco javanais) et diverses épices aromatiques.",
+    "overlap": false,
+    "annotation_source": "generated_single_speaker_anchor"
+  }
+]

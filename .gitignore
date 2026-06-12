@@ -30,9 +30,13 @@ Thumbs.db
 models/
 
 # Local audio and generated data
-data/raw/*
+data/raw/**
+!data/raw/**/
+!data/raw/**/.gitkeep
 data/processed/*
 data/reference/*
+!data/reference/public/
+!data/reference/public/**
 data/synthetic/*
 data/demo/*
 !data/**/.gitkeep
@@ -41,6 +45,10 @@ data/demo/*
 *.m4a
 *.flac
 *.ogg
+*.zip
+*.tar
+*.tar.gz
+*.tgz
 outputs/uploads/*
 !outputs/uploads/.gitkeep
 

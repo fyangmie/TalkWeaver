@@ -1,0 +1,13 @@
+[
+  {
+    "start": 0.0,
+    "end": 7.44,
+    "speaker": "SPEAKER_00",
+    "speakers": [
+      "SPEAKER_00"
+    ],
+    "text": "因为远离大陆，哺乳动物无法长途跋涉而来，使得巨龟成为科隆群岛主要的食草动物。",
+    "overlap": false,
+    "annotation_source": "generated_single_speaker_anchor"
+  }
+]

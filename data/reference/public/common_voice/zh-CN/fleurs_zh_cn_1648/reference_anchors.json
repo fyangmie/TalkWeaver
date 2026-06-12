@@ -1,0 +1,13 @@
+[
+  {
+    "start": 0.0,
+    "end": 9.66,
+    "speaker": "SPEAKER_00",
+    "speakers": [
+      "SPEAKER_00"
+    ],
+    "text": "迦南没有大森林，所以木材非常昂贵。",
+    "overlap": false,
+    "annotation_source": "generated_single_speaker_anchor"
+  }
+]

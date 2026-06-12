@@ -1,0 +1,13 @@
+[
+  {
+    "start": 0.0,
+    "end": 7.92,
+    "speaker": "SPEAKER_00",
+    "speakers": [
+      "SPEAKER_00"
+    ],
+    "text": "The U.N. also hopes to finalize a fund to help countries affected by global warming to cope with the impacts.",
+    "overlap": false,
+    "annotation_source": "generated_single_speaker_anchor"
+  }
+]

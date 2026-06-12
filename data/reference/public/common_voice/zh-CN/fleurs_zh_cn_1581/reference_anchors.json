@@ -1,0 +1,13 @@
+[
+  {
+    "start": 0.0,
+    "end": 7.56,
+    "speaker": "SPEAKER_00",
+    "speakers": [
+      "SPEAKER_00"
+    ],
+    "text": "亚马逊河也是地球上最宽的河流，有些河段的宽度可达6英里。",
+    "overlap": false,
+    "annotation_source": "generated_single_speaker_anchor"
+  }
+]
