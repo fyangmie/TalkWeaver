@@ -1604,6 +1604,36 @@ Exit criteria:
 - schema validation passes;
 - license/access, consent, and redistribution status are recorded.
 
+### Phase 2B - Core Evidence Workflow
+
+**Status: implemented on June 13, 2026, with real-model execution pending.**
+
+Implemented:
+
+- `backend/schemas.py` for the v1 `ConversationMap` evidence contract;
+- `backend/temporal_anchor.py` for speaker/content/time alignment;
+- `backend/events.py` for overlap and conservative interruption candidates;
+- `backend/term_rescue.py` for glossary, fuzzy, and phonetic-like candidates;
+- `backend/constrained_correction.py` for per-anchor correction and audits;
+- `backend/conversation_map.py` for speaker cards, summary, and JSON export;
+- `scripts/run_talkweaver_workflow.py` for manifest-aware execution;
+- explicit mock, reference-assisted, and real evidence modes;
+- successful mock and AMI reference-assisted smoke runs.
+
+Current limitation:
+
+- `faster-whisper` and `pyannote.audio` are not installed in the current
+  environment, so real ASR and automatic diarization were not executed;
+- real mode fails clearly with fallback disabled;
+- speaker stance output remains extractive and does not infer unsupported
+  personality, intent, or position;
+- interruption events are timing-based candidates requiring human review.
+
+This phase implements a paper-inspired proxy workflow. It does not reproduce
+DiarizationLM, DM-ASR, Diarization-Aware Multi-Speaker ASR via LLMs, or
+TagSpeech. Benchmark and ablation runs begin only after this evidence contract
+is stable.
+
 ### Phase 3 - Metrics and Experiment Runners
 
 **Goal:** Make all future UI evidence reproducible.

@@ -171,6 +171,57 @@ sources, licenses, commands, checksums, and current results, and
 [`docs/manual_dataset_steps.md`](docs/manual_dataset_steps.md) for access
 blockers. No raw dataset audio is committed.
 
+## Running TalkWeaver Core Workflow
+
+The Phase 2B method builds an auditable temporal-anchor `ConversationMap`
+before any benchmark or ablation is run. It combines ASR text, speaker-time
+evidence, overlap/interruption candidates, retrieved terminology, constrained
+correction, and unsupported-change audits.
+
+Mock smoke test:
+
+```bash
+python scripts/run_talkweaver_workflow.py \
+  --manifest data/manifests/formal_eval_real.csv \
+  --clip-id fleurs_en_1548 \
+  --mock-models \
+  --output outputs/conversation_maps/
+```
+
+Reference-assisted AMI workflow:
+
+```bash
+python scripts/run_talkweaver_workflow.py \
+  --manifest data/manifests/formal_eval_real.csv \
+  --clip-id ami_es2002a_01 \
+  --asr-source reference \
+  --diarization-source reference \
+  --output outputs/conversation_maps/
+```
+
+Real ASR with reference diarization:
+
+```bash
+python scripts/run_talkweaver_workflow.py \
+  --manifest data/manifests/formal_eval_real.csv \
+  --clip-id ami_es2002a_01 \
+  --asr-model tiny \
+  --device cpu \
+  --compute-type int8 \
+  --diarization-source reference \
+  --output outputs/conversation_maps/
+```
+
+Real model commands disable mock fallback and exit clearly when a dependency
+or credential is unavailable. Reference-assisted mode is marked as
+oracle/reference evidence, not automatic diarization. Output is written to
+`outputs/conversation_maps/<clip_id>_conversation_map.json`.
+
+See [`docs/talkweaver_workflow.md`](docs/talkweaver_workflow.md) for the
+paper-to-module mapping, schema, evidence modes, correction rules, and current
+limitations. This is a paper-inspired proxy workflow; it is not claimed as a
+reproduction of DiarizationLM, DM-ASR, Diarization-Aware MS-ASR, or TagSpeech.
+
 ## Quickstart: Mock Mode
 
 Mock mode is deterministic, requires no GPU or external API keys, and labels

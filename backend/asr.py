@@ -146,10 +146,18 @@ def transcribe_with_metadata(
     try:
         from faster_whisper import WhisperModel
     except ImportError as exc:
-        message = (
-            "faster-whisper is not installed; using deterministic mock ASR. "
-            "Install it with `pip install faster-whisper` for real inference."
-        )
+        if fallback_to_mock:
+            message = (
+                "faster-whisper is not installed; using deterministic mock "
+                "ASR. Install it with `pip install faster-whisper` for real "
+                "inference."
+            )
+        else:
+            message = (
+                "faster-whisper is not installed; real ASR cannot run and "
+                "mock fallback is disabled. Install it with "
+                "`pip install faster-whisper`."
+            )
         if not fallback_to_mock:
             raise RuntimeError(message) from exc
         LOGGER.warning(message)

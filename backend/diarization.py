@@ -103,8 +103,13 @@ def diarize_with_metadata(
     fallback_reason: str | None = None
     if not hf_token:
         fallback_reason = (
-            "HF_TOKEN is not configured; deterministic mock diarization was "
-            "used instead of pyannote.audio."
+            "HF_TOKEN is not configured; "
+            + (
+                "deterministic mock diarization was used instead of "
+                "pyannote.audio."
+                if fallback_to_mock
+                else "real diarization cannot run and mock fallback is disabled."
+            )
         )
 
     if fallback_reason is None:
@@ -112,8 +117,12 @@ def diarize_with_metadata(
             from pyannote.audio import Pipeline
         except ImportError:
             fallback_reason = (
-                "pyannote.audio is not installed; deterministic mock "
-                "diarization was used."
+                "pyannote.audio is not installed; "
+                + (
+                    "deterministic mock diarization was used."
+                    if fallback_to_mock
+                    else "real diarization cannot run and mock fallback is disabled."
+                )
             )
 
     if fallback_reason is not None:
