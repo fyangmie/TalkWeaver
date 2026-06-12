@@ -1117,32 +1117,69 @@ assets/result_charts/v1/mobile_memory_size.png
 
 ## 7. Data Plan
 
-### 7.1 Data Categories
+### 7.1 Public-Dataset-First Strategy
 
-| Data source | Purpose | Required characteristics | Rules |
-| --- | --- | --- | --- |
-| Self-recorded chaotic meeting clips | Main demo and project-specific evaluation | 2-6 speakers, interruptions, overlap, technical terms, disagreement, action items | Obtain participant consent; avoid sensitive personal information |
-| Public dataset small samples | External validity and comparison | AMI, AliMeeting, VoxConverse, or another licensed source with speaker/time references | Store metadata and scripts when redistribution is restricted |
-| Synthetic overlap samples | Controlled overlap duration and SNR | known source tracks, controlled start/end, multiple overlap ratios | Label as synthetic; do not use as the only evidence |
-| Multilingual samples | English, Mandarin, and code-switch behavior | comparable speakers/topics where practical | Use language-appropriate metrics |
-| Mobile-recorded samples | Device and environment trade-offs | phone microphone, distance/noise conditions, device metadata | Record device and capture settings |
+Formal evaluation must prioritize public datasets with documented references,
+licenses, versions, and evaluation splits. Self-recorded audio is not the main
+dataset and is not required for every experiment.
 
-### 7.2 Recommended Minimum Dataset
+The preferred public sources are:
 
-The minimum viable real study should target:
+- AISHELL-4 or AliMeeting for Mandarin multi-speaker meeting evaluation;
+- AMI or LibriCSS for English meeting and overlap evaluation;
+- Common Voice for multilingual ASR evaluation, including English, French,
+  and Chinese;
+- VoxConverse as optional in-the-wild diarization data.
 
-- 8-12 self-recorded clips;
-- 2-4 public-dataset excerpts where licensing permits;
-- 8-12 synthetic overlap clips;
-- at least 3 English, 3 Mandarin, and 3 code-switched clips;
-- at least 4 mobile-recorded clips;
-- a held-out test split not used to tune prompts or glossary rules.
+Public data must be registered in the same manifest and reference schema as
+local data. When dataset licenses prohibit redistribution, commit only
+metadata, download/preparation instructions, checksums where permitted, and
+derived results that comply with the dataset terms.
 
-These are planning targets, not permission to fabricate missing clips.
+### 7.2 Dataset Decision Table
 
-### 7.3 Clip Design
+| Dataset | Purpose | Languages | Speakers | Overlap | Has transcript | Has speaker/time labels | License/access risk | Use in project |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| AISHELL-4 | Mandarin meeting ASR, diarization, and overlap evaluation | Mandarin Chinese | Multi-speaker meetings | Yes | Yes | Yes | Access and redistribution terms must be verified for the selected release | Primary Mandarin meeting candidate |
+| AliMeeting | Mandarin meeting ASR, speaker attribution, and overlap evaluation | Mandarin Chinese | Multi-speaker meetings | Yes | Yes | Yes | Version-specific access and redistribution restrictions may apply | Primary or fallback Mandarin meeting candidate |
+| AMI Meeting Corpus | English meeting ASR, diarization, interruption, and overlap evaluation | English | Primarily four-person meetings | Yes | Yes | Yes | Follow AMI access and redistribution terms; avoid committing restricted audio | Primary English meeting candidate |
+| LibriCSS | Controlled English overlap and multi-speaker ASR evaluation | English | Multi-speaker sessions derived from LibriSpeech | Controlled overlap conditions | Yes | Yes, depending on the selected reference package | Derived-corpus terms and source-data conditions must be recorded | Primary English overlap candidate or AMI complement |
+| Mozilla Common Voice | Multilingual ASR comparison and WER/CER evaluation | English, French, Chinese, and other languages | Usually one speaker per clip; many speakers across the corpus | Not a meeting-overlap corpus | Yes | No meeting-level speaker/time annotations | Release-specific terms, required attribution, and download access must be checked | Required multilingual sample set; not used as diarization evidence |
+| VoxConverse | Optional in-the-wild diarization robustness evaluation | Primarily English audiovisual speech | Variable | Possible natural overlap | Limited for ASR evaluation | Diarization references are available for supported partitions | Dataset and source-media redistribution rules require review | Optional diarization-only or qualitative robustness track |
+| Self-recorded or self-created clip | Consent-safe demo, mobile capture, and controlled technical-term failures | Project-selected, preferably English/Mandarin or code-switching | 2-6 for conversation demos; one or more for mobile ASR | Designed as needed | Human-authored reference required | Human annotations created by the team | Redistribution requires explicit participant consent | Optional but recommended for the video, mobile study, and terms such as pyannote, diarization, RAG, WER, and DER |
+| Synthetic overlap sample | Controlled overlap ratio, timing, and SNR study | Based on licensed source speech | Two or more mixed sources | Deliberately controlled | Source transcripts required | Generated timing labels | Every source clip must permit the intended derivative use | Supporting controlled experiment, never the sole formal evidence |
 
-Self-recorded clips should deliberately include:
+Dataset capabilities and licensing must be verified against the exact release
+before download or experiment execution. This table is a planning decision,
+not a redistribution authorization.
+
+Recommended experiment mapping:
+
+| Experiment | Primary dataset recommendation | Supporting or optional data |
+| --- | --- | --- |
+| ASR model comparison | AMI for English meetings; AISHELL-4 or AliMeeting for Mandarin meetings | Common Voice for language-specific ASR behavior |
+| Pipeline ablation | A frozen subset of AMI plus AISHELL-4 or AliMeeting with compatible references | LibriCSS controlled-overlap subset |
+| LLM correction ablation | Public meeting segments with human references | Consent-safe technical-term clips for controlled correction failures |
+| RAG term recovery | Consent-safe or synthetic clips containing the fixed domain glossary | Public segments only when the target terms genuinely occur |
+| Overlap-aware correction | LibriCSS controlled overlaps and AMI natural overlaps | AISHELL-4 or AliMeeting Mandarin overlap segments |
+| Multilingual evaluation | Common Voice English, French, and Chinese sample sets | Public meeting samples for English/Mandarin context, reported separately |
+| Mobile ASR trade-off | One phone-recorded consent-safe sample or documented public mobile/device sample | Common Voice clips replayed or processed under a documented device protocol |
+| Optional in-the-wild diarization | VoxConverse | Qualitative case review unless suitable ASR references are also available |
+
+### 7.3 Self-Recorded Data Role
+
+Self-recorded or self-created clips are:
+
+- not mandatory for all experiments;
+- recommended for the final video demo because consent and scene design can be
+  controlled;
+- recommended for the mobile ASR recording experiment;
+- recommended for controlled technical-term failures such as `pyannote`,
+  `diarization`, `RAG`, `WER`, and `DER`;
+- safe for redistribution only when every participant has provided explicit
+  consent for the intended use.
+
+When created, controlled clips should deliberately include:
 
 - clean turn-taking;
 - short backchannels;
@@ -1155,7 +1192,25 @@ Self-recorded clips should deliberately include:
 - claims that can support stance cards;
 - uncertain or inaudible content that should remain unresolved.
 
-### 7.4 Data Governance
+### 7.4 Minimum Data Plan
+
+The minimum viable study requires:
+
+- **Public data:** at least one English meeting/overlap sample from AMI or
+  LibriCSS, one Mandarin meeting sample from AISHELL-4 or AliMeeting, and one
+  multilingual ASR sample set covering English, French, and Chinese from
+  Common Voice or an equivalently documented public source;
+- **Demo data:** one consent-safe chaotic conversation clip, either
+  self-recorded or selected from a permissive public source;
+- **Mobile data:** one phone-recorded sample or one clearly documented
+  mobile/public-device sample;
+- a held-out evaluation partition that is not used to tune prompts, correction
+  rules, or the RAG glossary.
+
+Additional synthetic overlap samples and VoxConverse evaluation are useful but
+not part of the minimum dataset.
+
+### 7.5 Data Governance
 
 For every clip record:
 
@@ -1170,9 +1225,11 @@ For every clip record:
 - split;
 - annotation status.
 
-Raw private recordings must not be committed unless consent explicitly allows
-it. The Git repository should contain manifests, small licensed samples where
-allowed, scripts, and instructions.
+No private or restricted audio may be committed to GitHub. Only small
+synthetic examples or audio whose license and participant consent explicitly
+permit repository redistribution may be committed. The repository should
+otherwise contain manifests, dataset preparation scripts, versioned
+instructions, and permitted derived metadata or results.
 
 ---
 
@@ -1200,6 +1257,11 @@ Required columns:
 clip_id
 audio_path
 source_type
+dataset_name
+dataset_version
+source_recording_id
+source_url
+license_or_access_notes
 split
 language
 duration_seconds
@@ -1221,9 +1283,15 @@ notes
 Example:
 
 ```csv
-clip_id,audio_path,source_type,split,language,duration_seconds,speaker_count,has_overlap,has_interruptions,has_domain_terms,recording_device,noise_condition,consent_status,redistribution_status,transcript_status,anchor_status,term_status,event_status,notes
-demo_001,data/raw/demo_001.wav,self_recorded,test,en,42.8,3,true,true,true,iPhone_15,room_noise,obtained,private,complete,complete,complete,complete,chaotic project debate
+clip_id,audio_path,source_type,dataset_name,dataset_version,source_recording_id,source_url,license_or_access_notes,split,language,duration_seconds,speaker_count,has_overlap,has_interruptions,has_domain_terms,recording_device,noise_condition,consent_status,redistribution_status,transcript_status,anchor_status,term_status,event_status,notes
+ami_eval_001,external/ami/ami_eval_001.wav,public_dataset,AMI,recorded_release_version,original_meeting_and_segment_id,official_dataset_url,verify_and_record_exact_terms,test,en,42.8,4,true,true,false,corpus_audio,meeting_room,not_applicable,restricted,complete,complete,not_required,complete,AMI excerpt; audio is not committed
 ```
+
+For self-recorded entries, `dataset_name` may be `talkweaver_consent_safe`,
+`dataset_version` may identify the recording batch, and `source_url` may be
+empty. Consent and redistribution fields remain mandatory. For public
+datasets, consent may be `not_applicable`, but dataset version, official
+source, access terms, and redistribution status must be recorded.
 
 ### 8.3 Reference Transcript
 
@@ -1487,7 +1555,11 @@ Exit criteria:
 Tasks:
 
 - define and validate `manifest.csv`;
-- record or collect the first real clips;
+- register public-dataset samples as the primary formal evaluation data;
+- support both public-dataset and consent-safe self-recorded manifest entries;
+- obtain the minimum English meeting/overlap, Mandarin meeting, multilingual,
+  demo, and mobile samples described in Section 7 without committing
+  restricted audio;
 - create reference transcripts;
 - annotate temporal anchors;
 - annotate domain terms;
@@ -1496,9 +1568,11 @@ Tasks:
 
 Exit criteria:
 
-- at least one complete end-to-end annotated clip;
+- at least one complete end-to-end annotated public meeting or overlap sample;
+- minimum-source coverage is represented in the manifest, with unavailable
+  items explicitly marked rather than fabricated;
 - schema validation passes;
-- consent and redistribution status are recorded.
+- license/access, consent, and redistribution status are recorded.
 
 ### Phase 3 - Metrics and Experiment Runners
 
@@ -1619,6 +1693,12 @@ Exit criteria:
 
 - preserve the working v0 pipeline and mock mode;
 - a real `manifest.csv`;
+- public datasets as the primary source for formal evaluation;
+- at least one English meeting/overlap sample;
+- at least one Mandarin meeting sample;
+- a multilingual English/French/Chinese ASR sample set;
+- one consent-safe demo clip from a self-recorded or permissive public source;
+- one phone-recorded or documented mobile/public-device sample;
 - at least one fully annotated real conversation;
 - reference transcript and temporal anchors;
 - reference overlap/interruption events;
@@ -1642,8 +1722,8 @@ Exit criteria:
 
 ### 12.2 Should-Have
 
-- several self-recorded chaotic clips;
-- a small licensed public-data sample;
+- one or more self-recorded, consent-safe chaotic clips for the final video;
+- additional public-dataset samples and held-out coverage;
 - fuzzy and phonetic-like term candidate retrieval;
 - human correction review decisions;
 - CER and code-switch error analysis;
@@ -1676,7 +1756,8 @@ Exit criteria:
   evidence;
 - do not present automatic interruption labels as human ground truth;
 - do not hide uncertain or inaudible speech with fluent LLM text;
-- do not commit private recordings, credentials, or restricted datasets.
+- do not commit private recordings, credentials, restricted datasets, or
+  public-dataset audio that is not explicitly redistributable.
 
 ---
 
@@ -1737,8 +1818,11 @@ The next implementation task should be:
 
 ```text
 Phase 2: create the real-data manifest and annotation schemas, add validation
-scripts, and prepare one fully annotated chaotic meeting clip while preserving
-all v0 behavior.
+scripts, register the minimum public-dataset-first evaluation sources, and
+prepare one fully annotated public meeting or overlap sample while preserving
+all v0 behavior. A consent-safe self-recorded clip may be added for the demo
+or mobile study, but self-recording is not a prerequisite for formal
+evaluation.
 ```
 
 Once the evidence contracts are stable, the new frontend can be built against

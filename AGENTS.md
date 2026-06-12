@@ -43,6 +43,13 @@ Record official source, version, license, dependencies, hardware, runtime, and
 claim level. Do not run heavy training, large model downloads, or long
 benchmarks without explicit user approval.
 
+Formal evaluation follows the public-dataset-first strategy in `PRD2.md`.
+Codex must not assume that self-recording is required. Data manifests and
+validation tools must support both public-dataset entries and consent-safe
+self-recorded entries. Never commit private or restricted audio; commit only
+small synthetic examples or audio whose license and participant consent
+explicitly permit redistribution.
+
 Do not delete working v0 modules merely to fit the new interface. Extend or
 adapt them incrementally.
 
