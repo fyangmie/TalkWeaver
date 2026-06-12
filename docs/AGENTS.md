@@ -6,6 +6,48 @@
 
 ---
 
+## 0. Current Source of Truth
+
+`PRD2.md` is the authoritative source for the final product direction and all
+future implementation phases.
+
+`PRD.md` documents the original v0 prototype. Its working pipeline, CLI,
+tests, mock mode, and data contracts must be preserved, but its product
+positioning and phase roadmap are historical. If `PRD.md`, this file, or older
+documentation conflicts with `PRD2.md`, follow `PRD2.md`.
+
+The final direction is:
+
+```text
+TalkWeaver: AI Meeting Detective for Chaotic Multi-Speaker Conversations
+```
+
+```text
+An evidence-grounded conversation map for overlap, interruptions,
+misheard terms, and speaker stances.
+```
+
+Future work must satisfy two goals:
+
+1. build a fun, interactive, final-video-ready investigation experience;
+2. keep every insight grounded in audio, temporal anchors, model artifacts,
+   retrieval evidence, or human reference annotations.
+
+Multilingual evaluation and the Level 1 whisper.cpp quantized-model mobile ASR
+benchmark are mandatory final-project tracks. A full native iOS or Android app
+is not mandatory.
+
+All paper and runtime baseline integrations must follow
+`docs/baseline_feasibility.md` and the reproduction policy in `PRD2.md`.
+Record official source, version, license, dependencies, hardware, runtime, and
+claim level. Do not run heavy training, large model downloads, or long
+benchmarks without explicit user approval.
+
+Do not delete working v0 modules merely to fit the new interface. Extend or
+adapt them incrementally.
+
+---
+
 ## 1. Mission
 
 You are building **TalkWeaver**, a research-inspired machine learning final project.
@@ -13,25 +55,30 @@ You are building **TalkWeaver**, a research-inspired machine learning final proj
 Final title:
 
 ```text
-TalkWeaver:
-An Overlap-Aware Multi-Speaker ASR System
-with Diarization-Structured LLM Correction
+TalkWeaver: AI Meeting Detective for Chaotic Multi-Speaker Conversations
 ```
 
 Subtitle:
 
 ```text
-RAG-Enhanced Domain Term Recovery for Noisy Meeting Speech
+An evidence-grounded conversation map for overlap, interruptions,
+misheard terms, and speaker stances.
 ```
 
 The project must focus on:
 
 - speaker diarization;
 - overlapping speech / cross-speech;
+- interruption and turn-taking evidence;
 - LLM + ASR synergy;
+- correction provenance and unsupported-change detection;
+- speaker claims, stances, and action items with source anchors;
 - recent paper-driven improvement;
 - RAG-based domain term recovery as an auxiliary module;
-- experiments and evaluation;
+- real manifests, human reference annotations, and controlled experiments;
+- mandatory multilingual evaluation and Multilingual Demo;
+- mandatory Level 1 whisper.cpp mobile ASR trade-off evaluation;
+- an engaging investigation-oriented website;
 - GitHub-quality engineering.
 
 Do **not** implement this as a simple Whisper demo or a generic RAG meeting chatbot.
@@ -64,10 +111,16 @@ Do not let the project drift into:
 
 - generic meeting summarization;
 - generic chatbot;
-- mobile deployment;
 - pet translation;
-- pure UI building;
+- entertainment without evidence;
+- benchmark-only storytelling;
+- full native mobile applications before the core research works;
 - pure API usage.
+
+The detective interface is required, but it must expose rigorous evidence.
+Level 1 mobile work is required as a measured ASR trade-off experiment, not
+as an early full-app rewrite. Apple WhisperKit/Core ML and Android/ONNX
+Runtime remain hardware-dependent should-have or could-have extensions.
 
 ---
 
@@ -100,7 +153,11 @@ docs/paper_reading_notes/04_rag_asr_correction.md
 
 ### Important
 
-If `project/xutong_paper.pdf` exists, read and summarize it. If it does not exist, create a placeholder note saying the file was not available and must be added by the student. Never invent paper details.
+Inspect the local reference folder first. As of June 12, 2026, the course
+anchor paper is available at `参考文献/xutong_paper.pdf`, together with the
+five related papers listed in `PRD2.md`. Use the actual local sources and
+never invent paper details. If files move or become unavailable, record that
+status explicitly.
 
 ---
 
@@ -325,7 +382,11 @@ Add `.gitkeep` files in otherwise-empty folders.
 
 ---
 
-## 7. Implementation Phases
+## 7. Legacy v0 Implementation Phases
+
+The phases below document how the existing prototype was built. They are not
+the active roadmap. Use the seven v1 phases in `PRD2.md` for all new planning
+and implementation work.
 
 Work incrementally. Do not try to finish everything in one giant patch.
 
@@ -703,22 +764,33 @@ Do not invent final experimental claims.
 
 ## 14. Streamlit UI Expectations
 
-The UI should look like a serious final project.
+The v1 UI must follow the AI Meeting Detective page plan in `PRD2.md`. The
+existing Streamlit pages are a working v0 baseline and must remain usable
+until their replacements are implemented incrementally.
+
+The UI should feel fun, interactive, and impressive in the final video while
+remaining a serious evidence-grounded research project. It must not look like
+only a cold benchmark dashboard.
 
 Required visual elements:
 
 - audio player;
-- pipeline status;
+- conversation crime scene;
 - waveform or placeholder waveform;
 - speaker timeline;
+- interruption map;
 - raw transcript;
 - speaker-attributed transcript;
 - corrected transcript;
-- overlap warning badges;
-- RAG retrieved terms;
-- meeting summary;
-- action items;
-- metrics charts.
+- overlap and interruption evidence;
+- misheard-word rescue evidence;
+- RAG candidate terms and scores;
+- raw-versus-corrected audit;
+- unsupported-correction warnings;
+- evidence-backed speaker stance cards;
+- multilingual comparison;
+- mobile ASR trade-off charts;
+- secondary metrics dashboard.
 
 The UI should support mock mode for demo and development.
 
@@ -858,15 +930,19 @@ Before final submission, ensure the repository contains:
 
 The video should follow this story:
 
-1. Real-world problem: noisy multi-speaker meetings are hard.
-2. Related work: DiarizationLM, DM-ASR, TagSpeech, RAG-ASR correction.
-3. Research gaps: overlap, speaker-time alignment, hallucination, domain terms.
-4. Our method: structured transcript, overlap uncertainty, RAG domain recovery.
-5. Demo: upload audio, run pipeline, show speaker timeline and corrections.
-6. Experiments: WER, WDER, Term Error, latency, ablation.
-7. Limitations and future work.
+1. Open with a chaotic multi-speaker clip.
+2. Use Conversation Crime Scene to ask what actually happened.
+3. Investigate speakers, overlap, and interruptions through time.
+4. Show a misheard term rescued by evidence-backed retrieval.
+5. Audit an LLM edit in Hallucination Watchdog.
+6. Compare speaker claims and stances with source anchors.
+7. Map DiarizationLM, diarization-aware MS-ASR, DM-ASR, TagSpeech, and
+   retrieval-based correction to concrete adaptations.
+8. Present real ASR, ablation, overlap, term, multilingual, and mobile
+   trade-off experiments.
+9. Close with limitations and future work.
 
-Do not present the project as merely a web app.
+Do not present the project as merely a web app or merely a benchmark.
 
 ---
 

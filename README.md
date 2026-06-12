@@ -4,6 +4,22 @@
 
 *RAG-Enhanced Domain Term Recovery for Noisy Meeting Speech*
 
+> The original prototype has been reframed into TalkWeaver: AI Meeting Detective. PRD2.md is now the source of truth for the final project direction.
+
+The final title is **TalkWeaver: AI Meeting Detective for Chaotic
+Multi-Speaker Conversations**, with the subtitle **An evidence-grounded
+conversation map for overlap, interruptions, misheard terms, and speaker
+stances.** The working pipeline documented below is the v0 foundation and
+will be preserved while the new investigation experience is implemented.
+
+## Final Direction
+
+TalkWeaver is now **AI Meeting Detective**. Multilingual evaluation and the
+Level 1 whisper.cpp mobile ASR trade-off experiment are required research
+tracks; a full native iOS or Android app is not required. Official and proxy
+baseline feasibility is documented in
+[`docs/baseline_feasibility.md`](docs/baseline_feasibility.md).
+
 TalkWeaver is a research-inspired machine learning final project for noisy,
 multi-speaker meetings. Its main focus is the interaction between automatic
 speech recognition (ASR), speaker diarization, overlapping speech, and
@@ -48,10 +64,11 @@ temporal-anchor transcript.
 - **Retrieval-augmented ASR correction:** glossary candidates for rare and
   technical terms.
 
-The literature notes link the verified primary records for DiarizationLM,
-DM-ASR, TagSpeech, and retrieval-augmented ASR correction. The required local
-`project/xutong_paper.pdf` is still unavailable and is explicitly left
-unsummarized.
+The local reference folder now contains the course anchor thesis,
+DiarizationLM, Diarization-Aware Multi-Speaker ASR via LLMs, DM-ASR,
+TagSpeech, and retrieval-augmented ASR correction. Their v1 product and
+experiment mapping is defined in `PRD2.md`; the older literature notes still
+need to be synchronized during the documentation phase.
 
 ## Architecture
 
@@ -423,7 +440,8 @@ results from annotated audio; mock charts must not be cited as model quality.
 - [x] WER, speaker-error approximation, TER, overlap, hallucination, latency
 - [x] Mock ablation CSVs and five labeled charts
 - [x] Project report, blog article, literature notes, and video script
-- [ ] Add and review `project/xutong_paper.pdf`
+- [x] Inspect the local course anchor paper and related reference PDFs
+- [ ] Synchronize the full literature notes with the PRD2 paper mapping
 - [ ] Collect or license real evaluation audio and annotations
 - [ ] Run reference-backed groups A-F and replace demo-only conclusions
 - [ ] Add final screenshots, member contributions, and recorded video
@@ -465,8 +483,8 @@ Planned final captures:
 - Lexical grounding reduces hallucination risk but does not replace human
   review, especially for overlapping speech.
 - Mock transcripts and metrics demonstrate interfaces, not model quality.
-- The required `project/xutong_paper.pdf` was still unavailable when Phase 8
-  documentation was completed on June 10, 2026.
+- The course anchor paper is now available under `参考文献/`, but the older
+  v0 report and reading note still require a PRD2-aligned revision.
 - Literature metadata and links require verification before final submission.
 - Meeting summarization is secondary and must not replace the main
   diarization/overlap research evaluation.
