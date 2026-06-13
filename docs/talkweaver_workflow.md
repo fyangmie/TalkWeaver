@@ -208,7 +208,8 @@ Implemented:
 
 Not implemented yet:
 
-- benchmark-scale ASR inference or ablations;
+- TalkWeaver workflow ablations beyond the completed ASR-only Phase 2C
+  baseline;
 - automatic semantic interruption classification;
 - validated stance extraction;
 - paper baseline model inference;
@@ -216,18 +217,23 @@ Not implemented yet:
 - automatic pyannote inference in the current environment;
 - the AI Meeting Detective frontend pages that consume this schema.
 
-## Current Environment Limitation
+## Current Environment Status
 
-At the June 13, 2026 smoke run, `faster-whisper` and `pyannote.audio` were not
-installed, `HF_TOKEN` was unset, and no supported LLM API key was configured.
-Mock and reference-assisted workflows run. Real ASR correctly exits with an
-explicit missing-dependency message and does not create fake real output.
+As of June 13, 2026, real `faster-whisper` CPU inference has been confirmed,
+and the Phase 2C `tiny`/`base` ASR-only baseline has run over all 17 local
+formal-manifest clips. Mock and reference-assisted workflows remain
+available. Automatic diarization still requires a valid pyannote model setup
+and `HF_TOKEN`; no supported LLM API key is required for the deterministic
+correction fallback.
 
 Recheck the local environment at any time:
 
 ```bash
 python scripts/check_optional_dependencies.py
 ```
+
+See [`asr_benchmark.md`](asr_benchmark.md) for the separate ASR-only
+evaluation protocol and results.
 
 ## Output
 

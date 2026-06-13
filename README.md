@@ -234,6 +234,37 @@ optional real-ASR setup. This is a paper-inspired proxy workflow; it is not
 claimed as a reproduction of DiarizationLM, DM-ASR, Diarization-Aware MS-ASR,
 or TagSpeech.
 
+## Running Real ASR Benchmark
+
+Phase 2C evaluates real `faster-whisper` ASR before any TalkWeaver workflow
+ablation. The current small formal subset contains 17 FLEURS/AMI clips and
+uses WER for English/French and CER for Mandarin Chinese.
+
+```bash
+python experiments/run_asr_benchmark.py \
+  --manifest data/manifests/formal_eval_real.csv \
+  --models tiny base \
+  --device cpu \
+  --compute-type int8 \
+  --output experiments/results/asr_benchmark_real.csv \
+  --predictions-dir experiments/results/asr_predictions_real
+
+python experiments/summarize_asr_results.py \
+  --input experiments/results/asr_benchmark_real.csv \
+  --output experiments/results/asr_benchmark_summary_real.csv
+
+python experiments/plot_asr_results.py \
+  --input experiments/results/asr_benchmark_real.csv \
+  --output-dir assets/result_charts
+```
+
+Per-clip predictions remain local and ignored by Git. The small result CSVs
+and charts are stored under `experiments/results/` and
+`assets/result_charts/`. See
+[`docs/asr_benchmark.md`](docs/asr_benchmark.md) for the protocol, measured
+results, normalization policy, and limitations. These values are not
+full-dataset performance claims.
+
 ## Quickstart: Mock Mode
 
 Mock mode is deterministic, requires no GPU or external API keys, and labels

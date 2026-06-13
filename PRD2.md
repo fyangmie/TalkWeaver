@@ -1606,7 +1606,7 @@ Exit criteria:
 
 ### Phase 2B - Core Evidence Workflow
 
-**Status: implemented on June 13, 2026, with real-model execution pending.**
+**Status: implemented on June 13, 2026, including a real ASR smoke run.**
 
 Implemented:
 
@@ -1618,13 +1618,16 @@ Implemented:
 - `backend/conversation_map.py` for speaker cards, summary, and JSON export;
 - `scripts/run_talkweaver_workflow.py` for manifest-aware execution;
 - explicit mock, reference-assisted, and real evidence modes;
-- successful mock and AMI reference-assisted smoke runs.
+- successful mock and AMI reference-assisted smoke runs;
+- successful real `faster-whisper` CPU smoke execution with
+  `asr_mode=real`.
 
 Current limitation:
 
-- `faster-whisper` and `pyannote.audio` are not installed in the current
-  environment, so real ASR and automatic diarization were not executed;
-- real mode fails clearly with fallback disabled;
+- real mode fails clearly with fallback disabled when model dependencies are
+  unavailable;
+- automatic diarization still requires a configured pyannote model and
+  `HF_TOKEN`;
 - speaker stance output remains extractive and does not infer unsupported
   personality, intent, or position;
 - interruption events are timing-based candidates requiring human review.
@@ -1633,6 +1636,27 @@ This phase implements a paper-inspired proxy workflow. It does not reproduce
 DiarizationLM, DM-ASR, Diarization-Aware Multi-Speaker ASR via LLMs, or
 TagSpeech. Benchmark and ablation runs begin only after this evidence contract
 is stable.
+
+### Phase 2C - Real ASR Baseline
+
+**Status: implemented on June 13, 2026.**
+
+Implemented:
+
+- language-aware WER for English/French and CER for Mandarin Chinese;
+- dependency-light Levenshtein metrics and conservative text normalization;
+- real `faster-whisper` manifest runner with no mock fallback;
+- per-clip prediction JSON/TXT artifacts with word timestamps;
+- per-clip runtime and real-time factor measurements;
+- aggregate summaries grouped by model, language, and dataset;
+- real result charts for language error rate and model RTF;
+- successful `tiny` and `base` CPU/int8 runs over all 17 manifest clips.
+
+The committed result CSVs and charts are explicitly labeled as small-subset
+formal evaluation. Prediction dumps remain local and ignored by Git. The
+benchmark is ASR-only and does not validate diarization, overlap reasoning,
+RAG, LLM correction, or the complete TalkWeaver method. Protocol and measured
+limitations are documented in `docs/asr_benchmark.md`.
 
 ### Phase 3 - Metrics and Experiment Runners
 
