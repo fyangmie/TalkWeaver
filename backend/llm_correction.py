@@ -21,11 +21,27 @@ from backend.prompting import build_correction_messages, format_segment_prompt
 LOGGER = logging.getLogger(__name__)
 WORD_PATTERN = re.compile(r"[A-Za-z0-9]+(?:[.-][A-Za-z0-9]+)*")
 CORRECTIONS = (
+    ("piano note audio", "pyannote.audio"),
+    ("pie anode audio", "pyannote.audio"),
+    ("speaker diary station", "speaker diarization"),
     ("piano note", "pyannote"),
+    ("pie anode", "pyannote"),
     ("diary station", "diarization"),
+    ("diary zation", "diarization"),
+    ("diaryzation", "diarization"),
+    ("temporal anger", "temporal anchor"),
+    ("overlap aware", "overlap-aware"),
+    ("faster whisper", "faster-whisper"),
+    ("whisper", "Whisper"),
+    ("c translate two", "CTranslate2"),
+    ("q when", "Qwen"),
+    ("tag speech", "TagSpeech"),
+    ("dm asr", "DM-ASR"),
     ("the ear", "DER"),
+    ("dear", "DER"),
     ("where", "WER"),
     ("rack", "RAG"),
+    ("rag", "RAG"),
 )
 
 

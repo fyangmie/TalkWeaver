@@ -1,0 +1,141 @@
+{
+  "fixture_type": "controlled_technical_term_glossary",
+  "claim_scope": "Text-only controlled fixtures; not public audio or measured ASR output.",
+  "terms": [
+    {
+      "canonical": "pyannote",
+      "aliases": [],
+      "spoken_forms": ["py annote"],
+      "asr_error_forms": ["piano note", "pie anode", "pyanote"],
+      "language": "en",
+      "category": "diarization_tool",
+      "allowed_contexts": ["speaker", "diarization", "audio", "pipeline"]
+    },
+    {
+      "canonical": "pyannote.audio",
+      "aliases": ["pyannote audio"],
+      "spoken_forms": ["py annote audio"],
+      "asr_error_forms": ["piano note audio", "pie anode audio"],
+      "language": "en",
+      "category": "diarization_tool",
+      "allowed_contexts": ["speaker", "diarization", "audio", "pipeline"]
+    },
+    {
+      "canonical": "speaker diarization",
+      "aliases": ["speaker segmentation"],
+      "spoken_forms": [],
+      "asr_error_forms": ["speaker diary station"],
+      "language": "en",
+      "category": "task",
+      "allowed_contexts": ["speaker", "meeting", "who spoke", "asr"]
+    },
+    {
+      "canonical": "diarization",
+      "aliases": [],
+      "spoken_forms": [],
+      "asr_error_forms": ["diary station", "diary zation", "diaryzation"],
+      "language": "multilingual",
+      "category": "task",
+      "allowed_contexts": ["speaker", "meeting", "turn", "overlap", "asr"]
+    },
+    {
+      "canonical": "RAG",
+      "aliases": ["retrieval augmented generation"],
+      "spoken_forms": ["r a g"],
+      "asr_error_forms": ["rack", "rag"],
+      "language": "multilingual",
+      "category": "retrieval",
+      "allowed_contexts": ["retrieval", "glossary", "llm", "asr", "correction", "generation"]
+    },
+    {
+      "canonical": "WER",
+      "aliases": ["word error rate"],
+      "spoken_forms": ["w e r"],
+      "asr_error_forms": ["where"],
+      "language": "en",
+      "category": "metric",
+      "allowed_contexts": ["error rate", "asr", "metric", "benchmark", "transcript", "accuracy"]
+    },
+    {
+      "canonical": "DER",
+      "aliases": ["diarization error rate"],
+      "spoken_forms": ["d e r"],
+      "asr_error_forms": ["the ear", "dear"],
+      "language": "en",
+      "category": "metric",
+      "allowed_contexts": ["diarization", "speaker", "error rate", "metric", "benchmark"]
+    },
+    {
+      "canonical": "temporal anchor",
+      "aliases": ["time anchor"],
+      "spoken_forms": [],
+      "asr_error_forms": ["temporal anger"],
+      "language": "en",
+      "category": "representation",
+      "allowed_contexts": ["timestamp", "speaker", "segment", "evidence", "transcript"]
+    },
+    {
+      "canonical": "overlap-aware correction",
+      "aliases": ["overlap aware correction"],
+      "spoken_forms": [],
+      "asr_error_forms": ["overlap aware correction"],
+      "language": "en",
+      "category": "correction",
+      "allowed_contexts": ["overlap", "cross-talk", "speaker", "uncertainty", "correction"]
+    },
+    {
+      "canonical": "faster-whisper",
+      "aliases": ["faster whisper"],
+      "spoken_forms": [],
+      "asr_error_forms": ["faster whisper"],
+      "language": "en",
+      "category": "asr_tool",
+      "allowed_contexts": ["asr", "whisper", "ctranslate2", "transcription", "model"]
+    },
+    {
+      "canonical": "Whisper",
+      "aliases": [],
+      "spoken_forms": [],
+      "asr_error_forms": [],
+      "language": "multilingual",
+      "category": "asr_model",
+      "allowed_contexts": ["asr", "model", "transcription", "speech"]
+    },
+    {
+      "canonical": "CTranslate2",
+      "aliases": ["ctranslate2"],
+      "spoken_forms": ["c translate two"],
+      "asr_error_forms": ["c translate two"],
+      "language": "en",
+      "category": "inference_runtime",
+      "allowed_contexts": ["inference", "runtime", "faster-whisper", "quantized", "cpu"]
+    },
+    {
+      "canonical": "Qwen",
+      "aliases": [],
+      "spoken_forms": ["q when"],
+      "asr_error_forms": ["q when"],
+      "language": "multilingual",
+      "category": "llm",
+      "allowed_contexts": ["llm", "model", "api", "correction", "prompt"]
+    },
+    {
+      "canonical": "TagSpeech",
+      "aliases": [],
+      "spoken_forms": ["tag speech"],
+      "asr_error_forms": ["tag speech"],
+      "language": "en",
+      "category": "paper",
+      "allowed_contexts": ["paper", "research", "temporal anchor", "speaker", "asr"]
+    },
+    {
+      "canonical": "DM-ASR",
+      "aliases": ["dm asr"],
+      "spoken_forms": ["d m asr"],
+      "asr_error_forms": ["dm asr", "d m asr"],
+      "language": "en",
+      "category": "paper",
+      "allowed_contexts": ["paper", "research", "speaker", "time conditioned", "asr"]
+    }
+  ]
+}

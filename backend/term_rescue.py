@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import re
 from dataclasses import dataclass
 from difflib import SequenceMatcher
@@ -18,25 +19,52 @@ WORD_PATTERN = re.compile(r"[A-Za-z0-9\u4e00-\u9fff]+")
 @dataclass(frozen=True)
 class GlossaryEntry:
     canonical: str
+    aliases: tuple[str, ...] = ()
+    spoken_forms: tuple[str, ...] = ()
+    asr_error_forms: tuple[str, ...] = ()
+    language: str = "en"
+    category: str = "domain_term"
+    allowed_contexts: tuple[str, ...] = ()
+
+
+@dataclass(frozen=True)
+class TermMatch:
+    """One retrieval decision with evidence and correction safety state."""
+
+    canonical: str
+    matched_form: str
+    score: float
+    retrieval_method: str
+    safe_to_apply: bool
+    needs_review: bool
+    context_reason: str
     spoken_forms: tuple[str, ...] = ()
     asr_error_forms: tuple[str, ...] = ()
 
 
 MULTILINGUAL_ENTRIES = (
     GlossaryEntry(
-        "speaker diarization",
-        ("diarization", "说话人分离", "diarisation des locuteurs"),
-        ("diary station",),
+        canonical="speaker diarization",
+        spoken_forms=(
+            "diarization",
+            "说话人分离",
+            "diarisation des locuteurs",
+        ),
+        asr_error_forms=("diary station",),
     ),
     GlossaryEntry(
-        "overlapping speech",
-        ("cross-speech", "重叠语音", "parole chevauchante"),
-        ("overlap speech", "cross speech"),
+        canonical="overlapping speech",
+        spoken_forms=(
+            "cross-speech",
+            "重叠语音",
+            "parole chevauchante",
+        ),
+        asr_error_forms=("overlap speech", "cross speech"),
     ),
     GlossaryEntry(
-        "temporal anchor",
-        ("时间锚点", "ancrage temporel"),
-        ("time anchor",),
+        canonical="temporal anchor",
+        spoken_forms=("时间锚点", "ancrage temporel"),
+        asr_error_forms=("time anchor",),
     ),
 )
 
@@ -101,6 +129,292 @@ def _entry_catalog(
     return list(entries.values())
 
 
+def _contains_normalized_phrase(text: str, phrase: str) -> bool:
+    if not phrase:
+        return False
+    if any("\u4e00" <= character <= "\u9fff" for character in phrase):
+        return phrase in text
+    return re.search(
+        rf"(?:^|\s){re.escape(phrase)}(?:$|\s)",
+        text,
+    ) is not None
+
+
+def load_reference_glossary(path: str | Path) -> list[GlossaryEntry]:
+    """Load the controlled JSON glossary without adding project defaults."""
+
+    payload = json.loads(Path(path).read_text(encoding="utf-8"))
+    raw_entries = (
+        payload.get("terms", payload)
+        if isinstance(payload, dict)
+        else payload
+    )
+    if not isinstance(raw_entries, list):
+        raise ValueError("Reference term glossary must contain a list.")
+    entries: list[GlossaryEntry] = []
+    for index, item in enumerate(raw_entries):
+        if (
+            not isinstance(item, dict)
+            or not str(item.get("canonical", "")).strip()
+        ):
+            raise ValueError(f"Invalid glossary entry at index {index}.")
+        entries.append(
+            GlossaryEntry(
+                canonical=str(item["canonical"]).strip(),
+                aliases=tuple(str(value) for value in item.get("aliases", [])),
+                spoken_forms=tuple(
+                    str(value) for value in item.get("spoken_forms", [])
+                ),
+                asr_error_forms=tuple(
+                    str(value) for value in item.get("asr_error_forms", [])
+                ),
+                language=str(item.get("language", "en")),
+                category=str(item.get("category", "domain_term")),
+                allowed_contexts=tuple(
+                    str(value) for value in item.get("allowed_contexts", [])
+                ),
+            )
+        )
+    return entries
+
+
+AMBIGUOUS_FORMS = {
+    "dear",
+    "rack",
+    "rag",
+    "tag speech",
+    "where",
+}
+NEGATIVE_CONTEXTS = {
+    "DER": {"dear friend", "dear team", "letter", "greeting"},
+    "RAG": {
+        "equipment rack",
+        "metal rack",
+        "physical rack",
+        "server rack",
+        "shelf",
+    },
+    "TagSpeech": {"price tag", "speech tag", "html tag"},
+    "WER": {"ask where", "location", "place", "where is", "where we"},
+}
+
+
+def _context_support(
+    entry: GlossaryEntry,
+    *,
+    matched_form: str,
+    retrieval_method: str,
+    text: str,
+    context: str,
+) -> tuple[bool, str]:
+    combined = _normalize(f"{text} {context}")
+    normalized_form = _normalize(matched_form)
+    negative_cues = NEGATIVE_CONTEXTS.get(entry.canonical, set())
+    if any(_normalize(cue) in combined for cue in negative_cues):
+        return False, "Context indicates the common-word meaning."
+    if (
+        normalized_form not in AMBIGUOUS_FORMS
+        and retrieval_method.startswith("exact")
+    ):
+        return True, "The matched form is sufficiently term-specific."
+    allowed = [
+        _normalize(value)
+        for value in entry.allowed_contexts
+        if _normalize(value)
+    ]
+    if any(value in combined for value in allowed):
+        return True, "Domain context supports the ambiguous term form."
+    return False, "Ambiguous form lacks supporting domain context."
+
+
+def _exact_match(
+    text: str,
+    entry: GlossaryEntry,
+) -> tuple[float, str, str] | None:
+    normalized = _normalize(text)
+    forms = [
+        entry.canonical,
+        *entry.aliases,
+        *entry.spoken_forms,
+        *entry.asr_error_forms,
+    ]
+    for form in forms:
+        normalized_form = _normalize(form)
+        if _contains_normalized_phrase(normalized, normalized_form):
+            method = (
+                "exact_error_form"
+                if form in entry.asr_error_forms
+                else "exact_glossary"
+            )
+            return 1.0, method, form
+    return None
+
+
+def _window_scores(text: str, form: str) -> Iterable[tuple[str, float]]:
+    text_tokens = _normalize(text).split()
+    form_tokens = _normalize(form).split()
+    if not text_tokens or not form_tokens:
+        return []
+    scores: list[tuple[str, float]] = []
+    widths = {
+        max(1, len(form_tokens) - 1),
+        len(form_tokens),
+        len(form_tokens) + 1,
+    }
+    for width in widths:
+        if width > len(text_tokens):
+            continue
+        for start in range(len(text_tokens) - width + 1):
+            phrase = " ".join(text_tokens[start : start + width])
+            scores.append(
+                (
+                    phrase,
+                    SequenceMatcher(
+                        None,
+                        phrase,
+                        " ".join(form_tokens),
+                    ).ratio(),
+                )
+            )
+    return scores
+
+
+def _fuzzy_match(
+    text: str,
+    entry: GlossaryEntry,
+) -> tuple[float, str, str] | None:
+    best: tuple[float, str] = (0.0, "")
+    forms = [
+        entry.canonical,
+        *entry.aliases,
+        *entry.spoken_forms,
+        *entry.asr_error_forms,
+    ]
+    for form in forms:
+        for phrase, score in _window_scores(text, form):
+            if score > best[0]:
+                best = (score, phrase)
+    canonical_compact = _normalize(entry.canonical).replace(" ", "")
+    if len(canonical_compact) <= 4 and best[0] < 1.0:
+        return None
+    if best[0] >= 0.82:
+        return round(best[0], 3), "fuzzy", best[1]
+    return None
+
+
+def _phonetic_match(
+    text: str,
+    entry: GlossaryEntry,
+) -> tuple[float, str, str] | None:
+    best: tuple[float, str] = (0.0, "")
+    forms = [
+        entry.canonical,
+        *entry.aliases,
+        *entry.spoken_forms,
+        *entry.asr_error_forms,
+    ]
+    for form in forms:
+        target = _phonetic_like(form)
+        if len(target) < 3:
+            continue
+        for phrase, _score in _window_scores(text, form):
+            score = SequenceMatcher(
+                None,
+                _phonetic_like(phrase),
+                target,
+            ).ratio()
+            if score > best[0]:
+                best = (score, phrase)
+    if best[0] >= 0.94:
+        return round(best[0], 3), "phonetic_like", best[1]
+    return None
+
+
+def retrieve_controlled_matches(
+    text: str,
+    entries: list[GlossaryEntry],
+    *,
+    strategy: str,
+    context: str = "",
+    limit: int = 8,
+) -> tuple[list[TermMatch], list[TermMatch]]:
+    """Retrieve controlled candidates and separate context-rejected matches."""
+
+    if strategy not in {"exact_glossary", "fuzzy", "phonetic_like", "fused"}:
+        raise ValueError(f"Unsupported term retrieval strategy: {strategy}")
+    matches: list[TermMatch] = []
+    for entry in entries:
+        exact = _exact_match(text, entry)
+        fuzzy = _fuzzy_match(text, entry)
+        phonetic = _phonetic_match(text, entry)
+        selected: tuple[float, str, str] | None
+        if strategy == "exact_glossary":
+            selected = exact
+        elif strategy == "fuzzy":
+            selected = fuzzy
+        elif strategy == "phonetic_like":
+            selected = phonetic
+        else:
+            options = [value for value in (exact, fuzzy, phonetic) if value]
+            selected = max(options, key=lambda value: value[0]) if options else None
+        if selected is None:
+            continue
+        score, method, matched_form = selected
+        if (
+            strategy == "fused"
+            and method in {"fuzzy", "phonetic_like"}
+            and score < 0.88
+        ):
+            continue
+        supported, reason = _context_support(
+            entry,
+            matched_form=matched_form,
+            retrieval_method=method,
+            text=text,
+            context=context,
+        )
+        matches.append(
+            TermMatch(
+                canonical=entry.canonical,
+                matched_form=matched_form,
+                score=score,
+                retrieval_method=method,
+                safe_to_apply=supported,
+                needs_review=not supported,
+                context_reason=reason,
+                spoken_forms=entry.spoken_forms,
+                asr_error_forms=entry.asr_error_forms,
+            )
+        )
+    matches.sort(key=lambda item: (-item.score, item.canonical.casefold()))
+    if strategy == "fused":
+        accepted = [match for match in matches if match.safe_to_apply][:limit]
+        rejected = [match for match in matches if not match.safe_to_apply][:limit]
+        return accepted, rejected
+    return matches[:limit], []
+
+
+def matches_to_candidates(
+    matches: list[TermMatch],
+    *,
+    anchor_id: str,
+) -> list[TermRescueCandidate]:
+    """Convert controlled matches into the shared workflow schema."""
+
+    return [
+        TermRescueCandidate(
+            term_id=f"controlled_term_{index:03d}",
+            canonical=match.canonical,
+            spoken_forms=list(match.spoken_forms),
+            asr_error_forms=list(match.asr_error_forms),
+            retrieved_score=match.score,
+            retrieval_method=match.retrieval_method,
+            evidence_anchor_ids=[anchor_id],
+        )
+        for index, match in enumerate(matches, start=1)
+    ]
+
+
 def _candidate_match(
     text: str,
     entry: GlossaryEntry,
@@ -113,7 +427,7 @@ def _candidate_match(
     ]
     for form in forms:
         normalized_form = _normalize(form)
-        if normalized_form and normalized_form in normalized:
+        if _contains_normalized_phrase(normalized, normalized_form):
             method = (
                 "exact_error_form"
                 if form in entry.asr_error_forms

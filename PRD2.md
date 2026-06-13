@@ -1747,6 +1747,34 @@ No real API call or correction-quality result is claimed by this preparation
 phase. Normal tests remain network-free, and deterministic correction remains
 available without credentials.
 
+### Phase 2F - Controlled Term Recovery and Correction Safety
+
+**Status: implemented on June 13, 2026.**
+
+Implemented:
+
+- 25 explicitly labeled text-only controlled technical-term fixtures across
+  English, French, and Mandarin carrier contexts;
+- a 15-entry reference glossary with aliases, spoken forms, likely ASR error
+  forms, categories, languages, and allowed contexts;
+- exact, fuzzy, phonetic-like, fused, fused-plus-rule, and optional strict
+  real-LLM variants;
+- context gating for ambiguous common words including `rack`, `where`,
+  `dear`, and `tag speech`;
+- per-case retrieval evidence, correction audits, unsupported-change flags,
+  review flags, WER/CER scoring, grouped summaries, and three charts;
+- a real optional DeepSeek `deepseek-chat` controlled run with API and
+  fallback metadata.
+
+The final controlled result contains 175 rows across seven variants. Fused
+retrieval reached mean term F1 `1.0` and produced zero false-positive terms on
+the four negative controls. Deterministic rule correction reduced mean
+controlled text error from `0.2880` to `0.0000`. Strict LLM correction reduced
+it to `0.0812`; four API outputs exceeded lexical grounding constraints, were
+rejected without fallback, retained raw text, and were marked for review.
+These are controlled text-fixture results, not public-audio ASR measurements
+or claims of general correction accuracy.
+
 ### Phase 3 - Metrics and Experiment Runners
 
 **Goal:** Make all future UI evidence reproducible.

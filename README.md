@@ -345,6 +345,55 @@ applied; WER/CER remained unchanged and unsupported changes remained zero.
 See [`docs/workflow_ablation.md`](docs/workflow_ablation.md) for variant
 definitions, measured results, charts, and claim limits.
 
+## Running Controlled Term Rescue Experiment
+
+Phase 2F uses 25 text-only controlled technical-term fixtures. These fixtures
+are not public audio and are not reported as measured ASR output. They isolate
+retrieval, correction, and Hallucination Watchdog behavior that the current
+public subset cannot test.
+
+Run the fully offline variants:
+
+```bash
+python experiments/run_term_rescue_experiment.py \
+  --cases data/controlled_terms/term_rescue_cases.jsonl \
+  --terms data/controlled_terms/reference_terms.json \
+  --output experiments/results/term_rescue_controlled.csv \
+  --candidates-output experiments/results/term_candidates_controlled.jsonl
+```
+
+Add strict real LLM rows only when the local `.env` is valid:
+
+```bash
+python experiments/run_term_rescue_experiment.py \
+  --cases data/controlled_terms/term_rescue_cases.jsonl \
+  --terms data/controlled_terms/reference_terms.json \
+  --output experiments/results/term_rescue_controlled.csv \
+  --candidates-output experiments/results/term_candidates_controlled.jsonl \
+  --include-llm-if-configured
+```
+
+Summarize and plot:
+
+```bash
+python experiments/summarize_term_rescue.py \
+  --input experiments/results/term_rescue_controlled.csv \
+  --output experiments/results/term_rescue_summary_controlled.csv
+
+python experiments/plot_term_rescue.py \
+  --input experiments/results/term_rescue_controlled.csv \
+  --output-dir assets/result_charts
+```
+
+The completed controlled run used DeepSeek `deepseek-chat` for the optional
+LLM variant. Fused retrieval reached term F1 `1.0` with zero false-positive
+terms on four common-word negative controls. Rule correction reduced the
+mean controlled text error from `0.2880` to `0.0000`. Strict LLM correction
+reduced it to `0.0812`; four API outputs were rejected by grounding checks,
+retained the raw text, and were marked for review. These are controlled
+fixture results, not public-dataset ASR claims. See
+[`docs/term_rescue_experiment.md`](docs/term_rescue_experiment.md).
+
 ## Quickstart: Mock Mode
 
 Mock mode is deterministic, requires no GPU or external API keys, and labels
