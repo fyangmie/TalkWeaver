@@ -8,9 +8,12 @@ import pandas as pd
 import streamlit as st
 
 from webapp.data_loader import (
-    load_overlap_safety_results,
+    get_best_llm_rejection_examples,
+    get_best_term_rescue_examples,
+    get_correction_diff_examples,
+    get_negative_control_examples,
+    load_overlap_safety_cases,
     load_overlap_safety_summary,
-    load_term_rescue_results,
     load_term_rescue_summary,
 )
 from webapp.detective_ui import (
@@ -24,6 +27,7 @@ from webapp.detective_ui import (
     show_frame_warning,
     truthy,
 )
+from webapp.ui_components import render_text_diff
 
 
 def _aggregate(
@@ -36,6 +40,71 @@ def _aggregate(
     aggregations = {name: "mean" for name in mean_columns if name in frame}
     aggregations.update({name: "sum" for name in sum_columns if name in frame})
     return frame.groupby("variant", as_index=False).agg(aggregations)
+
+
+def _format_case_label(row: dict[str, Any]) -> str:
+    return f"{row.get('case_id', 'case')} | {row.get('variant', 'variant')}"
+
+
+def _show_audit_metadata(row: dict[str, Any], *, reason_field: str = "notes") -> None:
+    unsupported = list_value(row.get("unsupported_changes"))
+    details = st.columns(4)
+    details[0].metric("Needs review", str(truthy(row.get("needs_review"))))
+    details[1].metric(
+        "Rejected",
+        str(truthy(row.get("correction_rejected"))),
+    )
+    details[2].metric("API used", str(truthy(row.get("api_used"))))
+    details[3].metric("Fallback used", str(truthy(row.get("fallback_used"))))
+    st.caption(
+        f"Unsupported changes: {', '.join(str(item) for item in unsupported) or 'none'}"
+    )
+    reason = row.get(reason_field) or row.get("notes")
+    if isinstance(reason, str) and reason.strip():
+        st.caption(f"Reason: {reason}")
+
+
+def _select_case(
+    label: str,
+    frame: pd.DataFrame,
+    *,
+    key: str,
+) -> dict[str, Any] | None:
+    if frame.empty:
+        st.info(f"No {label.lower()} are available.")
+        return None
+    records = frame.to_dict("records")
+    selected = st.selectbox(
+        label,
+        records,
+        format_func=_format_case_label,
+        key=key,
+    )
+    return selected
+
+
+def _overlap_case(
+    cases: pd.DataFrame,
+    *,
+    case_id: str,
+    variant: str,
+) -> dict[str, Any] | None:
+    if cases.empty:
+        return None
+    match = cases[
+        cases["case_id"].eq(case_id) & cases["variant"].eq(variant)
+    ]
+    return match.iloc[0].to_dict() if not match.empty else None
+
+
+def _render_overlap_case(title: str, row: dict[str, Any] | None, finding: str) -> None:
+    st.markdown(f"#### {title}")
+    if row is None:
+        st.info("Controlled example is not available.")
+        return
+    st.caption(finding)
+    render_text_diff(row.get("raw_asr_text", ""), row.get("corrected_text", ""))
+    _show_audit_metadata(row)
 
 
 def render_overlap(conversation_map: dict[str, Any]) -> None:
@@ -93,6 +162,86 @@ def render_overlap(conversation_map: dict[str, Any]) -> None:
     )
     if not aggregate.empty:
         st.dataframe(aggregate, width="stretch", hide_index=True)
+
+        aware = aggregate[aggregate["variant"].str.startswith("overlap_aware")]
+        unaware = aggregate[
+            aggregate["variant"].str.startswith("no_overlap_awareness")
+        ]
+        comparison = st.columns(4)
+        comparison[0].metric(
+            "Aware safety pass",
+            f"{aware['safety_pass_rate'].mean():.2f}" if not aware.empty else "n/a",
+        )
+        comparison[1].metric(
+            "No-awareness pass",
+            f"{unaware['safety_pass_rate'].mean():.2f}" if not unaware.empty else "n/a",
+        )
+        comparison[2].metric(
+            "Aware rejections",
+            int(aware["correction_rejected_count"].sum()) if not aware.empty else 0,
+        )
+        comparison[3].metric(
+            "Aware review flags",
+            int(aware["needs_review_count"].sum()) if not aware.empty else 0,
+        )
+        st.caption(
+            "Accepted invented content: "
+            f"{int(aggregate['invented_content_count'].sum())}; "
+            "all controlled variants retained speaker attribution."
+        )
+
+    cases = load_overlap_safety_cases()
+    show_frame_warning(cases)
+    if not cases.empty:
+        st.subheader("Overlap decision case files")
+        tab_mild, tab_heavy, tab_speaker, tab_rack = st.tabs(
+            [
+                "Mild overlap",
+                "Heavy overlap",
+                "Ambiguous speakers",
+                "Rack negative control",
+            ]
+        )
+        with tab_mild:
+            _render_overlap_case(
+                "Correction allowed, review retained",
+                _overlap_case(
+                    cases,
+                    case_id="overlap_006",
+                    variant="overlap_aware_rule",
+                ),
+                "Evidence-supported terms can be corrected during mild overlap, but the region remains marked for review.",
+            )
+        with tab_heavy:
+            _render_overlap_case(
+                "Unsafe completion rejected",
+                _overlap_case(
+                    cases,
+                    case_id="overlap_009",
+                    variant="overlap_aware_llm",
+                ),
+                "Heavy, incomplete cross-talk keeps the raw fragment and rejects fluent completion.",
+            )
+        with tab_speaker:
+            _render_overlap_case(
+                "Speaker attribution remains fixed",
+                _overlap_case(
+                    cases,
+                    case_id="overlap_012",
+                    variant="overlap_aware_rule",
+                ),
+                "TalkWeaver may correct supported terms but does not move words between speakers without evidence.",
+            )
+        with tab_rack:
+            _render_overlap_case(
+                "Physical rack stays rack",
+                _overlap_case(
+                    cases,
+                    case_id="overlap_004",
+                    variant="overlap_aware_rule",
+                ),
+                "Ordinary physical-object context blocks the RAG substitution.",
+            )
     render_chart_grid(CHART_GROUPS["Controlled overlap safety"])
 
 
@@ -132,96 +281,108 @@ def render_term_rescue(_: dict[str, Any]) -> None:
         cards[1].metric("Mean term F1", f"{float(best['mean_term_f1']):.3f}")
         cards[2].metric("False positives", int(best.get("false_positive_count", 0)))
         cards[3].metric("Needs review", int(best.get("needs_review_count", 0)))
-        st.dataframe(aggregate, width="stretch", hide_index=True)
     render_chart_grid(CHART_GROUPS["Controlled term rescue"])
 
-    results = load_term_rescue_results()
-    show_frame_warning(results)
-    if not results.empty:
-        preferred = results[
-            results["variant"].isin(
-                ["fused_plus_llm_correction", "fused_plus_rule_correction", "fused"]
-            )
-        ].copy()
-        examples = preferred if not preferred.empty else results
-        columns = [
-            name
-            for name in (
-                "case_id",
-                "variant",
-                "raw_asr_text",
-                "retrieved_candidates",
-                "corrected_text",
-                "expected_terms",
-                "false_positive_terms",
-                "needs_review",
-            )
-            if name in examples
-        ]
-        st.subheader("Term rescue evidence examples")
-        st.dataframe(examples[columns].head(15), width="stretch", hide_index=True)
-
-
-def _find_watchdog_examples(
-    term_results: pd.DataFrame,
-    overlap_results: pd.DataFrame,
-) -> dict[str, dict[str, Any] | None]:
-    accepted = next(
-        (
-            row
-            for row in term_results.to_dict("records")
-            if row.get("corrected_text") != row.get("raw_asr_text")
-            and not list_value(row.get("unsupported_changes"))
-            and not truthy(row.get("needs_review"))
-        ),
-        None,
-    )
-    negative = next(
-        (
-            row
-            for row in term_results.to_dict("records")
-            if row.get("corrected_text") == row.get("raw_asr_text")
-            and not list_value(row.get("false_positive_terms"))
-            and any(
-                word in str(row.get("raw_asr_text", "")).lower()
-                for word in ("rack", "where")
-            )
-        ),
-        None,
-    )
-    rejected = next(
-        (
-            row
-            for row in overlap_results.to_dict("records")
-            if truthy(row.get("correction_rejected"))
-        ),
-        None,
-    )
-    return {"accepted": accepted, "rejected": rejected, "negative": negative}
-
-
-def _render_example(title: str, row: dict[str, Any] | None, status: str) -> None:
-    with st.expander(title, expanded=True):
-        if row is None:
-            st.info("No matching example is available.")
-            return
-        st.caption(status)
-        raw, corrected = st.columns(2)
-        raw.markdown("**Raw**")
-        raw.write(row.get("raw_asr_text", row.get("raw_text", "")))
-        corrected.markdown("**Corrected / retained**")
-        corrected.write(row.get("corrected_text", ""))
-        st.caption(
-            f"needs_review={truthy(row.get('needs_review'))} | "
-            f"unsupported={len(list_value(row.get('unsupported_changes')))} | "
-            f"api_used={truthy(row.get('api_used'))}"
+    examples = get_best_term_rescue_examples()
+    show_frame_warning(examples)
+    if examples.empty:
+        return
+    st.subheader("Rescue Case Files")
+    columns = [
+        name
+        for name in (
+            "case_id",
+            "raw_asr_text",
+            "corrected_text",
+            "expected_terms",
+            "retrieved_candidates",
+            "applied_corrections",
+            "variant",
+            "term_f1",
+            "text_error_before",
+            "text_error_after",
+            "needs_review",
         )
+        if name in examples
+    ]
+    st.dataframe(examples[columns], width="stretch", hide_index=True)
+
+    selected = _select_case(
+        "Controlled Correction Demo",
+        examples,
+        key="term_rescue_case",
+    )
+    if selected:
+        st.markdown(
+            '<span class="tw-source-controlled">Controlled technical-term fixture, not real audio.</span>',
+            unsafe_allow_html=True,
+        )
+        render_text_diff(
+            selected.get("raw_asr_text", ""),
+            selected.get("corrected_text", ""),
+        )
+        evidence = st.columns(4)
+        evidence[0].metric("Term F1", f"{float(selected.get('term_f1', 0)):.2f}")
+        evidence[1].metric(
+            "Error before",
+            f"{float(selected.get('text_error_before', 0)):.3f}",
+        )
+        evidence[2].metric(
+            "Error after",
+            f"{float(selected.get('text_error_after', 0)):.3f}",
+        )
+        evidence[3].metric(
+            "Needs review",
+            str(truthy(selected.get("needs_review"))),
+        )
+        st.caption(
+            "Expected terms: "
+            f"{', '.join(str(item) for item in list_value(selected.get('expected_terms'))) or 'none'}"
+        )
+        st.caption(
+            "Retrieved candidates: "
+            f"{', '.join(str(item) for item in list_value(selected.get('retrieved_candidates'))) or 'none'}"
+        )
+        st.caption(
+            "Applied corrections: "
+            f"{', '.join(str(item) for item in list_value(selected.get('applied_corrections'))) or 'none'}"
+        )
+
+
+def _render_watchdog_section(
+    title: str,
+    explanation: str,
+    frame: pd.DataFrame,
+    *,
+    key: str,
+    reason_field: str = "notes",
+) -> None:
+    st.subheader(title)
+    st.write(explanation)
+    selected = _select_case(title, frame, key=key)
+    if selected is None:
+        return
+    render_text_diff(
+        selected.get("raw_asr_text", ""),
+        selected.get("corrected_text", ""),
+    )
+    _show_audit_metadata(selected, reason_field=reason_field)
 
 
 def render_watchdog(conversation_map: dict[str, Any]) -> None:
     page_header(
         "Hallucination Watchdog",
         "Raw evidence remains visible, unsupported changes are counted, and risky corrections can be rejected.",
+    )
+    st.markdown(
+        """
+        <div class="tw-evidence-band">
+        TalkWeaver keeps raw ASR evidence and separates
+        <code>corrected_text</code> from <code>raw_text</code>. If a correction
+        is unsupported, it is rejected or marked <code>needs_review</code>.
+        </div>
+        """,
+        unsafe_allow_html=True,
     )
     if require_map(conversation_map):
         audits = conversation_map.get("correction_audits", [])
@@ -253,33 +414,28 @@ def render_watchdog(conversation_map: dict[str, Any]) -> None:
                 if name in audit_rows
             ]
             st.dataframe(audit_rows[preferred], width="stretch", hide_index=True)
-        else:
-            st.info("The selected map has no CorrectionAudit records.")
 
-    term_results = load_term_rescue_results()
-    overlap_results = load_overlap_safety_results()
-    examples = _find_watchdog_examples(term_results, overlap_results)
-    st.subheader("Controlled watchdog decisions")
     st.markdown(
-        '<span class="tw-source-controlled">Controlled safety fixtures; not public-audio performance.</span>',
+        '<span class="tw-source-controlled">The case files below are controlled safety fixtures, not public-audio performance.</span>',
         unsafe_allow_html=True,
     )
-    columns = st.columns(3)
-    with columns[0]:
-        _render_example(
-            "Accepted supported correction",
-            examples["accepted"],
-            "Evidence-supported lexical edit",
-        )
-    with columns[1]:
-        _render_example(
-            "Rejected uncertain correction",
-            examples["rejected"],
-            "Raw text retained after safety rejection",
-        )
-    with columns[2]:
-        _render_example(
-            "Negative control preserved",
-            examples["negative"],
-            "Common word not rewritten without domain context",
-        )
+    _render_watchdog_section(
+        "A. Accepted safe corrections",
+        "Supported glossary evidence permits a narrow lexical correction.",
+        get_correction_diff_examples(),
+        key="watchdog_accepted",
+    )
+    _render_watchdog_section(
+        "B. Rejected or review-needed LLM corrections",
+        "Strict grounding keeps the raw text when the API output exceeds supported evidence.",
+        get_best_llm_rejection_examples(),
+        key="watchdog_rejected",
+        reason_field="rejection_reason",
+    )
+    _render_watchdog_section(
+        "C. Negative controls not replaced",
+        "Common words such as rack and where remain unchanged when context does not support RAG or WER.",
+        get_negative_control_examples(),
+        key="watchdog_negative",
+        reason_field="preservation_reason",
+    )

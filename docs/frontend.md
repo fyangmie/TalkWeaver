@@ -46,32 +46,51 @@ reference-assisted evidence, and controlled fixtures.
 
 Shows case metadata, evidence modes, anchor and speaker counts, overlap
 events, review flags, unsupported changes, and the most uncertain temporal
-anchor.
+anchor. When a public clip mostly retains its raw ASR text, the page explains
+that the clip has no annotated technical-term target and that conservative
+retention is an intentional safety result.
 
 ### Speaker Timeline Detective
 
 Plots temporal anchors on speaker lanes. Overlap intervals are shaded and
 review anchors receive a visible outline. The table can be filtered by
 speaker, overlap, and review state, then inspected as raw-versus-corrected
-evidence.
+evidence. The anchor inspector uses a token-level diff and explicitly labels
+identical text as retained evidence rather than a missing UI state.
 
 ### Cross-talk and Overlap Warning
 
 Combines selected-map overlap events with the controlled Phase 2G safety
 summary and charts. The page emphasizes conservative rejection instead of
-fluent completion of uncertain cross-talk.
+fluent completion of uncertain cross-talk. Four controlled case files show:
+
+- mild overlap where supported correction is allowed but review remains;
+- heavy overlap where correction is rejected;
+- ambiguous speaker attribution where words are not reassigned;
+- physical `rack` context where `RAG` replacement is blocked.
 
 ### Misheard Word Rescue
 
 Shows controlled Phase 2F glossary, fuzzy, phonetic-like, fused, rule, and
 LLM results. It includes retrieval candidates, corrected text, expected
-terms, false positives, and review flags.
+terms, false positives, and review flags. The **Rescue Case Files** selector
+visually demonstrates:
+
+- `piano note -> pyannote`;
+- `diary station -> speaker diarization`;
+- contextual `rack -> RAG`;
+- contextual `where -> WER`;
+- `temporal anger -> temporal anchor`.
+
+These are controlled technical-term fixtures, not real audio.
 
 ### Hallucination Watchdog
 
 Displays `CorrectionAudit` records from the selected map and controlled
 examples of accepted supported edits, rejected risky edits, and preserved
-common-word negative controls.
+common-word negative controls. Each case exposes raw text, corrected or
+retained text, unsupported changes, review/rejection status, API use,
+fallback use, and the recorded reason.
 
 ### Evidence Dashboard
 
@@ -108,9 +127,38 @@ The frontend data layer is `webapp/data_loader.py`.
 | ASR summary | `experiments/results/asr_benchmark_summary_real.csv` | Small real public subset |
 | Speaker/overlap baseline | `experiments/results/speaker_overlap_baseline_real.csv` | Real references; reference-assisted rows are oracle workflow checks |
 | Workflow ablation | `experiments/results/workflow_ablation_real.csv` | Fixed real ASR predictions with explicit evidence flags |
+| Term rescue cases | `experiments/results/term_rescue_controlled.csv` | Controlled authored correction and retrieval cases |
 | Term rescue summary | `experiments/results/term_rescue_summary_controlled.csv` | Controlled authored text fixtures |
+| Overlap safety cases | `experiments/results/overlap_safety_controlled.csv` | Controlled correction/rejection cases |
 | Overlap safety summary | `experiments/results/overlap_safety_summary_controlled.csv` | Controlled authored text fixtures |
 | Charts | `assets/result_charts/` | Derived from the corresponding CSV scope |
+
+## Why Public Clips May Show No Correction
+
+The current AMI and FLEURS subset was selected for real ASR, multilingual,
+speaker-time, and overlap evaluation. It does not contain annotated
+TalkWeaver technical-term targets. In the real workflow ablation, correction
+therefore preserved the fixed ASR predictions instead of forcing edits.
+
+Identical `raw_text` and `corrected_text` on those clips is an auditable
+conservative result. It must not be replaced with a fabricated real-audio
+correction. Demonstrable correction behavior comes from the separate Phase
+2F and Phase 2G controlled fixtures.
+
+## Correction Demo Flow
+
+For a final-video correction demonstration:
+
+1. Open **Speaker Timeline Detective** and show that the selected AMI public
+   map retains raw evidence while exposing overlap and review flags.
+2. Open **Misheard Word Rescue** and select a controlled Rescue Case File.
+   The token diff highlights the misheard phrase and rescued canonical term.
+3. Open **Hallucination Watchdog** and compare an accepted correction, a
+   strict LLM rejection, and an unchanged negative control.
+4. Open **Cross-talk and Overlap Warning** and contrast mild correction with
+   heavy-overlap rejection.
+
+The controlled fixture label remains visible throughout this flow.
 
 ## Missing Data Behavior
 

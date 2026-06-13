@@ -7,16 +7,21 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import MagicMock, patch
 
 from webapp.data_loader import (
     discover_charts,
     frame_warning,
+    get_best_term_rescue_examples,
     get_best_available_demo_clip,
+    load_overlap_safety_cases,
     list_available_conversation_maps,
     load_asr_summary,
     load_conversation_map,
+    load_term_rescue_cases,
 )
 from webapp.report_export import build_detective_report, export_detective_report
+from webapp.ui_components import render_text_diff
 
 
 def _sample_map(clip_id: str = "sample_case") -> dict:
@@ -131,6 +136,26 @@ class FrontendDataLoaderTests(unittest.TestCase):
 
         self.assertEqual(set(charts), {"present.png"})
 
+    def test_controlled_case_loaders_read_committed_results(self) -> None:
+        term_cases = load_term_rescue_cases()
+        overlap_cases = load_overlap_safety_cases()
+
+        self.assertFalse(term_cases.empty)
+        self.assertFalse(overlap_cases.empty)
+        self.assertIn("raw_asr_text", term_cases)
+        self.assertIn("correction_rejected", overlap_cases)
+
+    def test_curated_term_examples_include_visible_corrections(self) -> None:
+        examples = get_best_term_rescue_examples()
+
+        self.assertFalse(examples.empty)
+        self.assertTrue(
+            examples["raw_asr_text"].ne(examples["corrected_text"]).all()
+        )
+        text = " ".join(examples["raw_asr_text"].astype(str)).lower()
+        self.assertIn("piano note", text)
+        self.assertIn("temporal anger", text)
+
 
 class DetectiveReportTests(unittest.TestCase):
     def test_report_export_creates_markdown(self) -> None:
@@ -148,6 +173,38 @@ class DetectiveReportTests(unittest.TestCase):
     def test_app_import_does_not_start_streamlit_main(self) -> None:
         module = importlib.import_module("webapp.app")
         self.assertTrue(callable(module.main))
+
+
+class TextDiffTests(unittest.TestCase):
+    @staticmethod
+    def _streamlit_mock() -> MagicMock:
+        streamlit = MagicMock()
+        streamlit.columns.return_value = (MagicMock(), MagicMock())
+        return streamlit
+
+    def test_render_text_diff_handles_identical_text(self) -> None:
+        streamlit = self._streamlit_mock()
+        with patch("webapp.ui_components.st", streamlit):
+            result = render_text_diff("same evidence", "same evidence")
+
+        self.assertTrue(result["identical"])
+        self.assertEqual(result["changes"], [])
+        streamlit.info.assert_called_once()
+
+    def test_render_text_diff_highlights_changed_text(self) -> None:
+        streamlit = self._streamlit_mock()
+        with patch("webapp.ui_components.st", streamlit):
+            result = render_text_diff(
+                "we use piano note",
+                "we use pyannote",
+            )
+
+        self.assertFalse(result["identical"])
+        self.assertEqual(result["changes"][0]["removed"], "piano note")
+        self.assertEqual(result["changes"][0]["added"], "pyannote")
+        self.assertIn("tw-diff-removed", result["raw_html"])
+        self.assertIn("tw-diff-added", result["corrected_html"])
+        streamlit.info.assert_not_called()
 
 
 if __name__ == "__main__":

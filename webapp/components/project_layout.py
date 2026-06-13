@@ -118,6 +118,28 @@ def apply_detective_style() -> None:
             border-left: 4px solid #137C72;
             padding-left: 0.8rem;
         }
+        .tw-diff-panel {
+            background: #FFFFFF;
+            border-top: 1px solid #D9E1E4;
+            border-right: 1px solid #D9E1E4;
+            border-bottom: 1px solid #D9E1E4;
+            border-radius: 4px;
+            min-height: 82px;
+            padding: 0.85rem;
+            line-height: 1.75;
+        }
+        .tw-diff-removed {
+            background: #FBE1DF;
+            color: #8A2E29;
+            border-bottom: 2px solid #C2413B;
+            padding: 0.08rem 0.18rem;
+        }
+        .tw-diff-added {
+            background: #DDF1EA;
+            color: #0B665D;
+            border-bottom: 2px solid #137C72;
+            padding: 0.08rem 0.18rem;
+        }
         </style>
         """,
         unsafe_allow_html=True,

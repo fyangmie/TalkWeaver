@@ -11,6 +11,7 @@ from webapp.detective_ui import (
     map_stats,
     number,
     page_header,
+    render_public_correction_notice,
     require_map,
     safe_html,
     source_boundary,
@@ -85,6 +86,7 @@ def render_crime_scene(conversation_map: dict[str, Any]) -> None:
     metadata = conversation_map.get("metadata", {})
     stats = map_stats(conversation_map)
     source_boundary(metadata)
+    render_public_correction_notice(conversation_map)
 
     top = st.columns(6)
     top[0].metric("Clip", conversation_map.get("clip_id", "unknown"))

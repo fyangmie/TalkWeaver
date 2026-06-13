@@ -489,6 +489,13 @@ controlled text fixtures, and reference-assisted oracle speaker evidence are
 visually distinguished. Markdown reports are exported locally to
 `outputs/reports/<clip_id>_detective_report.md`.
 
+Public AMI/FLEURS maps may show identical raw and corrected text because the
+current public subset has no annotated technical-term correction targets.
+TalkWeaver deliberately avoids unsupported edits. Use **Misheard Word
+Rescue**, **Hallucination Watchdog**, and **Cross-talk and Overlap Warning**
+to inspect controlled correction, rejection, and negative-control case files
+with token-level diffs.
+
 See [`docs/frontend.md`](docs/frontend.md) for consumed artifacts, page
 behavior, claim boundaries, and limitations.
 

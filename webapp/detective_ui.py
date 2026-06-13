@@ -135,6 +135,39 @@ def source_boundary(metadata: dict[str, Any]) -> None:
         )
 
 
+def public_correction_is_conservative(
+    conversation_map: dict[str, Any],
+    *,
+    threshold: float = 0.8,
+) -> bool:
+    """Return whether a public clip mostly retained its raw ASR text."""
+
+    metadata = conversation_map.get("metadata", {})
+    if metadata.get("source_type") != "public_dataset":
+        return False
+    anchors = conversation_map.get("anchors", [])
+    if not anchors:
+        return False
+    identical = sum(
+        str(anchor.get("raw_text", "")).strip()
+        == str(anchor.get("corrected_text", "")).strip()
+        for anchor in anchors
+    )
+    return identical / len(anchors) >= threshold
+
+
+def render_public_correction_notice(conversation_map: dict[str, Any]) -> None:
+    """Explain unchanged public-data text without implying a failed workflow."""
+
+    if public_correction_is_conservative(conversation_map):
+        st.info(
+            "Correction note: this public-data clip has no annotated "
+            "technical-term correction target. TalkWeaver preserved the ASR "
+            "text instead of forcing unsupported edits. See Misheard Word "
+            "Rescue and Hallucination Watchdog for controlled correction examples."
+        )
+
+
 def render_chart_grid(names: tuple[str, ...], columns: int = 2) -> None:
     charts = discover_charts(names)
     if not charts:

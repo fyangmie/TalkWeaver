@@ -118,6 +118,14 @@ def load_term_rescue_results(
     return _load_csv(path, "controlled term rescue results")
 
 
+def load_term_rescue_cases(
+    path: str | Path = TERM_RESCUE_RESULTS_PATH,
+) -> pd.DataFrame:
+    """Load row-level controlled term rescue case results."""
+
+    return _load_csv(path, "controlled term rescue cases")
+
+
 def load_overlap_safety_summary(
     path: str | Path = OVERLAP_SAFETY_SUMMARY_PATH,
 ) -> pd.DataFrame:
@@ -128,6 +136,199 @@ def load_overlap_safety_results(
     path: str | Path = OVERLAP_SAFETY_RESULTS_PATH,
 ) -> pd.DataFrame:
     return _load_csv(path, "controlled overlap safety results")
+
+
+def load_overlap_safety_cases(
+    path: str | Path = OVERLAP_SAFETY_RESULTS_PATH,
+) -> pd.DataFrame:
+    """Load row-level controlled overlap correction case results."""
+
+    return _load_csv(path, "controlled overlap safety cases")
+
+
+def _nonempty_text(series: pd.Series) -> pd.Series:
+    return series.fillna("").astype(str).str.strip().ne("")
+
+
+def _boolean_series(series: pd.Series) -> pd.Series:
+    if series.dtype == bool:
+        return series
+    return series.fillna(False).astype(str).str.lower().isin({"true", "1", "yes"})
+
+
+def _json_list_is_empty(value: Any) -> bool:
+    if value is None or (isinstance(value, float) and pd.isna(value)):
+        return True
+    if isinstance(value, list):
+        return not value
+    if isinstance(value, str):
+        try:
+            parsed = json.loads(value)
+        except json.JSONDecodeError:
+            return not value.strip()
+        return isinstance(parsed, list) and not parsed
+    return False
+
+
+def _pick_first_matching(
+    frame: pd.DataFrame,
+    phrases: Iterable[str],
+) -> list[dict[str, Any]]:
+    rows = frame.to_dict("records")
+    selected: list[dict[str, Any]] = []
+    used_case_ids: set[str] = set()
+    for phrase in phrases:
+        for row in rows:
+            case_id = str(row.get("case_id", ""))
+            if case_id in used_case_ids:
+                continue
+            if phrase in str(row.get("raw_asr_text", "")).lower():
+                selected.append(row)
+                used_case_ids.add(case_id)
+                break
+    return selected
+
+
+def get_best_term_rescue_examples(
+    path: str | Path = TERM_RESCUE_RESULTS_PATH,
+) -> pd.DataFrame:
+    """Return deterministic, context-supported rescue demonstrations."""
+
+    frame = load_term_rescue_cases(path)
+    if frame.empty:
+        return frame
+    preferred = frame[
+        frame["variant"].eq("fused_plus_rule_correction")
+        & frame["raw_asr_text"].fillna("").ne(frame["corrected_text"].fillna(""))
+        & frame["term_f1"].fillna(0).ge(0.99)
+    ].copy()
+    phrases = (
+        "piano note",
+        "diary station",
+        "rack glossary",
+        "report where",
+        "temporal anger",
+    )
+    selected = _pick_first_matching(preferred, phrases)
+    result = pd.DataFrame(selected)
+    if result.empty:
+        result = preferred.sort_values(
+            ["term_f1", "text_error_after"],
+            ascending=[False, True],
+        ).head(5)
+    result.attrs.update(frame.attrs)
+    return result.reset_index(drop=True)
+
+
+def get_best_llm_rejection_examples(
+    term_path: str | Path = TERM_RESCUE_RESULTS_PATH,
+    overlap_path: str | Path = OVERLAP_SAFETY_RESULTS_PATH,
+) -> pd.DataFrame:
+    """Return strict-LLM outputs rejected or retained for human review."""
+
+    term = load_term_rescue_cases(term_path)
+    overlap = load_overlap_safety_cases(overlap_path)
+    records: list[dict[str, Any]] = []
+    if not term.empty:
+        term_rejected = term[
+            term["variant"].eq("fused_plus_llm_correction")
+            & _boolean_series(term["api_used"])
+            & (
+                _nonempty_text(term["correction_error"])
+                | _boolean_series(term["needs_review"])
+            )
+        ].copy()
+        for row in term_rejected.head(4).to_dict("records"):
+            row["source_experiment"] = "controlled_term_rescue"
+            row["rejection_reason"] = (
+                row.get("correction_error")
+                if isinstance(row.get("correction_error"), str)
+                and row.get("correction_error", "").strip()
+                else row.get("notes", "Strict LLM output requires review.")
+            )
+            row.setdefault("correction_rejected", bool(row.get("correction_error")))
+            records.append(row)
+    if not overlap.empty:
+        overlap_rejected = overlap[
+            overlap["variant"].eq("overlap_aware_llm")
+            & _boolean_series(overlap["correction_rejected"])
+        ].copy()
+        for row in overlap_rejected.head(4).to_dict("records"):
+            row["source_experiment"] = "controlled_overlap_safety"
+            row["rejection_reason"] = row.get(
+                "notes",
+                "Overlap-aware policy rejected the correction.",
+            )
+            records.append(row)
+    return pd.DataFrame(records).reset_index(drop=True)
+
+
+def get_negative_control_examples(
+    term_path: str | Path = TERM_RESCUE_RESULTS_PATH,
+    overlap_path: str | Path = OVERLAP_SAFETY_RESULTS_PATH,
+) -> pd.DataFrame:
+    """Return common-word cases that were deliberately not domain-corrected."""
+
+    term = load_term_rescue_cases(term_path)
+    overlap = load_overlap_safety_cases(overlap_path)
+    records: list[dict[str, Any]] = []
+    if not term.empty:
+        preferred = term[term["variant"].eq("fused_plus_rule_correction")].copy()
+        mask = preferred["expected_terms"].map(_json_list_is_empty)
+        mask &= preferred["raw_asr_text"].fillna("").eq(
+            preferred["corrected_text"].fillna("")
+        )
+        for row in preferred[mask].head(6).to_dict("records"):
+            row["source_experiment"] = "controlled_term_rescue"
+            row["preservation_reason"] = (
+                "No supported domain term in context; raw lexical evidence retained."
+            )
+            records.append(row)
+    if not overlap.empty:
+        preferred = overlap[
+            overlap["variant"].eq("overlap_aware_rule")
+            & ~_boolean_series(overlap["correction_allowed"])
+            & ~_boolean_series(overlap["correction_rejected"])
+            & overlap["raw_asr_text"].fillna("").eq(
+                overlap["corrected_text"].fillna("")
+            )
+        ]
+        for row in preferred.head(4).to_dict("records"):
+            row["source_experiment"] = "controlled_overlap_safety"
+            row["preservation_reason"] = row.get(
+                "notes",
+                "No evidence-supported correction was applied.",
+            )
+            records.append(row)
+    return pd.DataFrame(records).reset_index(drop=True)
+
+
+def get_correction_diff_examples(
+    path: str | Path = TERM_RESCUE_RESULTS_PATH,
+) -> pd.DataFrame:
+    """Return accepted controlled corrections with visible before/after text."""
+
+    frame = load_term_rescue_cases(path)
+    if frame.empty:
+        return frame
+    accepted = frame[
+        frame["variant"].isin(
+            ["fused_plus_rule_correction", "fused_plus_llm_correction"]
+        )
+        & frame["raw_asr_text"].fillna("").ne(frame["corrected_text"].fillna(""))
+        & ~_boolean_series(frame["needs_review"])
+        & frame["unsupported_changes"].map(_json_list_is_empty)
+    ].copy()
+    accepted["error_delta"] = (
+        accepted["text_error_before"].fillna(0)
+        - accepted["text_error_after"].fillna(0)
+    )
+    accepted = accepted.sort_values(
+        ["error_delta", "term_f1"],
+        ascending=[False, False],
+    ).drop_duplicates("case_id")
+    accepted.attrs.update(frame.attrs)
+    return accepted.head(10).reset_index(drop=True)
 
 
 def load_chart(

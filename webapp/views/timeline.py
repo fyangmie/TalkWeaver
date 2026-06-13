@@ -9,7 +9,13 @@ import streamlit as st
 
 from webapp.components.speaker_timeline import render_anchor_timeline
 from webapp.data_loader import ROOT_DIR
-from webapp.detective_ui import anchor_table, page_header, require_map, safe_html
+from webapp.detective_ui import (
+    anchor_table,
+    page_header,
+    render_public_correction_notice,
+    require_map,
+)
+from webapp.ui_components import render_text_diff
 
 
 def render_timeline(conversation_map: dict[str, Any]) -> None:
@@ -19,6 +25,7 @@ def render_timeline(conversation_map: dict[str, Any]) -> None:
     )
     if not require_map(conversation_map):
         return
+    render_public_correction_notice(conversation_map)
     anchors = list(conversation_map.get("anchors", []))
     speakers = sorted(
         {
@@ -86,18 +93,10 @@ def render_timeline(conversation_map: dict[str, Any]) -> None:
         ),
     )
     anchor = next(item for item in filtered if item.get("anchor_id") == selected_id)
-    raw_column, corrected_column = st.columns(2)
-    raw_column.markdown("**Raw ASR evidence**")
-    raw_column.markdown(
-        f'<div class="tw-diff-raw">{safe_html(anchor.get("raw_text", ""))}</div>',
-        unsafe_allow_html=True,
-    )
-    corrected_column.markdown("**Corrected text**")
-    corrected_column.markdown(
-        '<div class="tw-diff-corrected">'
-        f'{safe_html(anchor.get("corrected_text", "") or "(no correction)")}'
-        "</div>",
-        unsafe_allow_html=True,
+    render_text_diff(
+        anchor.get("raw_text", ""),
+        anchor.get("corrected_text", ""),
+        corrected_label="Corrected / retained anchor text",
     )
     st.caption(
         f"Overlap={bool(anchor.get('overlap'))} | "

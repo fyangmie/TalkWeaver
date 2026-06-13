@@ -1852,6 +1852,19 @@ remains available. Event-level audio seeking, a dedicated human-labeled
 interruption map, evidence-linked stance cards, multilingual comparison, and
 the mobile ASR trade-off page remain later phases.
 
+#### Phase 3A-Fix correction visibility status
+
+**Status: implemented on June 14, 2026.**
+
+The frontend now explains why conservative public AMI/FLEURS maps often keep
+`raw_text` and `corrected_text` identical. Separate, explicitly labeled
+controlled case files expose supported term rescues, strict LLM rejections,
+review flags, and common-word negative controls. A reusable token-level diff
+highlights removed ASR phrases and rescued canonical terms on Misheard Word
+Rescue, Hallucination Watchdog, Cross-talk Warning, and the timeline anchor
+inspector. Controlled rows remain outside the public ConversationMap
+selector and are never presented as real-audio corrections.
+
 Order:
 
 1. Conversation Crime Scene;
