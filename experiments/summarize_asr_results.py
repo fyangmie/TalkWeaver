@@ -16,13 +16,20 @@ SUMMARY_COLUMNS = [
     "language",
     "dataset_name",
     "metric_name",
+    "vad_filter",
     "num_clips",
     "total_duration_seconds",
     "mean_error_rate",
     "median_error_rate",
+    "cleaned_metric_name",
+    "mean_cleaned_error_rate",
+    "median_cleaned_error_rate",
     "mean_rtf",
     "median_rtf",
     "mean_runtime_seconds",
+    "cold_model_load_seconds",
+    "script_normalized",
+    "normalization_notes",
     "notes",
 ]
 
@@ -41,7 +48,7 @@ def summarize_results(
         raise ValueError("ASR benchmark CSV contains no rows.")
 
     grouped: defaultdict[
-        tuple[str, str, str, str],
+        tuple[str, str, str, str, str],
         list[dict[str, str]],
     ] = defaultdict(list)
     for row in rows:
@@ -51,21 +58,53 @@ def summarize_results(
                 row["language"],
                 row["dataset_name"],
                 row["metric_name"],
+                row.get("vad_filter", ""),
             )
         ].append(row)
 
     summaries: list[dict[str, Any]] = []
     for key, group in sorted(grouped.items()):
-        model_name, language, dataset_name, metric_name = key
+        (
+            model_name,
+            language,
+            dataset_name,
+            metric_name,
+            vad_filter,
+        ) = key
         error_rates = [float(row["error_rate"]) for row in group]
+        cleaned_error_rates = [
+            float(row["cleaned_error_rate"])
+            for row in group
+            if row.get("cleaned_error_rate", "").strip()
+        ]
         rtfs = [float(row["rtf"]) for row in group]
         runtimes = [float(row["runtime_seconds"]) for row in group]
+        cold_loads = [
+            float(row["cold_model_load_seconds"])
+            for row in group
+            if row.get("cold_model_load_seconds", "").strip()
+        ]
+        normalization_notes = sorted(
+            {
+                row.get("normalization_notes", "").strip()
+                for row in group
+                if row.get("normalization_notes", "").strip()
+            }
+        )
+        script_states = sorted(
+            {
+                row.get("script_normalized", "").strip()
+                for row in group
+                if row.get("script_normalized", "").strip()
+            }
+        )
         summaries.append(
             {
                 "model_name": model_name,
                 "language": language,
                 "dataset_name": dataset_name,
                 "metric_name": metric_name,
+                "vad_filter": vad_filter,
                 "num_clips": len(group),
                 "total_duration_seconds": round(
                     sum(float(row["duration_seconds"]) for row in group),
@@ -76,15 +115,37 @@ def summarize_results(
                     statistics.median(error_rates),
                     6,
                 ),
+                "cleaned_metric_name": (
+                    group[0].get("cleaned_metric_name", "")
+                    if cleaned_error_rates
+                    else ""
+                ),
+                "mean_cleaned_error_rate": (
+                    round(statistics.fmean(cleaned_error_rates), 6)
+                    if cleaned_error_rates
+                    else ""
+                ),
+                "median_cleaned_error_rate": (
+                    round(statistics.median(cleaned_error_rates), 6)
+                    if cleaned_error_rates
+                    else ""
+                ),
                 "mean_rtf": round(statistics.fmean(rtfs), 6),
                 "median_rtf": round(statistics.median(rtfs), 6),
                 "mean_runtime_seconds": round(
                     statistics.fmean(runtimes),
                     6,
                 ),
+                "cold_model_load_seconds": (
+                    round(statistics.fmean(cold_loads), 6)
+                    if cold_loads
+                    else ""
+                ),
+                "script_normalized": "; ".join(script_states),
+                "normalization_notes": "; ".join(normalization_notes),
                 "notes": (
                     "Small-subset formal evaluation aggregate; not full "
-                    "dataset performance."
+                    "dataset performance. RTF excludes model loading."
                 ),
             }
         )

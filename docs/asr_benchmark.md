@@ -43,12 +43,17 @@ compute type: int8
 beam size: 5
 VAD filter: enabled
 word timestamps: enabled
+Chinese script normalization: OpenCC t2s
 ```
 
 One model instance is reused for all 17 clips. Per-clip `runtime_seconds`
 starts immediately before `model.transcribe` and includes generator
 materialization and timestamp serialization. One-time model initialization is
-recorded in prediction metadata and CSV notes but excluded from per-clip RTF.
+recorded as `cold_model_load_seconds` and excluded from per-clip RTF.
+Therefore the reported RTF is a warm inference measure. The load measurement
+is a local process-level model constructor time with weights already cached;
+it is not mobile cold-start latency and does not include initial model
+download.
 
 ## Commands Used
 
@@ -60,8 +65,23 @@ python experiments/run_asr_benchmark.py \
   --models tiny base \
   --device cpu \
   --compute-type int8 \
+  --vad-filter true \
   --output experiments/results/asr_benchmark_real.csv \
   --predictions-dir experiments/results/asr_predictions_real
+```
+
+Run the AMI VAD diagnostic:
+
+```bash
+python experiments/run_asr_benchmark.py \
+  --manifest data/manifests/formal_eval_real.csv \
+  --models tiny base \
+  --device cpu \
+  --compute-type int8 \
+  --vad-filter false \
+  --only-dataset "AMI Meeting Corpus" \
+  --output experiments/results/asr_benchmark_ami_no_vad_real.csv \
+  --predictions-dir experiments/results/asr_predictions_ami_no_vad_real
 ```
 
 Create aggregate results:
@@ -104,12 +124,48 @@ CER = character edit distance / reference characters
 ```
 
 Whitespace and punctuation are removed before scoring. This avoids imposing
-an external Chinese word-segmentation policy.
+an external Chinese word-segmentation policy. When
+`opencc-python-reimplemented` is installed, both references and hypotheses
+are converted from Traditional to Simplified Chinese before CER. Each row
+records:
+
+```text
+script_normalized=true
+normalization_notes=OpenCC t2s normalization applied before Mandarin CER scoring.
+```
+
+Without OpenCC, the evaluator keeps the original script and records a warning
+that Traditional/Simplified differences may inflate CER. OpenCC remains an
+optional dependency:
+
+```bash
+pip install opencc-python-reimplemented
+```
 
 Both metrics use a local Levenshtein implementation. WER may use `jiwer` when
 it is already installed, but `jiwer` is not required.
 
-### Runtime And RTF
+### AMI Diagnostic Cleaned WER
+
+AMI manual references contain fillers, backchannels, repetitions, and
+punctuation markers that may be rendered differently by ASR. The benchmark
+therefore retains standard WER and adds a diagnostic:
+
+```text
+WER_DISFLUENCY_CLEANED
+```
+
+The diagnostic removes `um`, `uh`, `mm-hmm`, `mm`, `hmm`, and related
+variants, then collapses immediately repeated words in both reference and
+hypothesis. It does not replace standard WER and is not used for FLEURS.
+
+### VAD Diagnostic
+
+`--vad-filter true` remains the default baseline. `--vad-filter false` allows
+an AMI-only diagnostic because VAD may truncate low-energy meeting speech or
+backchannels. The CSV records `vad_filter` for every row.
+
+### Warm Runtime, Cold Load, And RTF
 
 ```text
 RTF = runtime_seconds / duration_seconds
@@ -117,28 +173,47 @@ RTF = runtime_seconds / duration_seconds
 
 An RTF below 1 means inference completed faster than the clip duration on the
 measured machine. These are local CPU measurements, not mobile-device
-measurements.
+measurements. `cold_model_load_seconds` is reported separately. It must not be
+treated as mobile startup latency because filesystem cache state, process
+startup, model download, hardware, and runtime packaging differ.
 
 ## Small-Subset Results
 
 Language-level means combine the available datasets for that language:
 
-| Model | English WER, 7 clips | French WER, 5 clips | Mandarin CER, 5 clips | Mean RTF, 17 clips |
+| Model | English WER, 7 clips | French WER, 5 clips | Mandarin CER with OpenCC, 5 clips | Mean warm RTF, 17 clips |
 | --- | ---: | ---: | ---: | ---: |
-| tiny | 0.3123 | 0.4387 | 0.4336 | 0.0470 |
-| base | 0.2160 | 0.2738 | 0.3475 | 0.0762 |
+| tiny | 0.3123 | 0.4387 | 0.2761 | 0.0473 |
+| base | 0.2160 | 0.2738 | 0.0897 | 0.0758 |
 
-Dataset-specific English results show why aggregate interpretation must remain
+OpenCC changes only the evaluation normalization, not model predictions. The
+previous script-sensitive Mandarin means were `0.4336` for `tiny` and
+`0.3475` for `base`; those values were inflated by Traditional/Simplified
+character differences.
+
+Dataset-specific results show why aggregate interpretation must remain
 conservative:
 
-| Model | FLEURS English WER | AMI overlap excerpt WER |
-| --- | ---: | ---: |
-| tiny | 0.2962 | 0.3527 |
-| base | 0.1542 | 0.3705 |
+| Model | FLEURS WER, English + French | FLEURS Mandarin CER | AMI standard WER | AMI cleaned WER |
+| --- | ---: | ---: | ---: | ---: |
+| tiny | 0.3675 | 0.2761 | 0.3527 | 0.2596 |
+| base | 0.2140 | 0.0897 | 0.3705 | 0.2885 |
 
-`base` improves the FLEURS language subsets but is slightly worse than
-`tiny` on the two AMI excerpts. With only two short meeting clips, this is an
-error-analysis observation rather than evidence of general model ordering.
+`base` improves FLEURS multilingual accuracy, while `tiny` is faster. AMI is
+unstable: only two short clips are available, the references preserve
+disfluencies, and the VAD-enabled `base` hypothesis for `ami_es2002a_01`
+stops after "what we're".
+
+The AMI VAD diagnostic was:
+
+| Model | VAD=true standard / cleaned WER | VAD=false standard / cleaned WER |
+| --- | ---: | ---: |
+| tiny | 0.3527 / 0.2596 | 0.3371 / 0.2404 |
+| base | 0.3705 / 0.2885 | 0.2612 / 0.1538 |
+
+Disabling VAD restored the remainder of the truncated `base` hypothesis and
+substantially reduced its two-clip AMI error. This is a diagnostic finding,
+not a general recommendation to disable VAD.
 
 ## Outputs
 
@@ -147,7 +222,9 @@ Committed small artifacts:
 ```text
 experiments/results/asr_benchmark_real.csv
 experiments/results/asr_benchmark_summary_real.csv
+experiments/results/asr_benchmark_ami_no_vad_real.csv
 assets/result_charts/asr_error_by_language.png
+assets/result_charts/asr_error_by_dataset.png
 assets/result_charts/asr_rtf_by_model.png
 ```
 
@@ -173,7 +250,10 @@ manifest and model cache.
 - There is no Mandarin meeting clip yet; Mandarin results are single-speaker
   FLEURS CER.
 - AMI has only two 20-second overlap excerpts.
-- Per-clip RTF excludes one-time model initialization and model download.
+- Standard AMI WER is reference-style sensitive; cleaned WER is diagnostic.
+- VAD conclusions are based on only two clips.
+- Per-clip warm RTF excludes model initialization and model download.
+- Local `cold_model_load_seconds` is not mobile cold-start latency.
 - Runtime reflects the current CPU environment and cannot be reported as a
   mobile result.
 - No statistical significance test is meaningful at this sample size.

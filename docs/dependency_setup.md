@@ -47,6 +47,15 @@ Real ASR is intentionally not part of `requirements.txt`. Mock and
 reference-assisted modes must remain usable on machines without model
 dependencies.
 
+For Mandarin CER, install the optional OpenCC normalizer:
+
+```bash
+python -m pip install opencc-python-reimplemented
+```
+
+Without it, ASR inference still works, but Traditional/Simplified character
+differences remain in CER and are explicitly flagged in metric metadata.
+
 When a named model such as `tiny` is used for the first time,
 `faster-whisper` automatically downloads the corresponding CTranslate2 model
 from the Hugging Face Hub. This is a model download, not a TalkWeaver source

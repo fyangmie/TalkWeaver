@@ -25,7 +25,7 @@ def plot_results(
     input_path: str | Path,
     output_dir: str | Path,
 ) -> list[Path]:
-    """Generate language error-rate and model RTF charts."""
+    """Generate language, dataset, and runtime comparison charts."""
 
     import matplotlib.pyplot as plt
 
@@ -34,13 +34,27 @@ def plot_results(
     destination.mkdir(parents=True, exist_ok=True)
     models = sorted({row["model_name"] for row in rows})
     languages = sorted({row["language"] for row in rows})
+    dataset_metrics = sorted(
+        {(row["dataset_name"], row["metric_name"]) for row in rows}
+    )
     errors: defaultdict[tuple[str, str], list[float]] = defaultdict(list)
+    dataset_errors: defaultdict[
+        tuple[str, str, str],
+        list[float],
+    ] = defaultdict(list)
     rtfs: defaultdict[str, list[float]] = defaultdict(list)
     metric_names: defaultdict[str, set[str]] = defaultdict(set)
     for row in rows:
         errors[(row["model_name"], row["language"])].append(
             float(row["error_rate"])
         )
+        dataset_errors[
+            (
+                row["model_name"],
+                row["dataset_name"],
+                row["metric_name"],
+            )
+        ].append(float(row["error_rate"]))
         rtfs[row["model_name"]].append(float(row["rtf"]))
         metric_names[row["language"]].add(row["metric_name"])
 
@@ -89,6 +103,49 @@ def plot_results(
     figure.savefig(error_path, dpi=180, bbox_inches="tight")
     plt.close(figure)
 
+    figure, axis = plt.subplots(figsize=(10, 5.8))
+    positions = list(range(len(dataset_metrics)))
+    for model_index, model in enumerate(models):
+        values = [
+            _mean(dataset_errors[(model, dataset, metric)])
+            if dataset_errors[(model, dataset, metric)]
+            else 0.0
+            for dataset, metric in dataset_metrics
+        ]
+        offsets = [
+            position - 0.4 + width / 2 + model_index * width
+            for position in positions
+        ]
+        bars = axis.bar(
+            offsets,
+            values,
+            width=width,
+            label=model,
+            color=colors[model_index % len(colors)],
+        )
+        for bar, value in zip(bars, values):
+            axis.text(
+                bar.get_x() + bar.get_width() / 2,
+                bar.get_height(),
+                f"{value:.3f}",
+                ha="center",
+                va="bottom",
+                fontsize=9,
+            )
+    dataset_labels = [
+        f"{dataset}\n({metric})"
+        for dataset, metric in dataset_metrics
+    ]
+    axis.set_xticks(positions, labels=dataset_labels)
+    axis.set_ylabel("Mean error rate")
+    axis.set_title("Real ASR Error by Dataset - Small Formal Subset")
+    axis.grid(axis="y", alpha=0.2)
+    axis.legend(title="faster-whisper model")
+    figure.tight_layout()
+    dataset_path = destination / "asr_error_by_dataset.png"
+    figure.savefig(dataset_path, dpi=180, bbox_inches="tight")
+    plt.close(figure)
+
     figure, axis = plt.subplots(figsize=(8.5, 5.2))
     rtf_values = [_mean(rtfs[model]) for model in models]
     bars = axis.bar(
@@ -122,7 +179,7 @@ def plot_results(
     rtf_path = destination / "asr_rtf_by_model.png"
     figure.savefig(rtf_path, dpi=180, bbox_inches="tight")
     plt.close(figure)
-    return [error_path, rtf_path]
+    return [error_path, dataset_path, rtf_path]
 
 
 def build_parser() -> argparse.ArgumentParser:

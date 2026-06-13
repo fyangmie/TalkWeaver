@@ -36,6 +36,12 @@ DEPENDENCIES = {
         purpose="optional spectral denoising",
         install="pip install -r requirements-optional.txt",
     ),
+    "opencc-python-reimplemented": OptionalDependency(
+        display_name="opencc-python-reimplemented",
+        import_name="opencc",
+        purpose="Traditional-to-Simplified normalization for Mandarin CER",
+        install="pip install opencc-python-reimplemented",
+    ),
 }
 
 

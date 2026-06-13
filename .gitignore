@@ -71,7 +71,9 @@ experiments/results/*.csv
 !experiments/results/latency_results.csv
 !experiments/results/asr_benchmark_real.csv
 !experiments/results/asr_benchmark_summary_real.csv
+!experiments/results/asr_benchmark_ami_no_vad_real.csv
 experiments/results/asr_predictions_real/
+experiments/results/asr_predictions_ami_no_vad_real/
 assets/result_charts/*.png
 !assets/result_charts/wer_comparison.png
 !assets/result_charts/wder_comparison.png
@@ -79,6 +81,7 @@ assets/result_charts/*.png
 !assets/result_charts/latency_comparison.png
 !assets/result_charts/hallucination_comparison.png
 !assets/result_charts/asr_error_by_language.png
+!assets/result_charts/asr_error_by_dataset.png
 !assets/result_charts/asr_rtf_by_model.png
 assets/screenshots/*
 assets/demo_gifs/*

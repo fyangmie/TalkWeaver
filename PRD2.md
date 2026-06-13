@@ -1658,6 +1658,25 @@ benchmark is ASR-only and does not validate diarization, overlap reasoning,
 RAG, LLM correction, or the complete TalkWeaver method. Protocol and measured
 limitations are documented in `docs/asr_benchmark.md`.
 
+### Phase 2C-Fix - ASR Evaluation Reliability
+
+**Status: implemented on June 13, 2026.**
+
+Implemented:
+
+- optional OpenCC Traditional-to-Simplified normalization before Mandarin
+  CER, with explicit metadata and graceful fallback;
+- separate standard WER and diagnostic disfluency-cleaned WER for AMI;
+- configurable `--vad-filter true/false` and `--only-dataset`;
+- AMI VAD-disabled diagnostic results for `tiny` and `base`;
+- separate warm per-clip RTF and process-level model load timing;
+- dataset-and-metric chart separating AMI WER, FLEURS WER, and FLEURS CER;
+- updated real CSVs, summaries, charts, tests, and interpretation notes.
+
+The fix changes evaluation normalization and diagnostics, not ASR
+predictions. AMI cleaned WER is supplementary and does not replace standard
+WER. Local model load timing is not a mobile cold-start measurement.
+
 ### Phase 3 - Metrics and Experiment Runners
 
 **Goal:** Make all future UI evidence reproducible.

@@ -18,7 +18,10 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from backend.asr import REAL_ASR_DEPENDENCY_ERROR  # noqa: E402
-from experiments.metrics.text_metrics import evaluate_text  # noqa: E402
+from experiments.metrics.text_metrics import (  # noqa: E402
+    evaluate_cleaned_wer,
+    evaluate_text,
+)
 from experiments.metrics.text_normalization import (  # noqa: E402
     canonical_language,
     is_mandarin_language,
@@ -32,15 +35,23 @@ OUTPUT_COLUMNS = [
     "model_name",
     "device",
     "compute_type",
+    "vad_filter",
     "duration_seconds",
     "runtime_seconds",
     "rtf",
+    "cold_model_load_seconds",
     "metric_name",
     "error_rate",
+    "normalization_notes",
+    "script_normalized",
     "reference_text",
     "hypothesis_text",
     "normalized_reference",
     "normalized_hypothesis",
+    "cleaned_metric_name",
+    "cleaned_error_rate",
+    "cleaned_normalized_reference",
+    "cleaned_normalized_hypothesis",
     "prediction_json_path",
     "prediction_txt_path",
     "notes",
@@ -70,6 +81,21 @@ def model_language(language: str | None) -> str | None:
     if normalized.startswith("fr"):
         return "fr"
     return normalized or None
+
+
+def parse_bool(value: str | bool) -> bool:
+    """Parse explicit CLI booleans such as --vad-filter true/false."""
+
+    if isinstance(value, bool):
+        return value
+    normalized = value.strip().lower()
+    if normalized in {"true", "1", "yes", "on"}:
+        return True
+    if normalized in {"false", "0", "no", "off"}:
+        return False
+    raise argparse.ArgumentTypeError(
+        f"Expected true or false, received {value!r}."
+    )
 
 
 def load_faster_whisper_model(
@@ -132,6 +158,7 @@ def transcribe_real_clip(
     audio_path: Path,
     *,
     language: str | None,
+    vad_filter: bool,
 ) -> tuple[dict[str, Any], float]:
     """Run one real inference and include generator materialization in time."""
 
@@ -141,7 +168,7 @@ def transcribe_real_clip(
         beam_size=5,
         language=model_language(language),
         word_timestamps=True,
-        vad_filter=True,
+        vad_filter=vad_filter,
     )
     segments = [_serialize_segment(segment) for segment in segment_generator]
     runtime_seconds = perf_counter() - started
@@ -151,6 +178,7 @@ def transcribe_real_clip(
     result = {
         "asr_mode": "real",
         "backend": "faster_whisper",
+        "vad_filter": vad_filter,
         "language_requested": model_language(language),
         "language_detected": getattr(info, "language", None),
         "language_probability": _optional_float(
@@ -180,10 +208,12 @@ def _write_prediction(
     reference_text: str,
     inference: dict[str, Any],
     metrics: dict[str, str | float],
+    cleaned_metrics: dict[str, str | float],
     runtime_seconds: float,
     model_load_seconds: float,
     device: str,
     compute_type: str,
+    vad_filter: bool,
 ) -> tuple[Path, Path]:
     prediction_dir.mkdir(parents=True, exist_ok=True)
     stem = f"{_safe_stem(model_name)}__{_safe_stem(row['clip_id'])}"
@@ -200,7 +230,8 @@ def _write_prediction(
         "model_name": model_name,
         "device": device,
         "compute_type": compute_type,
-        "model_load_seconds": round(model_load_seconds, 6),
+        "vad_filter": vad_filter,
+        "cold_model_load_seconds": round(model_load_seconds, 6),
         "runtime_seconds": round(runtime_seconds, 6),
         "reference_text": reference_text,
         "hypothesis_text": inference["hypothesis_text"],
@@ -208,6 +239,9 @@ def _write_prediction(
         "normalized_hypothesis": metrics["normalized_hypothesis"],
         "metric_name": metrics["metric_name"],
         "error_rate": round(float(metrics["error_rate"]), 6),
+        "normalization_notes": metrics["normalization_notes"],
+        "script_normalized": metrics["script_normalized"],
+        **cleaned_metrics,
         "asr": inference,
     }
     json_path.write_text(
@@ -234,6 +268,8 @@ def run_benchmark(
     compute_type: str,
     output: str | Path,
     predictions_dir: str | Path,
+    vad_filter: bool = True,
+    only_dataset: str | None = None,
 ) -> list[dict[str, Any]]:
     """Run real ASR for each valid manifest row and write audit artifacts."""
 
@@ -243,6 +279,11 @@ def run_benchmark(
     rows = load_manifest_rows(manifest_path)
     valid_rows: list[tuple[dict[str, str], Path, Path]] = []
     for row in rows:
+        if only_dataset and (
+            row.get("dataset_name", "").strip().casefold()
+            != only_dataset.strip().casefold()
+        ):
+            continue
         audio_path = project_path(row.get("audio_path", ""))
         transcript_path = project_path(row.get("transcript_path", ""))
         if not audio_path.is_file() or not transcript_path.is_file():
@@ -280,6 +321,7 @@ def run_benchmark(
                 model,
                 audio_path,
                 language=row.get("language"),
+                vad_filter=vad_filter,
             )
             if inference.get("asr_mode") != "real":
                 raise RuntimeError(
@@ -290,6 +332,18 @@ def run_benchmark(
                 str(inference["hypothesis_text"]),
                 row.get("language"),
             )
+            if row.get("dataset_name") == "AMI Meeting Corpus":
+                cleaned_metrics = evaluate_cleaned_wer(
+                    reference_text,
+                    str(inference["hypothesis_text"]),
+                )
+            else:
+                cleaned_metrics = {
+                    "cleaned_metric_name": "",
+                    "cleaned_error_rate": "",
+                    "cleaned_normalized_reference": "",
+                    "cleaned_normalized_hypothesis": "",
+                }
             duration_seconds = float(row["duration_seconds"])
             rtf = (
                 runtime_seconds / duration_seconds
@@ -303,10 +357,12 @@ def run_benchmark(
                 reference_text=reference_text,
                 inference=inference,
                 metrics=metrics,
+                cleaned_metrics=cleaned_metrics,
                 runtime_seconds=runtime_seconds,
                 model_load_seconds=model_load_seconds,
                 device=device,
                 compute_type=compute_type,
+                vad_filter=vad_filter,
             )
             result = {
                 "clip_id": row["clip_id"],
@@ -315,22 +371,39 @@ def run_benchmark(
                 "model_name": model_name,
                 "device": device,
                 "compute_type": compute_type,
+                "vad_filter": str(vad_filter).lower(),
                 "duration_seconds": round(duration_seconds, 6),
                 "runtime_seconds": round(runtime_seconds, 6),
                 "rtf": round(rtf, 6),
+                "cold_model_load_seconds": round(
+                    model_load_seconds,
+                    6,
+                ),
                 "metric_name": metrics["metric_name"],
                 "error_rate": round(float(metrics["error_rate"]), 6),
+                "normalization_notes": metrics["normalization_notes"],
+                "script_normalized": str(
+                    bool(metrics["script_normalized"])
+                ).lower(),
                 "reference_text": reference_text,
                 "hypothesis_text": inference["hypothesis_text"],
                 "normalized_reference": metrics["normalized_reference"],
                 "normalized_hypothesis": metrics["normalized_hypothesis"],
+                **{
+                    key: (
+                        round(float(value), 6)
+                        if key == "cleaned_error_rate" and value != ""
+                        else value
+                    )
+                    for key, value in cleaned_metrics.items()
+                },
                 "prediction_json_path": display_path(json_path),
                 "prediction_txt_path": display_path(txt_path),
                 "notes": (
                     "Real faster-whisper inference on the small-subset "
                     "formal evaluation manifest; model initialization "
                     f"({model_load_seconds:.3f}s) excluded from per-clip "
-                    "runtime and RTF."
+                    f"runtime and warm RTF; vad_filter={vad_filter}."
                 ),
             }
             results.append(result)
@@ -338,7 +411,7 @@ def run_benchmark(
                 f"[{model_name} {index}/{len(valid_rows)}] "
                 f"{row['clip_id']} {metrics['metric_name']}="
                 f"{float(metrics['error_rate']):.4f} "
-                f"RTF={rtf:.4f}"
+                f"RTF={rtf:.4f} vad_filter={vad_filter}"
             )
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -360,6 +433,17 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--models", nargs="+", required=True)
     parser.add_argument("--device", default="cpu")
     parser.add_argument("--compute-type", default="int8")
+    parser.add_argument(
+        "--vad-filter",
+        type=parse_bool,
+        default=True,
+        metavar="{true,false}",
+        help="Enable faster-whisper VAD filtering (default: true).",
+    )
+    parser.add_argument(
+        "--only-dataset",
+        help="Run only rows whose dataset_name exactly matches this value.",
+    )
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--predictions-dir", type=Path, required=True)
     return parser
@@ -375,6 +459,8 @@ def main() -> int:
             compute_type=args.compute_type,
             output=args.output,
             predictions_dir=args.predictions_dir,
+            vad_filter=args.vad_filter,
+            only_dataset=args.only_dataset,
         )
     except (FileNotFoundError, RuntimeError, ValueError) as exc:
         print(f"ASR benchmark failed: {exc}", file=sys.stderr)

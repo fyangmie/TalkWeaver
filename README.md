@@ -246,6 +246,7 @@ python experiments/run_asr_benchmark.py \
   --models tiny base \
   --device cpu \
   --compute-type int8 \
+  --vad-filter true \
   --output experiments/results/asr_benchmark_real.csv \
   --predictions-dir experiments/results/asr_predictions_real
 
@@ -262,7 +263,8 @@ Per-clip predictions remain local and ignored by Git. The small result CSVs
 and charts are stored under `experiments/results/` and
 `assets/result_charts/`. See
 [`docs/asr_benchmark.md`](docs/asr_benchmark.md) for the protocol, measured
-results, normalization policy, and limitations. These values are not
+results, OpenCC Mandarin normalization, AMI cleaned-WER/VAD diagnostics, warm
+RTF versus model-load timing, and limitations. These values are not
 full-dataset performance claims.
 
 ## Quickstart: Mock Mode

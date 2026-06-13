@@ -8,8 +8,11 @@ from typing import Any
 
 from experiments.metrics.text_normalization import (
     canonical_language,
+    chinese_script_normalization_available,
+    chinese_script_normalization_notes,
     is_mandarin_language,
     normalize_for_cer,
+    normalize_for_cleaned_wer,
     normalize_for_wer,
 )
 
@@ -104,7 +107,7 @@ def evaluate_text(
     reference: str,
     hypothesis: str,
     language: str | None,
-) -> dict[str, str | float]:
+) -> dict[str, str | float | bool]:
     """Normalize and score one reference/hypothesis pair."""
 
     metric_name = metric_name_for_language(language)
@@ -116,6 +119,8 @@ def evaluate_text(
             normalized_hypothesis,
             normalized=True,
         )
+        script_normalized = chinese_script_normalization_available()
+        normalization_notes = chinese_script_normalization_notes()
     else:
         normalized_reference = normalize_for_wer(reference)
         normalized_hypothesis = normalize_for_wer(hypothesis)
@@ -124,9 +129,36 @@ def evaluate_text(
             normalized_hypothesis,
             normalized=True,
         )
+        script_normalized = False
+        normalization_notes = (
+            "Lowercase, Unicode NFKC, common punctuation removal, and "
+            "whitespace normalization applied for WER."
+        )
     return {
         "metric_name": metric_name,
         "error_rate": float(error_rate),
         "normalized_reference": normalized_reference,
         "normalized_hypothesis": normalized_hypothesis,
+        "script_normalized": script_normalized,
+        "normalization_notes": normalization_notes,
+    }
+
+
+def evaluate_cleaned_wer(
+    reference: str,
+    hypothesis: str,
+) -> dict[str, str | float]:
+    """Compute a diagnostic WER after conservative disfluency cleanup."""
+
+    normalized_reference = normalize_for_cleaned_wer(reference)
+    normalized_hypothesis = normalize_for_cleaned_wer(hypothesis)
+    return {
+        "cleaned_metric_name": "WER_DISFLUENCY_CLEANED",
+        "cleaned_error_rate": word_error_rate(
+            normalized_reference,
+            normalized_hypothesis,
+            normalized=True,
+        ),
+        "cleaned_normalized_reference": normalized_reference,
+        "cleaned_normalized_hypothesis": normalized_hypothesis,
     }
