@@ -464,7 +464,35 @@ python experiments/plot_results.py
 Generated demo outputs are written under `outputs/` and
 `experiments/results/`.
 
-## Streamlit
+## Running AI Meeting Detective Frontend
+
+Phase 3A adds the investigation-oriented frontend over existing
+`ConversationMap` JSON, experiment CSV, and chart artifacts:
+
+```bash
+streamlit run webapp/app.py
+```
+
+The app provides:
+
+- Home / Project Story;
+- Conversation Crime Scene;
+- Speaker Timeline Detective;
+- Cross-talk and Overlap Warning;
+- Misheard Word Rescue;
+- Hallucination Watchdog;
+- Evidence Dashboard;
+- Export / Report Preview.
+
+It requires no API key and does not execute models. Real public-data results,
+controlled text fixtures, and reference-assisted oracle speaker evidence are
+visually distinguished. Markdown reports are exported locally to
+`outputs/reports/<clip_id>_detective_report.md`.
+
+See [`docs/frontend.md`](docs/frontend.md) for consumed artifacts, page
+behavior, claim boundaries, and limitations.
+
+## Legacy Streamlit Review Workspace
 
 ```bash
 streamlit run webapp/streamlit_app.py
@@ -746,6 +774,7 @@ results from annotated audio; mock charts must not be cited as model quality.
 - [x] WER, speaker-error approximation, TER, overlap, hallucination, latency
 - [x] Mock ablation CSVs and five labeled charts
 - [x] Project report, blog article, literature notes, and video script
+- [x] AI Meeting Detective Phase 3A data layer and core investigation pages
 - [x] Inspect the local course anchor paper and related reference PDFs
 - [ ] Synchronize the full literature notes with the PRD2 paper mapping
 - [ ] Collect or license real evaluation audio and annotations

@@ -1833,6 +1833,25 @@ Exit criteria:
 
 **Goal:** Build the final product experience over stable evidence schemas.
 
+#### Phase 3A frontend foundation status
+
+**Status: implemented on June 14, 2026.**
+
+The first investigation frontend now reads existing `ConversationMap` JSON,
+real experiment CSVs, controlled safety CSVs, and committed result charts
+through `webapp/data_loader.py`. `webapp/app.py` provides Home / Project
+Story, Conversation Crime Scene, Speaker Timeline Detective, Cross-talk and
+Overlap Warning, Misheard Word Rescue, Hallucination Watchdog, Evidence
+Dashboard, and Markdown Export / Report Preview views.
+
+The UI explicitly distinguishes real public-data artifacts, controlled text
+fixtures, reference-assisted oracle speaker/time evidence, and automatic
+model outputs. It requires no API credentials and does not silently execute
+mock or real models when artifacts are missing. The v0 Streamlit workspace
+remains available. Event-level audio seeking, a dedicated human-labeled
+interruption map, evidence-linked stance cards, multilingual comparison, and
+the mobile ASR trade-off page remain later phases.
+
 Order:
 
 1. Conversation Crime Scene;
