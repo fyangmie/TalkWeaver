@@ -7,6 +7,7 @@ from typing import Any
 import streamlit as st
 
 from webapp.components.project_layout import DETECTIVE_SUBTITLE, DETECTIVE_TITLE
+from webapp.data_loader import build_clip_detective_summary
 from webapp.detective_ui import (
     map_stats,
     number,
@@ -16,6 +17,7 @@ from webapp.detective_ui import (
     safe_html,
     source_boundary,
 )
+from webapp.ui_components import render_audio_evidence
 
 
 def render_home(conversation_map: dict[str, Any]) -> None:
@@ -87,6 +89,10 @@ def render_crime_scene(conversation_map: dict[str, Any]) -> None:
     stats = map_stats(conversation_map)
     source_boundary(metadata)
     render_public_correction_notice(conversation_map)
+    render_audio_evidence(
+        conversation_map,
+        label="Full clip audio evidence",
+    )
 
     top = st.columns(6)
     top[0].metric("Clip", conversation_map.get("clip_id", "unknown"))
@@ -113,8 +119,15 @@ def render_crime_scene(conversation_map: dict[str, Any]) -> None:
     overlap_reviewed = all(item.get("needs_review") for item in overlap_anchors)
 
     st.subheader("Detective summary")
+    detective = build_clip_detective_summary(conversation_map)
     summary_columns = st.columns(2)
     with summary_columns[0]:
+        st.markdown("#### What happened?")
+        st.write(detective["what_happened"])
+        st.markdown("#### Who spoke?")
+        st.write(detective["who_spoke"])
+        st.markdown("#### Evidence scope")
+        st.write(detective["evidence_scope"])
         if uncertain:
             st.markdown(
                 f"""
@@ -135,6 +148,12 @@ def render_crime_scene(conversation_map: dict[str, Any]) -> None:
         conservative = stats["unsupported"] == 0 and (
             not overlap_anchors or overlap_reviewed
         )
+        st.markdown("#### Where did cross-talk happen?")
+        st.write(detective["where_cross_talk"])
+        st.markdown("#### What needs review?")
+        st.write(detective["what_needs_review"])
+        st.markdown("#### Were corrections rejected?")
+        st.write(detective["corrections_rejected"])
         st.markdown(
             f"""
             <div class="tw-evidence-band">

@@ -10,15 +10,19 @@ from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 from webapp.data_loader import (
+    audio_available,
+    build_speaker_evidence_cards,
     discover_charts,
     frame_warning,
     get_best_term_rescue_examples,
     get_best_available_demo_clip,
+    get_event_audio_window,
     load_overlap_safety_cases,
     list_available_conversation_maps,
     load_asr_summary,
     load_conversation_map,
     load_term_rescue_cases,
+    resolve_local_audio_path,
 )
 from webapp.report_export import build_detective_report, export_detective_report
 from webapp.ui_components import render_text_diff
@@ -28,6 +32,7 @@ def _sample_map(clip_id: str = "sample_case") -> dict:
     return {
         "clip_id": clip_id,
         "metadata": {
+            "audio_path": "data/raw/missing.wav",
             "dataset_name": "Controlled Test",
             "language": "en",
             "duration_seconds": 3.2,
@@ -156,6 +161,42 @@ class FrontendDataLoaderTests(unittest.TestCase):
         self.assertIn("piano note", text)
         self.assertIn("temporal anger", text)
 
+    def test_audio_path_resolver_handles_missing_audio(self) -> None:
+        conversation_map = _sample_map()
+        with tempfile.TemporaryDirectory() as directory:
+            resolved = resolve_local_audio_path(conversation_map, directory)
+            available = audio_available(conversation_map, directory)
+
+        self.assertIsNone(resolved)
+        self.assertFalse(available)
+
+    def test_event_audio_window_is_padded_and_nonnegative(self) -> None:
+        window = get_event_audio_window(
+            {"start": 0.2, "end": 1.0},
+            padding_seconds=0.5,
+            duration_seconds=1.2,
+        )
+
+        self.assertEqual(window["start"], 0.0)
+        self.assertEqual(window["end"], 1.2)
+        self.assertEqual(window["duration"], 1.2)
+
+    def test_speaker_cards_are_derived_from_anchor_evidence(self) -> None:
+        cards = build_speaker_evidence_cards(_sample_map())
+
+        self.assertEqual(
+            {card["speaker_id"] for card in cards},
+            {"SPEAKER_00", "SPEAKER_01"},
+        )
+        for card in cards:
+            self.assertEqual(card["num_anchors"], 1)
+            self.assertEqual(card["num_overlap_anchors"], 1)
+            self.assertEqual(card["needs_review_anchors"], 1)
+            self.assertEqual(
+                card["evidence_anchor_ids"],
+                ["sample_case_anchor_001"],
+            )
+
 
 class DetectiveReportTests(unittest.TestCase):
     def test_report_export_creates_markdown(self) -> None:
@@ -167,7 +208,11 @@ class DetectiveReportTests(unittest.TestCase):
 
         self.assertEqual(path.name, "case_unsafe_name_detective_report.md")
         self.assertIn("TalkWeaver Detective Report", report)
-        self.assertIn("Overlap And Interruption Warnings", saved)
+        self.assertIn("Event Investigation", saved)
+        self.assertIn("Speaker Evidence Cards", saved)
+        self.assertIn("event_001", saved)
+        self.assertIn("SPEAKER_00", saved)
+        self.assertIn("Audio window", saved)
         self.assertIn("pyannote", saved)
 
     def test_app_import_does_not_start_streamlit_main(self) -> None:

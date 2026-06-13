@@ -1865,6 +1865,24 @@ Rescue, Hallucination Watchdog, Cross-talk Warning, and the timeline anchor
 inspector. Controlled rows remain outside the public ConversationMap
 selector and are never presented as real-audio corrections.
 
+#### Phase 3B event interaction status
+
+**Status: implemented on June 14, 2026.**
+
+The frontend now resolves local ConversationMap audio paths without copying
+or committing raw audio. Crime Scene, Timeline, Event Investigation, and
+Speaker Evidence Cards support whole-clip or timestamp-bounded playback when
+the ignored local file exists, with graceful missing-audio notices.
+
+Cross-talk Warning now filters overlap/interruption events by review state and
+speaker, links events to transcript anchors, and exposes severity, evidence
+IDs, raw/corrected text, and audio windows. Speaker cards report speaking
+time, overlap/review burden, extractive terms, claims, action items, quotes,
+and anchor provenance. Clip summaries and Markdown reports now preserve the
+same evidence links. Reference-assisted speaker timing remains explicitly
+oracle-assisted; the current public subset still has limited human
+interruption labels.
+
 Order:
 
 1. Conversation Crime Scene;

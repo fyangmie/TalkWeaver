@@ -8,6 +8,7 @@ import pandas as pd
 import streamlit as st
 
 from webapp.data_loader import (
+    get_event_investigation_rows,
     get_best_llm_rejection_examples,
     get_best_term_rescue_examples,
     get_correction_diff_examples,
@@ -27,7 +28,7 @@ from webapp.detective_ui import (
     show_frame_warning,
     truthy,
 )
-from webapp.ui_components import render_text_diff
+from webapp.ui_components import render_audio_evidence, render_text_diff
 
 
 def _aggregate(
@@ -113,11 +114,7 @@ def render_overlap(conversation_map: dict[str, Any]) -> None:
         "Overlap is a correction-risk signal: uncertain speech is exposed for review rather than completed fluently.",
     )
     if require_map(conversation_map):
-        events = [
-            event
-            for event in conversation_map.get("events", [])
-            if event.get("type") in {"overlap", "interruption"}
-        ]
+        events = get_event_investigation_rows(conversation_map)
         overlap_anchors = [
             anchor
             for anchor in conversation_map.get("anchors", [])
@@ -141,6 +138,110 @@ def render_overlap(conversation_map: dict[str, Any]) -> None:
                 ],
                 width="stretch",
                 hide_index=True,
+            )
+
+        st.subheader("Event Investigation")
+        st.markdown(
+            """
+            **Overlap** means simultaneous speech. **Interruption** is a
+            conservative timing candidate where one speaker starts before
+            another finishes and may take the floor. The current public
+            subset has reference overlap labels but limited human interruption
+            labels, so interruption candidates require review.
+            """
+        )
+        event_speakers = sorted(
+            {
+                str(speaker)
+                for event in events
+                for speaker in event.get("speakers", [])
+            }
+        )
+        filters = st.columns(3)
+        overlap_filter = filters[0].toggle(
+            "Overlap only",
+            value=False,
+            key="event_overlap_only",
+        )
+        review_filter = filters[1].toggle(
+            "Needs review only",
+            value=False,
+            key="event_review_only",
+        )
+        speaker_filter = filters[2].multiselect(
+            "Event speakers",
+            event_speakers,
+            default=event_speakers,
+            key="event_speaker_filter",
+        )
+        filtered_events = [
+            event
+            for event in events
+            if (not overlap_filter or event.get("type") == "overlap")
+            and (not review_filter or event.get("needs_review"))
+            and (
+                not event_speakers
+                or set(event.get("speakers", [])) & set(speaker_filter)
+            )
+        ]
+        if filtered_events:
+            selected_event = st.selectbox(
+                "Investigate event",
+                filtered_events,
+                format_func=lambda event: (
+                    f"{event.get('event_id', 'event')} | "
+                    f"{float(event.get('start', 0.0)):.2f}-"
+                    f"{float(event.get('end', 0.0)):.2f}s | "
+                    f"{event.get('type', 'event')}"
+                ),
+                key="event_investigation",
+            )
+            event_metrics = st.columns(4)
+            event_metrics[0].metric("Type", selected_event.get("type", "event"))
+            event_metrics[1].metric(
+                "Severity",
+                selected_event.get("severity", "unknown"),
+            )
+            event_metrics[2].metric(
+                "Needs review",
+                str(bool(selected_event.get("needs_review"))),
+            )
+            event_metrics[3].metric(
+                "Speakers",
+                len(selected_event.get("speakers", [])),
+            )
+            st.write(selected_event.get("description", ""))
+            st.caption(
+                "Speakers: "
+                f"{', '.join(selected_event.get('speakers', [])) or 'unknown'}"
+            )
+            st.caption(
+                "Evidence anchors: "
+                f"{', '.join(selected_event.get('evidence_anchor_ids', [])) or 'none'}"
+            )
+            render_text_diff(
+                selected_event.get("related_raw_text", ""),
+                selected_event.get("related_corrected_text", ""),
+                raw_label="Related raw anchor evidence",
+                corrected_label="Related corrected / retained evidence",
+            )
+            render_audio_evidence(
+                conversation_map,
+                selected_event,
+                item_type="event",
+                label="Event audio evidence",
+            )
+        else:
+            st.info("No events match the current filters.")
+
+        interruption_events = [
+            event for event in events if event.get("type") == "interruption"
+        ]
+        if not interruption_events:
+            st.info(
+                "No human-labeled interruption event is present in this "
+                "ConversationMap. The controlled examples below are shown as "
+                "interruption-risk safety examples, not public interruption ground truth."
             )
 
     st.subheader("Controlled Phase 2G safety evidence")

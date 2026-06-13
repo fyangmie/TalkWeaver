@@ -96,6 +96,7 @@ def build_anchor_timeline_rows(
 
 def build_anchor_timeline_figure(
     anchors: list[dict[str, Any]],
+    highlighted_anchor_ids: set[str] | None = None,
 ) -> Any | None:
     """Create a stable matplotlib timeline figure without Streamlit calls."""
 
@@ -117,15 +118,21 @@ def build_anchor_timeline_figure(
     figure_height = max(2.5, 0.72 * len(lanes) + 1.25)
     figure, axis = plt.subplots(figsize=(11.5, figure_height))
     overlap_spans: set[tuple[float, float]] = set()
+    highlighted = highlighted_anchor_ids or set()
     for row in rows:
+        is_highlighted = row["anchor_id"] in highlighted
         axis.barh(
             lane_positions[row["lane"]],
             row["duration"],
             left=row["start"],
             height=0.5,
             color=speaker_colors[row["lane"]],
-            edgecolor=REVIEW_COLOR if row["needs_review"] else "white",
-            linewidth=2.0 if row["needs_review"] else 0.8,
+            edgecolor=(
+                "#111820"
+                if is_highlighted
+                else REVIEW_COLOR if row["needs_review"] else "white"
+            ),
+            linewidth=2.8 if is_highlighted else 2.0 if row["needs_review"] else 0.8,
             alpha=0.9,
         )
         if row["overlap"]:
@@ -147,15 +154,20 @@ def build_anchor_timeline_figure(
         legend.append(Patch(facecolor=OVERLAP_COLOR, alpha=0.3, label="Overlap"))
     if any(row["needs_review"] for row in rows):
         legend.append(Patch(facecolor="white", edgecolor=REVIEW_COLOR, label="Review"))
+    if highlighted:
+        legend.append(Patch(facecolor="white", edgecolor="#111820", label="Selected event"))
     axis.legend(handles=legend, loc="upper right", frameon=False, ncol=2)
     figure.tight_layout()
     return figure
 
 
-def render_anchor_timeline(anchors: list[dict[str, Any]]) -> None:
+def render_anchor_timeline(
+    anchors: list[dict[str, Any]],
+    highlighted_anchor_ids: set[str] | None = None,
+) -> None:
     """Render temporal anchors as speaker lanes with overlap shading."""
 
-    figure = build_anchor_timeline_figure(anchors)
+    figure = build_anchor_timeline_figure(anchors, highlighted_anchor_ids)
     if figure is None:
         rows = build_anchor_timeline_rows(anchors)
         if rows:

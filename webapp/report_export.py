@@ -6,6 +6,12 @@ import re
 from pathlib import Path
 from typing import Any, Iterable
 
+from webapp.data_loader import (
+    build_clip_detective_summary,
+    build_speaker_evidence_cards,
+    get_event_investigation_rows,
+    resolve_local_audio_path,
+)
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
 DEFAULT_REPORT_DIR = ROOT_DIR / "outputs" / "reports"
@@ -37,8 +43,12 @@ def build_detective_report(
     events = list(conversation_map.get("events", []))
     audits = list(conversation_map.get("correction_audits", []))
     term_rescues = list(conversation_map.get("term_rescues", []))
+    speaker_cards = build_speaker_evidence_cards(conversation_map)
+    event_rows = get_event_investigation_rows(conversation_map)
+    detective = build_clip_detective_summary(conversation_map)
+    audio_path = resolve_local_audio_path(conversation_map)
     review_anchors = [item for item in anchors if item.get("needs_review")]
-    overlap_events = [item for item in events if item.get("type") == "overlap"]
+    overlap_events = [item for item in event_rows if item.get("type") == "overlap"]
 
     lines = [
         f"# TalkWeaver Detective Report: {_safe_text(clip_id)}",
@@ -55,6 +65,17 @@ def build_detective_report(
         f"- Diarization mode: {_safe_text(metadata.get('diarization_mode', 'unknown'))}",
         f"- Correction mode: {_safe_text(metadata.get('llm_mode', metadata.get('correction_mode', 'unknown')))}",
         f"- Evaluation scope: {_safe_text(metadata.get('evaluation_scope', 'not specified'))}",
+        f"- Local audio available: {audio_path is not None}",
+        f"- Audio metadata path: {_safe_text(metadata.get('audio_path', 'not specified'))}",
+        "",
+        "## Detective Summary",
+        "",
+        f"- **What happened?** {_safe_text(detective['what_happened'])}",
+        f"- **Who spoke?** {_safe_text(detective['who_spoke'])}",
+        f"- **Where did cross-talk happen?** {_safe_text(detective['where_cross_talk'])}",
+        f"- **What needs review?** {_safe_text(detective['what_needs_review'])}",
+        f"- **Were corrections rejected?** {_safe_text(detective['corrections_rejected'])}",
+        f"- **Evidence scope:** {_safe_text(detective['evidence_scope'])}",
         "",
         "## Evidence Summary",
         "",
@@ -91,18 +112,78 @@ def build_detective_report(
     if len(anchors) > max_anchors:
         lines.extend(["", f"_Showing {max_anchors} of {len(anchors)} anchors._"])
 
+    lines.extend(
+        [
+            "",
+            "## Event Investigation",
+            "",
+            "| Event | Type | Time | Speakers | Severity | Review | Evidence anchors | Related evidence | Audio window |",
+            "| --- | --- | --- | --- | --- | --- | --- | --- | --- |",
+        ]
+    )
+    if event_rows:
+        for event in event_rows:
+            lines.append(
+                "| "
+                f"{_safe_text(event.get('event_id', 'event'))} | "
+                f"{_safe_text(event.get('type', 'event'))} | "
+                f"{float(event.get('start', 0.0)):.2f}-"
+                f"{float(event.get('end', 0.0)):.2f}s | "
+                f"{_safe_text(', '.join(event.get('speakers', [])))} | "
+                f"{_safe_text(event.get('severity', 'unknown'))} | "
+                f"{bool(event.get('needs_review'))} | "
+                f"{_safe_text(', '.join(event.get('evidence_anchor_ids', [])))} | "
+                f"{_safe_text(event.get('related_raw_text', ''))} | "
+                f"{float(event.get('audio_window_start', 0.0)):.2f}-"
+                f"{float(event.get('audio_window_end', 0.0)):.2f}s |"
+            )
+    else:
+        lines.append(
+            "| No event evidence | - | - | - | - | - | - | - | - |"
+        )
+
     lines.extend(["", "## Overlap And Interruption Warnings", ""])
-    if events:
-        for event in events:
+    if event_rows:
+        for event in event_rows:
             lines.append(
                 f"- **{_safe_text(event.get('type', 'event'))}** "
                 f"{float(event.get('start', 0.0)):.2f}-"
                 f"{float(event.get('end', 0.0)):.2f}s, "
                 f"speakers: {_safe_text(', '.join(event.get('speakers', [])))}. "
-                f"{_safe_text(event.get('description', ''))}"
+                f"{_safe_text(event.get('description', ''))} "
+                f"Review={bool(event.get('needs_review'))}."
             )
     else:
         lines.append("- No event evidence is present in this ConversationMap.")
+
+    lines.extend(["", "## Speaker Evidence Cards", ""])
+    if speaker_cards:
+        for card in speaker_cards:
+            lines.extend(
+                [
+                    f"### {_safe_text(card['speaker_id'])}",
+                    "",
+                    f"- Speaking time: {float(card['speaking_time_seconds']):.2f}s",
+                    f"- Anchors: {card['num_anchors']}",
+                    f"- Overlap anchors: {card['num_overlap_anchors']}",
+                    f"- Needs-review anchors: {card['needs_review_anchors']}",
+                    f"- Summary mode: {_safe_text(card['summary_mode'])}",
+                    f"- Top terms: {_safe_text(', '.join(card['top_terms']) or 'none')}",
+                    f"- Evidence anchors: {_safe_text(', '.join(card['evidence_anchor_ids']) or 'none')}",
+                    f"- Evidence note: {_safe_text(card['stance_summary'])}",
+                    "",
+                ]
+            )
+            for quote in card["representative_raw_quotes"][:3]:
+                lines.append(
+                    f"- Raw quote `{_safe_text(quote.get('anchor_id', 'anchor'))}` "
+                    f"({float(quote.get('start', 0.0)):.2f}-"
+                    f"{float(quote.get('end', 0.0)):.2f}s): "
+                    f"{_safe_text(quote.get('text', ''))}"
+                )
+            lines.append("")
+    else:
+        lines.append("- No named speaker evidence is present.")
 
     lines.extend(["", "## Review Flags", ""])
     if review_anchors:
@@ -126,6 +207,26 @@ def build_detective_report(
             )
     else:
         lines.append("- No term rescue candidate is attached to this map.")
+    rescued_anchors = [
+        anchor
+        for anchor in anchors
+        if anchor.get("retrieved_terms")
+        or (
+            anchor.get("corrected_text")
+            and anchor.get("corrected_text") != anchor.get("raw_text")
+        )
+    ]
+    if rescued_anchors:
+        lines.append("")
+        lines.append("### Anchor-level correction examples")
+        lines.append("")
+        for anchor in rescued_anchors[:5]:
+            lines.append(
+                f"- `{_safe_text(anchor.get('anchor_id', 'anchor'))}`: "
+                f"raw={_safe_text(anchor.get('raw_text', ''))}; "
+                f"corrected={_safe_text(anchor.get('corrected_text', ''))}; "
+                f"terms={_safe_text(', '.join(anchor.get('retrieved_terms', [])) or 'none')}."
+            )
 
     lines.extend(["", "## Correction Audit", ""])
     if audits:

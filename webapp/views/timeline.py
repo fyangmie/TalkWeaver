@@ -2,20 +2,22 @@
 
 from __future__ import annotations
 
-from pathlib import Path
 from typing import Any
 
 import streamlit as st
 
 from webapp.components.speaker_timeline import render_anchor_timeline
-from webapp.data_loader import ROOT_DIR
+from webapp.data_loader import (
+    get_event_investigation_rows,
+    related_anchors_for_event,
+)
 from webapp.detective_ui import (
     anchor_table,
     page_header,
     render_public_correction_notice,
     require_map,
 )
-from webapp.ui_components import render_text_diff
+from webapp.ui_components import render_audio_evidence, render_text_diff
 
 
 def render_timeline(conversation_map: dict[str, Any]) -> None:
@@ -46,6 +48,34 @@ def render_timeline(conversation_map: dict[str, Any]) -> None:
     overlap_only = filter_columns[1].toggle("Overlap only", value=False)
     review_only = filter_columns[2].toggle("Needs review only", value=False)
 
+    events = get_event_investigation_rows(conversation_map)
+    event_options: list[dict[str, Any] | None] = [None, *events]
+    selected_event = st.selectbox(
+        "Jump to event",
+        event_options,
+        format_func=lambda event: (
+            "No event selected"
+            if event is None
+            else (
+                f"{event.get('event_id', 'event')} | "
+                f"{float(event.get('start', 0.0)):.2f}-"
+                f"{float(event.get('end', 0.0)):.2f}s | "
+                f"{event.get('type', 'event')}"
+            )
+        ),
+        key="timeline_event",
+    )
+    highlighted_ids: set[str] = set()
+    if selected_event is not None:
+        highlighted_ids = {
+            str(anchor.get("anchor_id"))
+            for anchor in related_anchors_for_event(
+                conversation_map,
+                selected_event,
+            )
+            if anchor.get("anchor_id")
+        }
+
     filtered = [
         anchor
         for anchor in anchors
@@ -56,7 +86,19 @@ def render_timeline(conversation_map: dict[str, Any]) -> None:
         and (not overlap_only or anchor.get("overlap"))
         and (not review_only or anchor.get("needs_review"))
     ]
-    render_anchor_timeline(filtered)
+    render_anchor_timeline(filtered, highlighted_ids)
+    if selected_event is not None:
+        st.caption(
+            f"Selected event speakers: "
+            f"{', '.join(selected_event.get('speakers', [])) or 'unknown'} | "
+            f"related anchors: {', '.join(sorted(highlighted_ids)) or 'none'}"
+        )
+        render_audio_evidence(
+            conversation_map,
+            selected_event,
+            item_type="event",
+            label="Selected event audio",
+        )
     table = anchor_table(filtered)
     if table.empty:
         st.info("No anchors match the current filters.")
@@ -103,10 +145,9 @@ def render_timeline(conversation_map: dict[str, Any]) -> None:
         f"Needs review={bool(anchor.get('needs_review'))} | "
         f"Retrieved terms={', '.join(anchor.get('retrieved_terms', [])) or 'none'}"
     )
-
-    audio_path = conversation_map.get("metadata", {}).get("audio_path")
-    if audio_path:
-        candidate = (ROOT_DIR / Path(str(audio_path))).resolve()
-        if candidate.is_file() and ROOT_DIR in candidate.parents:
-            with st.expander("Local audio evidence"):
-                st.audio(candidate)
+    render_audio_evidence(
+        conversation_map,
+        anchor,
+        item_type="anchor",
+        label="Selected anchor audio",
+    )

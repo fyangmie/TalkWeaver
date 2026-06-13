@@ -9,6 +9,11 @@ from typing import Any
 
 import streamlit as st
 
+from webapp.data_loader import (
+    get_anchor_audio_window,
+    get_event_audio_window,
+    resolve_local_audio_path,
+)
 
 TOKEN_PATTERN = re.compile(r"\w+(?:[.-]\w+)*|[^\w\s]", re.UNICODE)
 
@@ -93,3 +98,59 @@ def render_text_diff(
         unsafe_allow_html=True,
     )
     return diff
+
+
+def render_audio_evidence(
+    conversation_map: dict[str, Any],
+    item: dict[str, Any] | None = None,
+    *,
+    item_type: str = "event",
+    padding_seconds: float = 0.5,
+    label: str = "Audio evidence",
+) -> dict[str, Any]:
+    """Render a whole clip or timestamp-bounded local audio evidence player."""
+
+    path = resolve_local_audio_path(conversation_map)
+    if path is None:
+        st.info(
+            "Local audio is unavailable. Raw public/private audio is ignored "
+            "by Git, so regenerate or download it locally to enable playback."
+        )
+        return {"available": False, "path": None, "window": None}
+
+    duration_value = conversation_map.get("metadata", {}).get("duration_seconds")
+    try:
+        duration = float(duration_value)
+    except (TypeError, ValueError):
+        duration = None
+
+    if item is None:
+        st.markdown(f"**{label}**")
+        st.audio(path)
+        return {"available": True, "path": path, "window": None}
+
+    if item_type == "anchor":
+        window = get_anchor_audio_window(
+            item,
+            padding_seconds,
+            duration_seconds=duration,
+        )
+    else:
+        window = get_event_audio_window(
+            item,
+            padding_seconds,
+            duration_seconds=duration,
+        )
+    st.markdown(f"**{label}**")
+    st.audio(
+        path,
+        start_time=window["start"],
+        end_time=window["end"],
+    )
+    st.caption(
+        f"Evidence window {window['start']:.2f}s-{window['end']:.2f}s. "
+        "If the browser does not honor the seek position, jump to "
+        f"approximately {window['start']:.1f}s-{window['end']:.1f}s "
+        "in the audio player."
+    )
+    return {"available": True, "path": path, "window": window}

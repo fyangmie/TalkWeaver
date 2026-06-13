@@ -56,7 +56,17 @@ Plots temporal anchors on speaker lanes. Overlap intervals are shaded and
 review anchors receive a visible outline. The table can be filtered by
 speaker, overlap, and review state, then inspected as raw-versus-corrected
 evidence. The anchor inspector uses a token-level diff and explicitly labels
-identical text as retained evidence rather than a missing UI state.
+identical text as retained evidence rather than a missing UI state. The
+**Jump to event** selector highlights linked anchors and starts local audio at
+the padded event window.
+
+### Speaker Evidence Cards
+
+Builds one evidence card per named speaker. Each card reports speaking time,
+anchor count, overlap count, review burden, top extractive terms,
+representative raw/corrected quotes, claims, action items, and source anchor
+IDs. Current AMI cards use extractive fallback. LLM-assisted cards must be
+explicitly labeled and retain anchor links.
 
 ### Cross-talk and Overlap Warning
 
@@ -68,6 +78,10 @@ fluent completion of uncertain cross-talk. Four controlled case files show:
 - heavy overlap where correction is rejected;
 - ambiguous speaker attribution where words are not reassigned;
 - physical `rack` context where `RAG` replacement is blocked.
+
+The Event Investigation section filters real ConversationMap events by type,
+review state, and speaker. It links each event to raw/corrected anchors and a
+local audio window.
 
 ### Misheard Word Rescue
 
@@ -117,6 +131,35 @@ outputs/reports/<clip_id>_detective_report.md
 
 Generated reports remain ignored by Git by default.
 
+## Local Audio Evidence
+
+ConversationMaps retain the manifest `audio_path`, but raw public/private
+audio is ignored by Git. `resolve_local_audio_path()` permits playback only
+when that path resolves to an existing file inside the repository.
+
+When available:
+
+- Conversation Crime Scene shows the full clip;
+- Speaker Timeline plays the selected anchor or event window;
+- Cross-talk Warning plays the selected event window;
+- Speaker Evidence Cards play the selected quote window.
+
+Streamlit uses `start_time` and `end_time` for bounded playback. Every view
+also prints the approximate time range because browser seek behavior may
+vary. Missing audio produces a normal informational notice and never causes a
+test or page failure.
+
+## Overlap And Interruption
+
+- **Overlap:** two or more speakers are active at the same time.
+- **Interruption candidate:** one speaker begins before another finishes and
+  may create floor-taking or cross-talk.
+
+The current AMI subset contains reference overlap labels. It has limited
+human interruption labels, so timing-derived interruption candidates must
+not be reported as human ground truth. Reference AMI speaker timing remains
+oracle-assisted, not automatic diarization.
+
 ## Data Files
 
 The frontend data layer is `webapp/data_loader.py`.
@@ -157,6 +200,10 @@ For a final-video correction demonstration:
    strict LLM rejection, and an unchanged negative control.
 4. Open **Cross-talk and Overlap Warning** and contrast mild correction with
    heavy-overlap rejection.
+5. Select a real AMI event, play its bounded audio window, and inspect linked
+   anchors.
+6. Open **Speaker Evidence Cards** and verify an extractive statement against
+   its timestamped quote.
 
 The controlled fixture label remains visible throughout this flow.
 
@@ -175,16 +222,16 @@ workflow or reference-map scripts documented in
 - Reference speaker-time is oracle-assisted, not automatic diarization.
 - Controlled term and overlap fixtures are text safety tests, not acoustic
   generalization evidence.
-- Event-level audio seeking is not implemented yet.
-- Speaker stance cards remain extractive fallback evidence; unsupported
-  personality, emotion, or intent inference is prohibited.
+- Event-level playback requires the ignored local audio file and browser
+  support for seek offsets.
+- Speaker cards remain extractive fallback evidence unless an LLM-assisted
+  card is explicitly labeled; unsupported personality, emotion, or intent
+  inference is prohibited.
 - Multilingual UI comparison and the mandatory whisper.cpp mobile trade-off
   page remain future phases.
 
 ## Next Steps
 
-1. Add linked event-to-audio playback.
-2. Add a dedicated interruption map once human interruption labels exist.
-3. Add evidence-linked speaker stance and action-item cards.
-4. Add multilingual comparison and Level 1 mobile ASR trade-off views.
-5. Capture desktop and mobile screenshots for the final video.
+1. Add a dedicated interruption map once human interruption labels exist.
+2. Add multilingual comparison and Level 1 mobile ASR trade-off views.
+3. Capture desktop and mobile screenshots for the final video.

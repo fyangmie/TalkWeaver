@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import json
+import re
+from collections import Counter
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -21,6 +23,45 @@ TERM_RESCUE_SUMMARY_PATH = RESULTS_DIR / "term_rescue_summary_controlled.csv"
 TERM_RESCUE_RESULTS_PATH = RESULTS_DIR / "term_rescue_controlled.csv"
 OVERLAP_SAFETY_SUMMARY_PATH = RESULTS_DIR / "overlap_safety_summary_controlled.csv"
 OVERLAP_SAFETY_RESULTS_PATH = RESULTS_DIR / "overlap_safety_controlled.csv"
+
+STOPWORDS = {
+    "about",
+    "after",
+    "again",
+    "also",
+    "and",
+    "are",
+    "because",
+    "been",
+    "before",
+    "but",
+    "can",
+    "for",
+    "from",
+    "have",
+    "into",
+    "just",
+    "know",
+    "like",
+    "our",
+    "that",
+    "the",
+    "their",
+    "then",
+    "there",
+    "they",
+    "this",
+    "what",
+    "when",
+    "where",
+    "which",
+    "who",
+    "will",
+    "with",
+    "would",
+    "you",
+    "your",
+}
 
 
 def _empty_frame(path: Path, message: str) -> pd.DataFrame:
@@ -88,6 +129,367 @@ def load_conversation_map(path: str | Path | None) -> dict[str, Any]:
         return {"_warning": f"File is not a valid ConversationMap: {source}"}
     payload["_source_path"] = str(source.resolve())
     return payload
+
+
+def resolve_local_audio_path(
+    conversation_map: dict[str, Any],
+    root: str | Path = ROOT_DIR,
+) -> Path | None:
+    """Resolve a local audio artifact without allowing paths outside the repo."""
+
+    audio_value = conversation_map.get("metadata", {}).get("audio_path")
+    if not audio_value:
+        return None
+    repository_root = Path(root).resolve()
+    candidate = Path(str(audio_value))
+    if not candidate.is_absolute():
+        candidate = repository_root / candidate
+    try:
+        resolved = candidate.resolve()
+        resolved.relative_to(repository_root)
+    except (OSError, ValueError):
+        return None
+    return resolved if resolved.is_file() else None
+
+
+def audio_available(
+    conversation_map: dict[str, Any],
+    root: str | Path = ROOT_DIR,
+) -> bool:
+    """Return whether the selected map references a safe local audio file."""
+
+    return resolve_local_audio_path(conversation_map, root) is not None
+
+
+def _audio_window(
+    item: dict[str, Any],
+    *,
+    padding_seconds: float,
+    duration_seconds: float | None = None,
+) -> dict[str, float]:
+    start = max(0.0, float(item.get("start", 0.0)) - max(0.0, padding_seconds))
+    end = max(start, float(item.get("end", start)) + max(0.0, padding_seconds))
+    if duration_seconds is not None and duration_seconds >= 0:
+        end = min(end, duration_seconds)
+        start = min(start, end)
+    return {
+        "start": round(start, 3),
+        "end": round(end, 3),
+        "duration": round(max(0.0, end - start), 3),
+    }
+
+
+def get_anchor_audio_window(
+    anchor: dict[str, Any],
+    padding_seconds: float = 0.5,
+    *,
+    duration_seconds: float | None = None,
+) -> dict[str, float]:
+    """Return a padded, non-negative anchor playback window."""
+
+    return _audio_window(
+        anchor,
+        padding_seconds=padding_seconds,
+        duration_seconds=duration_seconds,
+    )
+
+
+def get_event_audio_window(
+    event: dict[str, Any],
+    padding_seconds: float = 0.5,
+    *,
+    duration_seconds: float | None = None,
+) -> dict[str, float]:
+    """Return a padded, non-negative event playback window."""
+
+    return _audio_window(
+        event,
+        padding_seconds=padding_seconds,
+        duration_seconds=duration_seconds,
+    )
+
+
+def related_anchors_for_event(
+    conversation_map: dict[str, Any],
+    event: dict[str, Any],
+) -> list[dict[str, Any]]:
+    """Link an event to explicit anchor IDs or intersecting timed anchors."""
+
+    anchors = list(conversation_map.get("anchors", []))
+    evidence_ids = set(event.get("evidence_anchor_ids", []))
+    if evidence_ids:
+        linked = [
+            anchor
+            for anchor in anchors
+            if anchor.get("anchor_id") in evidence_ids
+        ]
+        if linked:
+            return linked
+    start = float(event.get("start", 0.0))
+    end = float(event.get("end", start))
+    return [
+        anchor
+        for anchor in anchors
+        if float(anchor.get("start", 0.0)) < end
+        and float(anchor.get("end", 0.0)) > start
+    ]
+
+
+def get_event_investigation_rows(
+    conversation_map: dict[str, Any],
+) -> list[dict[str, Any]]:
+    """Enrich ConversationEvents with linked transcript and review evidence."""
+
+    duration = conversation_map.get("metadata", {}).get("duration_seconds")
+    try:
+        duration_value = float(duration)
+    except (TypeError, ValueError):
+        duration_value = None
+    rows: list[dict[str, Any]] = []
+    for event in conversation_map.get("events", []):
+        linked = related_anchors_for_event(conversation_map, event)
+        evidence_ids = list(event.get("evidence_anchor_ids", []))
+        if not evidence_ids:
+            evidence_ids = [
+                str(anchor.get("anchor_id"))
+                for anchor in linked
+                if anchor.get("anchor_id")
+            ]
+        window = get_event_audio_window(
+            event,
+            duration_seconds=duration_value,
+        )
+        rows.append(
+            {
+                **event,
+                "evidence_anchor_ids": evidence_ids,
+                "needs_review": any(
+                    bool(anchor.get("needs_review")) for anchor in linked
+                ),
+                "related_raw_text": " ".join(
+                    str(anchor.get("raw_text", "")).strip()
+                    for anchor in linked
+                    if str(anchor.get("raw_text", "")).strip()
+                ),
+                "related_corrected_text": " ".join(
+                    str(anchor.get("corrected_text", "")).strip()
+                    for anchor in linked
+                    if str(anchor.get("corrected_text", "")).strip()
+                ),
+                "audio_window_start": window["start"],
+                "audio_window_end": window["end"],
+            }
+        )
+    return rows
+
+
+def _speaker_ids_from_anchors(anchors: list[dict[str, Any]]) -> list[str]:
+    speakers = {
+        str(speaker)
+        for anchor in anchors
+        for speaker in (
+            anchor.get("speakers")
+            or ([anchor.get("speaker")] if anchor.get("speaker") else [])
+        )
+        if speaker not in {None, "", "UNKNOWN", "OVERLAP"}
+    }
+    return sorted(speakers)
+
+
+def _top_anchor_terms(
+    anchors: list[dict[str, Any]],
+    existing_terms: Iterable[str],
+) -> list[str]:
+    retrieved = [
+        str(term)
+        for anchor in anchors
+        for term in anchor.get("retrieved_terms", [])
+        if str(term).strip()
+    ]
+    words = re.findall(
+        r"[A-Za-z][A-Za-z0-9.-]{2,}",
+        " ".join(
+            str(anchor.get("corrected_text") or anchor.get("raw_text") or "")
+            for anchor in anchors
+        ).lower(),
+    )
+    counts = Counter(word for word in words if word not in STOPWORDS)
+    ordered = list(dict.fromkeys([str(term) for term in existing_terms] + retrieved))
+    ordered.extend(word for word, _count in counts.most_common() if word not in ordered)
+    return ordered[:6]
+
+
+def build_speaker_evidence_cards(
+    conversation_map: dict[str, Any],
+) -> list[dict[str, Any]]:
+    """Build evidence-linked speaker cards with extractive fallbacks."""
+
+    anchors = list(conversation_map.get("anchors", []))
+    existing = {
+        str(card.get("speaker")): card
+        for card in conversation_map.get("speaker_cards", [])
+        if card.get("speaker")
+    }
+    speakers = sorted(set(existing) | set(_speaker_ids_from_anchors(anchors)))
+    cards: list[dict[str, Any]] = []
+    for speaker in speakers:
+        speaker_anchors = [
+            anchor
+            for anchor in anchors
+            if speaker
+            in (
+                anchor.get("speakers")
+                or ([anchor.get("speaker")] if anchor.get("speaker") else [])
+            )
+        ]
+        source = existing.get(speaker, {})
+        evidence_ids = list(
+            dict.fromkeys(
+                [
+                    str(item)
+                    for item in source.get("evidence_anchor_ids", [])
+                    if item
+                ]
+                + [
+                    str(anchor.get("anchor_id"))
+                    for anchor in speaker_anchors
+                    if anchor.get("anchor_id")
+                ]
+            )
+        )
+        speaking_time = source.get("speaking_time_seconds")
+        if speaking_time is None:
+            speaking_time = sum(
+                max(
+                    0.0,
+                    float(anchor.get("end", 0.0))
+                    - float(anchor.get("start", 0.0)),
+                )
+                for anchor in speaker_anchors
+            )
+        raw_quotes = [
+            {
+                "anchor_id": anchor.get("anchor_id", ""),
+                "start": float(anchor.get("start", 0.0)),
+                "end": float(anchor.get("end", 0.0)),
+                "text": str(anchor.get("raw_text", "")),
+            }
+            for anchor in speaker_anchors
+            if str(anchor.get("raw_text", "")).strip()
+        ][:4]
+        corrected_quotes = [
+            {
+                "anchor_id": anchor.get("anchor_id", ""),
+                "start": float(anchor.get("start", 0.0)),
+                "end": float(anchor.get("end", 0.0)),
+                "text": str(
+                    anchor.get("corrected_text")
+                    or anchor.get("raw_text")
+                    or ""
+                ),
+            }
+            for anchor in speaker_anchors
+            if str(
+                anchor.get("corrected_text") or anchor.get("raw_text") or ""
+            ).strip()
+        ][:4]
+        claims = list(source.get("main_claims", []))
+        claim_modes = {str(claim.get("mode", "")) for claim in claims}
+        summary_mode = (
+            "llm_assisted"
+            if any(mode and mode != "extractive_fallback" for mode in claim_modes)
+            else "extractive_fallback"
+        )
+        stance_summary = str(source.get("stance_summary", "")).strip()
+        if not stance_summary:
+            stance_summary = (
+                "Extractive fallback only. No opinion, intent, or personality "
+                "is inferred beyond the linked quotes."
+            )
+        cards.append(
+            {
+                "speaker_id": speaker,
+                "speaking_time_seconds": round(float(speaking_time), 3),
+                "num_anchors": len(speaker_anchors),
+                "num_overlap_anchors": sum(
+                    bool(anchor.get("overlap")) for anchor in speaker_anchors
+                ),
+                "needs_review_anchors": sum(
+                    bool(anchor.get("needs_review")) for anchor in speaker_anchors
+                ),
+                "top_terms": _top_anchor_terms(
+                    speaker_anchors,
+                    source.get("top_terms", []),
+                ),
+                "representative_raw_quotes": raw_quotes,
+                "representative_corrected_quotes": corrected_quotes,
+                "main_claims": claims,
+                "action_items": list(source.get("action_items", [])),
+                "stance_summary": stance_summary,
+                "summary_mode": summary_mode,
+                "evidence_anchor_ids": evidence_ids,
+            }
+        )
+    return cards
+
+
+def build_clip_detective_summary(
+    conversation_map: dict[str, Any],
+) -> dict[str, str]:
+    """Create a deterministic clip-level summary from existing evidence."""
+
+    metadata = conversation_map.get("metadata", {})
+    anchors = list(conversation_map.get("anchors", []))
+    events = get_event_investigation_rows(conversation_map)
+    speaker_cards = build_speaker_evidence_cards(conversation_map)
+    summary_text = str(
+        conversation_map.get("summary", {}).get("summary", "")
+    ).strip()
+    if not summary_text:
+        summary_text = " ".join(
+            str(anchor.get("corrected_text") or anchor.get("raw_text") or "")
+            for anchor in anchors[:3]
+        ).strip() or "No transcript summary is available."
+    review_count = sum(bool(anchor.get("needs_review")) for anchor in anchors)
+    overlap_events = [event for event in events if event.get("type") == "overlap"]
+    interruption_events = [
+        event for event in events if event.get("type") == "interruption"
+    ]
+    rejected = sum(
+        bool(audit.get("correction_rejected"))
+        or bool(audit.get("unsupported_changes"))
+        for audit in conversation_map.get("correction_audits", [])
+    )
+    source_type = metadata.get("source_type", "unknown")
+    if source_type == "public_dataset":
+        source_label = "Real public-data clip"
+    elif metadata.get("is_mock"):
+        source_label = "Deterministic mock/demo clip"
+    else:
+        source_label = str(source_type).replace("_", " ").title()
+    speaker_names = ", ".join(
+        card["speaker_id"] for card in speaker_cards
+    ) or "No named speaker evidence"
+    cross_talk = (
+        f"{len(overlap_events)} overlap event(s) and "
+        f"{len(interruption_events)} interruption candidate(s)."
+    )
+    return {
+        "what_happened": summary_text,
+        "who_spoke": speaker_names,
+        "where_cross_talk": cross_talk,
+        "what_needs_review": (
+            f"{review_count} anchor(s) need review."
+            if review_count
+            else "No anchors are currently flagged for review."
+        ),
+        "corrections_rejected": (
+            f"{rejected} correction audit(s) were rejected or unsupported."
+            if rejected
+            else "No rejected correction is recorded in this ConversationMap."
+        ),
+        "evidence_scope": source_label,
+    }
 
 
 def load_asr_summary(path: str | Path = ASR_SUMMARY_PATH) -> pd.DataFrame:

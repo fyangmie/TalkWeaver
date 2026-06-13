@@ -31,6 +31,7 @@ from webapp.views.safety import (
     render_term_rescue,
     render_watchdog,
 )
+from webapp.views.speakers import render_speaker_cards
 from webapp.views.timeline import render_timeline
 
 
@@ -38,6 +39,7 @@ PAGES = (
     "Home / Project Story",
     "Conversation Crime Scene",
     "Speaker Timeline Detective",
+    "Speaker Evidence Cards",
     "Cross-talk and Overlap Warning",
     "Misheard Word Rescue",
     "Hallucination Watchdog",
@@ -98,6 +100,7 @@ def main() -> None:
         "Home / Project Story": render_home,
         "Conversation Crime Scene": render_crime_scene,
         "Speaker Timeline Detective": render_timeline,
+        "Speaker Evidence Cards": render_speaker_cards,
         "Cross-talk and Overlap Warning": render_overlap,
         "Misheard Word Rescue": render_term_rescue,
         "Hallucination Watchdog": render_watchdog,

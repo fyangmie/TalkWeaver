@@ -478,6 +478,7 @@ The app provides:
 - Home / Project Story;
 - Conversation Crime Scene;
 - Speaker Timeline Detective;
+- Speaker Evidence Cards;
 - Cross-talk and Overlap Warning;
 - Misheard Word Rescue;
 - Hallucination Watchdog;
@@ -495,6 +496,12 @@ TalkWeaver deliberately avoids unsupported edits. Use **Misheard Word
 Rescue**, **Hallucination Watchdog**, and **Cross-talk and Overlap Warning**
 to inspect controlled correction, rejection, and negative-control case files
 with token-level diffs.
+
+When manifest audio exists locally, the frontend provides full-clip and
+event/anchor-bounded playback using ConversationMap timestamps. Raw audio
+remains ignored by Git. Speaker Evidence Cards link extractive claims,
+representative quotes, review flags, and action items back to temporal anchor
+IDs; reference-assisted AMI timing is labeled as oracle evidence.
 
 See [`docs/frontend.md`](docs/frontend.md) for consumed artifacts, page
 behavior, claim boundaries, and limitations.
