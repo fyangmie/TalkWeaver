@@ -73,6 +73,8 @@ experiments/results/*.csv
 !experiments/results/asr_benchmark_summary_real.csv
 !experiments/results/asr_benchmark_ami_no_vad_real.csv
 !experiments/results/speaker_overlap_baseline_real.csv
+!experiments/results/workflow_ablation_real.csv
+!experiments/results/workflow_ablation_summary_real.csv
 experiments/results/asr_predictions_real/
 experiments/results/asr_predictions_ami_no_vad_real/
 assets/result_charts/*.png
@@ -84,6 +86,8 @@ assets/result_charts/*.png
 !assets/result_charts/asr_error_by_language.png
 !assets/result_charts/asr_error_by_dataset.png
 !assets/result_charts/asr_rtf_by_model.png
+!assets/result_charts/workflow_ablation_completeness.png
+!assets/result_charts/workflow_ablation_review_flags.png
 assets/screenshots/*
 assets/demo_gifs/*
 !assets/**/.gitkeep

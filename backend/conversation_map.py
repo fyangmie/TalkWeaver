@@ -72,7 +72,7 @@ def _llm_mode_label(mode: str) -> str:
     return mode
 
 
-def _reference_events(
+def reference_events_to_schema(
     events: list[dict[str, Any]] | None,
     clip_id: str,
 ) -> list[ConversationEvent]:
@@ -102,7 +102,7 @@ def _reference_events(
     return converted
 
 
-def _deduplicate_events(
+def deduplicate_events(
     events: list[ConversationEvent],
 ) -> list[ConversationEvent]:
     deduplicated: list[ConversationEvent] = []
@@ -124,7 +124,7 @@ def _deduplicate_events(
     )
 
 
-def _speaker_cards(
+def build_speaker_cards(
     anchors: list[Any],
 ) -> list[SpeakerCard]:
     speaking_time: defaultdict[str, float] = defaultdict(float)
@@ -214,14 +214,14 @@ def build_conversation_map(
     speaker_turns, diarization_mode = _extract_payload(
         diarization_output, "turns"
     )
-    reference_events = _reference_events(overlap_events, clip_id)
+    reference_events = reference_events_to_schema(overlap_events, clip_id)
     detected_overlap = detect_overlap_events(
         speaker_turns, clip_id=clip_id
     )
     detected_interruptions = detect_interruption_events(
         speaker_turns, clip_id=clip_id
     )
-    events = _deduplicate_events(
+    events = deduplicate_events(
         [*reference_events, *detected_overlap, *detected_interruptions]
     )
     anchors = build_temporal_anchors(
@@ -285,6 +285,6 @@ def build_conversation_map(
         events=events,
         term_rescues=term_candidates,
         correction_audits=audits,
-        speaker_cards=_speaker_cards(anchors),
+        speaker_cards=build_speaker_cards(anchors),
         summary=summary,
     )

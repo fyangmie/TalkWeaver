@@ -291,6 +291,37 @@ model access are available. See
 [`docs/speaker_overlap_baseline.md`](docs/speaker_overlap_baseline.md) for
 metric definitions, measured AMI results, and limitations.
 
+## Running TalkWeaver Workflow Ablation
+
+Phase 2E holds the real Phase 2C `base` ASR predictions fixed and compares
+seven downstream evidence variants:
+
+```bash
+python experiments/run_workflow_ablation.py \
+  --manifest data/manifests/formal_eval_real.csv \
+  --predictions-dir experiments/results/asr_predictions_real \
+  --asr-model base \
+  --output experiments/results/workflow_ablation_real.csv \
+  --maps-dir outputs/conversation_maps/ablation_real \
+  --variants all
+
+python experiments/summarize_workflow_ablation.py \
+  --input experiments/results/workflow_ablation_real.csv \
+  --output experiments/results/workflow_ablation_summary_real.csv
+
+python experiments/plot_workflow_ablation.py \
+  --input experiments/results/workflow_ablation_real.csv \
+  --output-dir assets/result_charts
+```
+
+The real run produced 119 rows across 17 clips and seven variants. It adds
+speaker-time, overlap, review, retrieval, correction-audit, speaker-card, and
+summary evidence without rerunning ASR. The public subset contains no
+annotated technical-term failures, so no term rescue or text correction was
+applied; WER/CER remained unchanged and unsupported changes remained zero.
+See [`docs/workflow_ablation.md`](docs/workflow_ablation.md) for variant
+definitions, measured results, charts, and claim limits.
+
 ## Quickstart: Mock Mode
 
 Mock mode is deterministic, requires no GPU or external API keys, and labels

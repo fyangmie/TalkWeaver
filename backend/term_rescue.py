@@ -137,15 +137,28 @@ def _candidate_match(
     if best >= 0.82:
         return round(best, 3), "fuzzy"
 
-    text_phonetic = _phonetic_like(text)
-    for form in forms:
+    text_tokens = normalized.split()
+    phonetic_forms = [entry.canonical, *entry.spoken_forms]
+    for form in phonetic_forms:
         form_phonetic = _phonetic_like(form)
-        if (
-            form_phonetic
-            and len(form_phonetic) >= 3
-            and form_phonetic in text_phonetic
-        ):
-            return 0.78, "phonetic_like"
+        form_tokens = _normalize(form).split()
+        if not form_phonetic or len(form_phonetic) < 3 or not form_tokens:
+            continue
+        width = len(form_tokens)
+        for window_width in {width, width + 1}:
+            if window_width > len(text_tokens):
+                continue
+            for start in range(len(text_tokens) - window_width + 1):
+                window = " ".join(
+                    text_tokens[start : start + window_width]
+                )
+                similarity = SequenceMatcher(
+                    None,
+                    _phonetic_like(window),
+                    form_phonetic,
+                ).ratio()
+                if similarity >= 0.9:
+                    return round(similarity, 3), "phonetic_like"
     return None
 
 

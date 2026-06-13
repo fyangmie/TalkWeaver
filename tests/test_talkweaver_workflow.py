@@ -140,6 +140,28 @@ class RetrievalAndCorrectionTests(unittest.TestCase):
             )
         )
 
+    def test_phonetic_matching_does_not_scan_entire_sentence(self) -> None:
+        unrelated = TemporalAnchor(
+            anchor_id="clip_anchor_002",
+            clip_id="clip",
+            start=3.0,
+            end=6.0,
+            speaker="SPEAKER_00",
+            speakers=["SPEAKER_00"],
+            raw_text=(
+                "Japanese cuisine features other simply seasoned dishes "
+                "and aromatic spices."
+            ),
+            language="en",
+        )
+
+        candidates = retrieve_term_candidates([unrelated])
+
+        self.assertNotIn(
+            "DER",
+            {candidate.canonical for candidate in candidates},
+        )
+
     def test_rule_fallback_preserves_anchor_and_builds_audit(self) -> None:
         candidates = retrieve_term_candidates([self.anchor])
         anchors, audits, mode = apply_constrained_correction(

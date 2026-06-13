@@ -1701,6 +1701,31 @@ are oracle workflow checks and must not be described as automatic
 diarization performance. Pyannote inference remains pending because no
 `HF_TOKEN` model access was configured for this run.
 
+### Phase 2E - TalkWeaver Workflow Ablation
+
+**Status: implemented on June 13, 2026.**
+
+Implemented:
+
+- seven explicit workflow variants from `asr_only` through
+  `full_talkweaver`;
+- stable loading and strict non-mock validation of Phase 2C prediction JSON;
+- reuse of fixed real `base` ASR predictions without model reruns;
+- variant-specific temporal anchors, oracle/reference speaker-time,
+  overlap/interruption evidence, term retrieval, constrained correction,
+  correction audits, speaker cards, and extractive summary;
+- WER/CER correction scoring through the same Phase 2C normalization policy;
+- 119 real small-subset result rows, a 28-row grouped summary, 119 local
+  ConversationMaps, and two result charts.
+
+The full workflow produced 25 anchors, 23 speaker-labeled anchors, four
+overlap anchors, five events, 25 correction audits, six review flags, and
+zero unsupported changes. The public subset contains no annotated project
+technical terms, so conservative retrieval produced zero candidates and
+correction changed no text. WER/CER therefore remained equal to the fixed
+ASR baseline. This validates evidence completeness and auditability, not
+correction accuracy improvement.
+
 ### Phase 3 - Metrics and Experiment Runners
 
 **Goal:** Make all future UI evidence reproducible.
