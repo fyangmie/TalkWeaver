@@ -1,0 +1,52 @@
+clip_id,dataset_name,language,mode,has_reference_anchors,has_reference_events,num_reference_turns,num_predicted_turns,num_reference_overlap_events,num_predicted_overlap_events,speaker_label_error_rate,turn_time_coverage,boundary_mae,overlap_precision,overlap_recall,overlap_f1,interruption_precision,interruption_recall,interruption_f1,notes
+fleurs_en_1548,Google FLEURS,en,no_diarization,true,false,1,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+fleurs_en_1548,Google FLEURS,en,reference_assisted,true,false,1,1,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+fleurs_en_1548,Google FLEURS,en,pyannote_optional,true,false,1,0,0,0,,,,,,,,,,Skipped automatic diarization: HF_TOKEN is not configured.
+fleurs_en_1620,Google FLEURS,en,no_diarization,true,false,1,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+fleurs_en_1620,Google FLEURS,en,reference_assisted,true,false,1,1,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+fleurs_en_1620,Google FLEURS,en,pyannote_optional,true,false,1,0,0,0,,,,,,,,,,Skipped automatic diarization: HF_TOKEN is not configured.
+fleurs_en_1510,Google FLEURS,en,no_diarization,true,false,1,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+fleurs_en_1510,Google FLEURS,en,reference_assisted,true,false,1,1,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+fleurs_en_1510,Google FLEURS,en,pyannote_optional,true,false,1,0,0,0,,,,,,,,,,Skipped automatic diarization: HF_TOKEN is not configured.
+fleurs_en_1578,Google FLEURS,en,no_diarization,true,false,1,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+fleurs_en_1578,Google FLEURS,en,reference_assisted,true,false,1,1,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+fleurs_en_1578,Google FLEURS,en,pyannote_optional,true,false,1,0,0,0,,,,,,,,,,Skipped automatic diarization: HF_TOKEN is not configured.
+fleurs_en_1652,Google FLEURS,en,no_diarization,true,false,1,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+fleurs_en_1652,Google FLEURS,en,reference_assisted,true,false,1,1,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+fleurs_en_1652,Google FLEURS,en,pyannote_optional,true,false,1,0,0,0,,,,,,,,,,Skipped automatic diarization: HF_TOKEN is not configured.
+fleurs_fr_1524,Google FLEURS,fr,no_diarization,true,false,1,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+fleurs_fr_1524,Google FLEURS,fr,reference_assisted,true,false,1,1,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+fleurs_fr_1524,Google FLEURS,fr,pyannote_optional,true,false,1,0,0,0,,,,,,,,,,Skipped automatic diarization: HF_TOKEN is not configured.
+fleurs_fr_1570,Google FLEURS,fr,no_diarization,true,false,1,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+fleurs_fr_1570,Google FLEURS,fr,reference_assisted,true,false,1,1,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+fleurs_fr_1570,Google FLEURS,fr,pyannote_optional,true,false,1,0,0,0,,,,,,,,,,Skipped automatic diarization: HF_TOKEN is not configured.
+fleurs_fr_1620,Google FLEURS,fr,no_diarization,true,false,1,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+fleurs_fr_1620,Google FLEURS,fr,reference_assisted,true,false,1,1,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+fleurs_fr_1620,Google FLEURS,fr,pyannote_optional,true,false,1,0,0,0,,,,,,,,,,Skipped automatic diarization: HF_TOKEN is not configured.
+fleurs_fr_1533,Google FLEURS,fr,no_diarization,true,false,1,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+fleurs_fr_1533,Google FLEURS,fr,reference_assisted,true,false,1,1,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+fleurs_fr_1533,Google FLEURS,fr,pyannote_optional,true,false,1,0,0,0,,,,,,,,,,Skipped automatic diarization: HF_TOKEN is not configured.
+fleurs_fr_1652,Google FLEURS,fr,no_diarization,true,false,1,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+fleurs_fr_1652,Google FLEURS,fr,reference_assisted,true,false,1,1,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+fleurs_fr_1652,Google FLEURS,fr,pyannote_optional,true,false,1,0,0,0,,,,,,,,,,Skipped automatic diarization: HF_TOKEN is not configured.
+fleurs_zh_cn_1579,Google FLEURS,zh-CN,no_diarization,true,false,1,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+fleurs_zh_cn_1579,Google FLEURS,zh-CN,reference_assisted,true,false,1,1,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+fleurs_zh_cn_1579,Google FLEURS,zh-CN,pyannote_optional,true,false,1,0,0,0,,,,,,,,,,Skipped automatic diarization: HF_TOKEN is not configured.
+fleurs_zh_cn_1605,Google FLEURS,zh-CN,no_diarization,true,false,1,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+fleurs_zh_cn_1605,Google FLEURS,zh-CN,reference_assisted,true,false,1,1,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+fleurs_zh_cn_1605,Google FLEURS,zh-CN,pyannote_optional,true,false,1,0,0,0,,,,,,,,,,Skipped automatic diarization: HF_TOKEN is not configured.
+fleurs_zh_cn_1581,Google FLEURS,zh-CN,no_diarization,true,false,1,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+fleurs_zh_cn_1581,Google FLEURS,zh-CN,reference_assisted,true,false,1,1,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+fleurs_zh_cn_1581,Google FLEURS,zh-CN,pyannote_optional,true,false,1,0,0,0,,,,,,,,,,Skipped automatic diarization: HF_TOKEN is not configured.
+fleurs_zh_cn_1648,Google FLEURS,zh-CN,no_diarization,true,false,1,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+fleurs_zh_cn_1648,Google FLEURS,zh-CN,reference_assisted,true,false,1,1,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+fleurs_zh_cn_1648,Google FLEURS,zh-CN,pyannote_optional,true,false,1,0,0,0,,,,,,,,,,Skipped automatic diarization: HF_TOKEN is not configured.
+fleurs_zh_cn_1588,Google FLEURS,zh-CN,no_diarization,true,false,1,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+fleurs_zh_cn_1588,Google FLEURS,zh-CN,reference_assisted,true,false,1,1,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+fleurs_zh_cn_1588,Google FLEURS,zh-CN,pyannote_optional,true,false,1,0,0,0,,,,,,,,,,Skipped automatic diarization: HF_TOKEN is not configured.
+ami_es2002a_01,AMI Meeting Corpus,en,no_diarization,true,true,4,1,1,0,1.0,1.0,,0.0,0.0,0.0,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+ami_es2002a_01,AMI Meeting Corpus,en,reference_assisted,true,true,4,4,1,1,0.0,1.0,0.0,1.0,1.0,1.0,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+ami_es2002a_01,AMI Meeting Corpus,en,pyannote_optional,true,true,4,0,1,0,,,,,,,,,,Skipped automatic diarization: HF_TOKEN is not configured.
+ami_es2002a_02,AMI Meeting Corpus,en,no_diarization,true,true,8,1,4,0,1.0,1.0,,0.0,0.0,0.0,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+ami_es2002a_02,AMI Meeting Corpus,en,reference_assisted,true,true,8,8,4,4,0.0,1.0,0.0,1.0,1.0,1.0,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+ami_es2002a_02,AMI Meeting Corpus,en,pyannote_optional,true,true,8,0,4,0,,,,,,,,,,Skipped automatic diarization: HF_TOKEN is not configured.

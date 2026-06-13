@@ -45,6 +45,8 @@ def _asr_mode_label(mode: str) -> str:
         return "mock"
     if mode == "reference":
         return "reference"
+    if mode == "real_prediction_json":
+        return "real_prediction_json"
     if mode == "faster_whisper":
         return "real"
     return "unknown"
@@ -55,7 +57,11 @@ def _diarization_mode_label(mode: str) -> str:
         return "mock"
     if mode == "reference":
         return "reference"
-    return "automatic_diarization"
+    if mode == "none":
+        return "none"
+    if mode == "pyannote":
+        return "pyannote"
+    return "unknown"
 
 
 def _llm_mode_label(mode: str) -> str:

@@ -146,6 +146,33 @@ reference mode during workflow development.
 See [`dependency_setup.md`](dependency_setup.md) for Python compatibility,
 CPU/GPU setup, cache policy, and troubleshooting.
 
+### Reusing Phase 2C Prediction JSON
+
+Workflow experiments can reuse a saved real prediction without loading the
+ASR model again:
+
+```bash
+python scripts/run_talkweaver_workflow.py \
+  --manifest data/manifests/formal_eval_real.csv \
+  --clip-id ami_es2002a_01 \
+  --asr-source prediction-json \
+  --asr-prediction-json \
+    experiments/results/asr_predictions_real/base__ami_es2002a_01.json \
+  --diarization-source reference \
+  --output outputs/conversation_maps/
+```
+
+Accepted diarization evidence sources are:
+
+- `reference`: oracle/reference turns from the manifest;
+- `none`: no speaker turns, for a no-diarization ablation;
+- `pyannote` (or legacy alias `real`): automatic inference only when the
+  package, token, and model access are available.
+
+Real ASR also accepts `--vad-filter true` or `--vad-filter false`. Prediction
+JSON metadata records whether VAD was used during the original benchmark.
+Neither real ASR nor pyannote silently falls back to mock evidence.
+
 ## Event Rules
 
 `backend/events.py` implements two conservative timing rules:
@@ -234,6 +261,8 @@ python scripts/check_optional_dependencies.py
 
 See [`asr_benchmark.md`](asr_benchmark.md) for the separate ASR-only
 evaluation protocol and results.
+See [`speaker_overlap_baseline.md`](speaker_overlap_baseline.md) for the
+Phase 2D reference speaker-time and event baseline.
 
 ## Output
 

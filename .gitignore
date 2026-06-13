@@ -72,6 +72,7 @@ experiments/results/*.csv
 !experiments/results/asr_benchmark_real.csv
 !experiments/results/asr_benchmark_summary_real.csv
 !experiments/results/asr_benchmark_ami_no_vad_real.csv
+!experiments/results/speaker_overlap_baseline_real.csv
 experiments/results/asr_predictions_real/
 experiments/results/asr_predictions_ami_no_vad_real/
 assets/result_charts/*.png

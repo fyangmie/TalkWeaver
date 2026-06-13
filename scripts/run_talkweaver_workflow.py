@@ -5,7 +5,6 @@ from __future__ import annotations
 
 import argparse
 import csv
-import json
 import sys
 from pathlib import Path
 from typing import Any
@@ -15,16 +14,29 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from backend.asr import transcribe_with_metadata  # noqa: E402
+from backend.asr_prediction import load_asr_prediction_json  # noqa: E402
 from backend.config import get_settings  # noqa: E402
 from backend.conversation_map import (  # noqa: E402
     build_conversation_map,
     save_conversation_map,
 )
 from backend.diarization import diarize_with_metadata  # noqa: E402
+from backend.reference_evidence import (  # noqa: E402
+    load_reference_evidence,
+    resolve_project_path,
+)
 
-
-def _read_json(path: str) -> Any:
-    return json.loads((ROOT / path).read_text(encoding="utf-8"))
+def _parse_bool(value: str | bool) -> bool:
+    if isinstance(value, bool):
+        return value
+    normalized = value.strip().lower()
+    if normalized in {"true", "1", "yes", "on"}:
+        return True
+    if normalized in {"false", "0", "no", "off"}:
+        return False
+    raise argparse.ArgumentTypeError(
+        f"Expected true or false, received {value!r}."
+    )
 
 
 def load_manifest_row(manifest: Path, clip_id: str) -> dict[str, str]:
@@ -38,46 +50,24 @@ def load_manifest_row(manifest: Path, clip_id: str) -> dict[str, str]:
 def _reference_evidence(
     row: dict[str, str],
 ) -> tuple[dict[str, Any], dict[str, Any], list[dict[str, Any]]]:
-    anchors = _read_json(row["anchors_path"])
+    evidence = load_reference_evidence(row)
+    anchors = evidence["anchors"]
     if not anchors:
         raise RuntimeError(
             f"{row['clip_id']} has no reference anchors for assisted mode."
         )
-    asr_segments = [
-        {
-            "start": float(anchor["start"]),
-            "end": float(anchor["end"]),
-            "text": str(anchor.get("text", "")).strip(),
-            "words": [],
-        }
-        for anchor in anchors
-        if str(anchor.get("text", "")).strip()
-    ]
-    turns = [
-        {
-            "start": float(anchor["start"]),
-            "end": float(anchor["end"]),
-            "speaker": str(anchor.get("speaker", "UNKNOWN")),
-            "confidence": 1.0,
-            "source": "reference_anchor",
-        }
-        for anchor in anchors
-    ]
-    events = (
-        _read_json(row["events_path"]) if row.get("events_path") else []
-    )
     return (
         {
             "mode": "reference",
-            "segments": asr_segments,
+            "segments": evidence["asr_segments"],
             "language": row["language"],
         },
         {
             "mode": "reference",
-            "turns": turns,
+            "turns": evidence["speaker_turns"],
             "is_mock": False,
         },
-        events,
+        evidence["events"],
     )
 
 
@@ -88,17 +78,24 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--mock-models", action="store_true")
     parser.add_argument(
         "--asr-source",
-        choices=["real", "reference"],
+        choices=["real", "reference", "prediction-json"],
         default="real",
     )
+    parser.add_argument("--asr-prediction-json", type=Path)
     parser.add_argument(
         "--diarization-source",
-        choices=["real", "reference"],
+        choices=["real", "reference", "none", "pyannote"],
         default="real",
     )
     parser.add_argument("--asr-model", default="tiny")
     parser.add_argument("--device", default="cpu")
     parser.add_argument("--compute-type", default="int8")
+    parser.add_argument(
+        "--vad-filter",
+        type=_parse_bool,
+        default=True,
+        metavar="{true,false}",
+    )
     parser.add_argument(
         "--output",
         type=Path,
@@ -111,7 +108,7 @@ def main() -> int:
     args = build_parser().parse_args()
     try:
         row = load_manifest_row(args.manifest, args.clip_id)
-        audio_path = ROOT / row["audio_path"]
+        audio_path = resolve_project_path(row["audio_path"])
         if not audio_path.is_file():
             raise FileNotFoundError(
                 f"Local audio is missing: {audio_path}. "
@@ -142,31 +139,48 @@ def main() -> int:
             )
             provided_events: list[dict[str, Any]] = []
         else:
-            asr_output = (
-                reference_asr
-                if args.asr_source == "reference"
-                else transcribe_with_metadata(
+            if args.asr_source == "reference":
+                asr_output = reference_asr
+            elif args.asr_source == "prediction-json":
+                if args.asr_prediction_json is None:
+                    raise ValueError(
+                        "--asr-prediction-json is required when "
+                        "--asr-source prediction-json is selected."
+                    )
+                asr_output = load_asr_prediction_json(
+                    resolve_project_path(args.asr_prediction_json)
+                )
+            else:
+                asr_output = transcribe_with_metadata(
                     audio_path,
                     mock=False,
                     model_size=args.asr_model,
                     device=args.device,
                     compute_type=args.compute_type,
                     language=row["language"],
+                    vad_filter=args.vad_filter,
                     fallback_to_mock=False,
                 )
-            )
-            diarization_output = (
-                reference_diarization
-                if args.diarization_source == "reference"
-                else diarize_with_metadata(
+            if args.diarization_source == "reference":
+                diarization_output = reference_diarization
+                provided_events = reference_events
+            elif args.diarization_source == "none":
+                diarization_output = {
+                    "mode": "none",
+                    "turns": [],
+                    "is_mock": False,
+                    "fallback_reason": None,
+                }
+                provided_events = []
+            else:
+                diarization_output = diarize_with_metadata(
                     audio_path,
                     mock=False,
                     hf_token=get_settings().hf_token,
                     fallback_to_mock=False,
                     duration_seconds=float(row["duration_seconds"]),
                 )
-            )
-            provided_events = reference_events
+                provided_events = []
 
         settings = get_settings()
         use_api = not settings.use_mock_llm and any(
@@ -181,6 +195,12 @@ def main() -> int:
                 **row,
                 "clip_id": args.clip_id,
                 "audio_path": row["audio_path"],
+                "asr_prediction_json": (
+                    str(args.asr_prediction_json)
+                    if args.asr_prediction_json is not None
+                    else ""
+                ),
+                "evaluation_scope": "small_subset",
             },
             asr_output,
             diarization_output,

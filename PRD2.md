@@ -1677,6 +1677,30 @@ The fix changes evaluation normalization and diagnostics, not ASR
 predictions. AMI cleaned WER is supplementary and does not replace standard
 WER. Local model load timing is not a mobile cold-start measurement.
 
+### Phase 2D - Speaker-Time and Overlap Baseline
+
+**Status: implemented on June 13, 2026, with automatic pyannote pending
+model access.**
+
+Implemented:
+
+- lightweight label-permutation-aware speaker/time metrics;
+- overlap interval precision, recall, and F1 scoring;
+- conservative interruption event matching;
+- a 17-clip runner covering `no_diarization`, `reference_assisted`, and
+  `pyannote_optional` modes;
+- two AMI reference-assisted ConversationMaps that reuse Phase 2C real ASR
+  prediction JSON;
+- workflow CLI support for prediction JSON reuse, VAD metadata, reference,
+  no-diarization, and optional pyannote evidence sources.
+
+The two AMI excerpts provide five reference overlap events and validate the
+speaker/time and overlap pipeline. They do not provide human interruption
+labels, so interruption scores remain unreported. Reference-assisted results
+are oracle workflow checks and must not be described as automatic
+diarization performance. Pyannote inference remains pending because no
+`HF_TOKEN` model access was configured for this run.
+
 ### Phase 3 - Metrics and Experiment Runners
 
 **Goal:** Make all future UI evidence reproducible.

@@ -267,6 +267,30 @@ results, OpenCC Mandarin normalization, AMI cleaned-WER/VAD diagnostics, warm
 RTF versus model-load timing, and limitations. These values are not
 full-dataset performance claims.
 
+## Running Speaker/Overlap Baseline
+
+Phase 2D validates TalkWeaver's speaker-time evidence and overlap scoring
+before workflow ablation:
+
+```bash
+python experiments/run_speaker_overlap_baseline.py \
+  --manifest data/manifests/formal_eval_real.csv \
+  --output experiments/results/speaker_overlap_baseline_real.csv
+
+python experiments/run_reference_workflow_maps.py \
+  --manifest data/manifests/formal_eval_real.csv \
+  --dataset "AMI Meeting Corpus" \
+  --output-dir outputs/conversation_maps/reference_assisted_real
+```
+
+The baseline compares a single-`UNKNOWN` no-diarization mode, an
+oracle/reference-assisted mode, and optional real pyannote inference.
+Reference-assisted results are workflow checks, not automatic diarization
+claims. Pyannote is skipped explicitly unless its package and `HF_TOKEN`
+model access are available. See
+[`docs/speaker_overlap_baseline.md`](docs/speaker_overlap_baseline.md) for
+metric definitions, measured AMI results, and limitations.
+
 ## Quickstart: Mock Mode
 
 Mock mode is deterministic, requires no GPU or external API keys, and labels
