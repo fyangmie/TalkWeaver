@@ -394,6 +394,53 @@ retained the raw text, and were marked for review. These are controlled
 fixture results, not public-dataset ASR claims. See
 [`docs/term_rescue_experiment.md`](docs/term_rescue_experiment.md).
 
+## Running Overlap-Aware Correction Safety Experiment
+
+Phase 2G evaluates whether overlap and uncertainty evidence makes correction
+more conservative. It uses 20 text-only controlled fixtures informed by the
+duration range of the five AMI reference overlap events from Phase 2D. The
+fixtures remain separate from public-audio ASR results.
+
+Run the offline rule comparison:
+
+```bash
+python experiments/run_overlap_safety_experiment.py \
+  --cases data/controlled_overlap/overlap_correction_cases.jsonl \
+  --policy data/controlled_overlap/overlap_safety_policy.json \
+  --output experiments/results/overlap_safety_controlled.csv
+```
+
+Add strict real LLM variants only when `.env` is configured:
+
+```bash
+python experiments/run_overlap_safety_experiment.py \
+  --cases data/controlled_overlap/overlap_correction_cases.jsonl \
+  --policy data/controlled_overlap/overlap_safety_policy.json \
+  --output experiments/results/overlap_safety_controlled.csv \
+  --include-llm-if-configured
+```
+
+Summarize and plot:
+
+```bash
+python experiments/summarize_overlap_safety.py \
+  --input experiments/results/overlap_safety_controlled.csv \
+  --output experiments/results/overlap_safety_summary_controlled.csv
+
+python experiments/plot_overlap_safety.py \
+  --input experiments/results/overlap_safety_controlled.csv \
+  --output-dir assets/result_charts
+```
+
+The completed controlled run produced 80 rows. Safety pass rate increased
+from `0.30` to `1.00` for rule correction and from `0.75` to `1.00` for
+DeepSeek `deepseek-chat` when overlap/uncertainty evidence was enabled.
+No accepted output contained unsupported changes, invented content, or
+speaker-attribution changes. Overlap-aware variants exposed 14 review cases;
+the rule variant rejected 7 risky corrections and the LLM variant rejected
+12, including 7 pre-model policy rejections. See
+[`docs/overlap_safety_experiment.md`](docs/overlap_safety_experiment.md).
+
 ## Quickstart: Mock Mode
 
 Mock mode is deterministic, requires no GPU or external API keys, and labels

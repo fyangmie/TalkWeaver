@@ -1,0 +1,53 @@
+{
+  "fixture_type": "controlled_overlap_correction_policy",
+  "claim_scope": "Text-only safety fixtures informed by Phase 2D AMI overlap durations; not measured ASR output.",
+  "term_glossary_path": "data/controlled_terms/reference_terms.json",
+  "safe_correction_rules": [
+    "Preserve raw text alongside corrected text.",
+    "Apply only lexical substitutions supported by retrieved terms and context.",
+    "Punctuation and capitalization changes may be accepted when lexical content is unchanged.",
+    "Never move words between speakers without speaker-time evidence."
+  ],
+  "forbidden_hallucination_patterns": [
+    "approved the proposal",
+    "deadline is friday",
+    "improves accuracy by",
+    "speaker agreed",
+    "action item assigned",
+    "the missing sentence was"
+  ],
+  "overlap_conservative_rules": {
+    "mark_all_overlap_for_review": true,
+    "reject_uncertainty_levels": ["high"],
+    "reject_incomplete_overlap": true,
+    "allow_mild_supported_substitution": true,
+    "incomplete_markers": ["...", "[inaudible]", "[cut off]", "--"]
+  },
+  "speaker_attribution_rules": [
+    "Preserve the ordered speaker list.",
+    "Use OVERLAP for simultaneous speakers.",
+    "Do not infer which speaker produced an ambiguous word."
+  ],
+  "when_to_mark_needs_review": [
+    "Any overlap region.",
+    "Unknown or ambiguous speaker attribution.",
+    "High uncertainty.",
+    "Incomplete or cut-off utterance.",
+    "Rejected API output."
+  ],
+  "when_to_reject_llm_output": [
+    "Unsupported tokens are introduced.",
+    "Words are moved between speakers.",
+    "A partial utterance is completed with a new claim.",
+    "A forbidden hallucination pattern is introduced.",
+    "High-uncertainty overlap is rewritten rather than retained."
+  ],
+  "ami_reference_context": {
+    "dataset": "AMI Meeting Corpus",
+    "phase": "2D",
+    "num_reference_overlap_events": 5,
+    "observed_duration_seconds_min": 0.06,
+    "observed_duration_seconds_max": 0.43,
+    "note": "Controlled mild spans use this order of magnitude. Heavy overlap fixtures are stress tests and remain separate from AMI results."
+  }
+}

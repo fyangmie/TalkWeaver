@@ -1,0 +1,17 @@
+variant,overlap,uncertainty_level,num_cases,mean_text_error_before,mean_text_error_after,unsupported_change_count,invented_content_count,forbidden_change_count,speaker_attribution_change_count,needs_review_count,correction_rejected_count,safety_pass_rate,review_flag_accuracy,overcorrection_rate,conservative_rejection_rate,api_used_count,fallback_used_count,notes
+no_overlap_awareness_llm,False,high,2,0.0,0.0,0,0,0,0,1,1,0.5,0.5,0.0,0.0,2,0,Controlled overlap text fixtures only; AMI evidence is contextual and remains a separate public-data result.
+no_overlap_awareness_llm,False,low,6,0.451389,0.0,0,0,0,0,0,0,1.0,1.0,0.0,0.0,6,0,Controlled overlap text fixtures only; AMI evidence is contextual and remains a separate public-data result.
+no_overlap_awareness_llm,True,high,4,0.0,0.0,0,0,0,0,2,2,0.5,0.5,0.0,0.0,4,0,Controlled overlap text fixtures only; AMI evidence is contextual and remains a separate public-data result.
+no_overlap_awareness_llm,True,medium,8,0.207639,0.207639,0,0,0,0,6,6,0.75,0.75,0.0,0.625,8,0,Controlled overlap text fixtures only; AMI evidence is contextual and remains a separate public-data result.
+no_overlap_awareness_rule,False,high,2,0.0,0.0,0,0,0,0,0,0,0.0,0.0,0.0,0.0,0,0,Controlled overlap text fixtures only; AMI evidence is contextual and remains a separate public-data result.
+no_overlap_awareness_rule,False,low,6,0.451389,0.0,0,0,0,0,0,0,1.0,1.0,0.0,0.0,0,0,Controlled overlap text fixtures only; AMI evidence is contextual and remains a separate public-data result.
+no_overlap_awareness_rule,True,high,4,0.0,0.216667,0,0,3,0,0,0,0.0,0.0,0.5,0.0,0,0,Controlled overlap text fixtures only; AMI evidence is contextual and remains a separate public-data result.
+no_overlap_awareness_rule,True,medium,8,0.207639,0.0,0,0,0,0,0,0,0.0,0.0,0.0,0.0,0,0,Controlled overlap text fixtures only; AMI evidence is contextual and remains a separate public-data result.
+overlap_aware_llm,False,high,2,0.0,0.0,0,0,0,0,2,2,1.0,1.0,0.0,0.0,0,0,Controlled overlap text fixtures only; AMI evidence is contextual and remains a separate public-data result.
+overlap_aware_llm,False,low,6,0.451389,0.0,0,0,0,0,0,0,1.0,1.0,0.0,0.0,6,0,Controlled overlap text fixtures only; AMI evidence is contextual and remains a separate public-data result.
+overlap_aware_llm,True,high,4,0.0,0.0,0,0,0,0,4,4,1.0,1.0,0.0,0.0,0,0,Controlled overlap text fixtures only; AMI evidence is contextual and remains a separate public-data result.
+overlap_aware_llm,True,medium,8,0.207639,0.207639,0,0,0,0,8,6,1.0,1.0,0.0,0.625,7,0,Controlled overlap text fixtures only; AMI evidence is contextual and remains a separate public-data result.
+overlap_aware_rule,False,high,2,0.0,0.0,0,0,0,0,2,2,1.0,1.0,0.0,0.0,0,0,Controlled overlap text fixtures only; AMI evidence is contextual and remains a separate public-data result.
+overlap_aware_rule,False,low,6,0.451389,0.0,0,0,0,0,0,0,1.0,1.0,0.0,0.0,0,0,Controlled overlap text fixtures only; AMI evidence is contextual and remains a separate public-data result.
+overlap_aware_rule,True,high,4,0.0,0.0,0,0,0,0,4,4,1.0,1.0,0.0,0.0,0,0,Controlled overlap text fixtures only; AMI evidence is contextual and remains a separate public-data result.
+overlap_aware_rule,True,medium,8,0.207639,0.0,0,0,0,0,8,1,1.0,1.0,0.0,0.0,0,0,Controlled overlap text fixtures only; AMI evidence is contextual and remains a separate public-data result.

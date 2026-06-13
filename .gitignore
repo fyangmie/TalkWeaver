@@ -77,6 +77,8 @@ experiments/results/*.csv
 !experiments/results/workflow_ablation_summary_real.csv
 !experiments/results/term_rescue_controlled.csv
 !experiments/results/term_rescue_summary_controlled.csv
+!experiments/results/overlap_safety_controlled.csv
+!experiments/results/overlap_safety_summary_controlled.csv
 experiments/results/asr_predictions_real/
 experiments/results/asr_predictions_ami_no_vad_real/
 assets/result_charts/*.png
@@ -93,6 +95,10 @@ assets/result_charts/*.png
 !assets/result_charts/term_rescue_f1_by_variant.png
 !assets/result_charts/term_rescue_false_positive_by_variant.png
 !assets/result_charts/term_rescue_error_delta.png
+!assets/result_charts/overlap_safety_pass_rate.png
+!assets/result_charts/overlap_unsupported_changes.png
+!assets/result_charts/overlap_review_flags.png
+!assets/result_charts/overlap_error_delta.png
 assets/screenshots/*
 assets/demo_gifs/*
 !assets/**/.gitkeep

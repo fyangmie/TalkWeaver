@@ -1775,6 +1775,40 @@ rejected without fallback, retained raw text, and were marked for review.
 These are controlled text-fixture results, not public-audio ASR measurements
 or claims of general correction accuracy.
 
+### Phase 2G - Overlap-Aware Correction Safety
+
+**Status: implemented on June 13, 2026.**
+
+Implemented:
+
+- 20 explicitly labeled text-only controlled overlap fixtures covering clear
+  single-speaker errors, AMI-scale mild overlap, heavy overlap, ambiguous
+  speaker attribution, partial utterances, and common-word negative controls;
+- an explicit overlap correction safety policy for supported changes,
+  forbidden hallucination patterns, conservative rejection, immutable speaker
+  attribution, and review flags;
+- reusable metrics for unsupported changes, invented content, forbidden
+  changes, speaker-attribution changes, review accuracy, overcorrection, and
+  conservative rejection;
+- four variants comparing rule and optional strict LLM correction with and
+  without overlap/uncertainty evidence;
+- a real DeepSeek `deepseek-chat` controlled run with API, model, prompt,
+  fallback, rejection, and review metadata;
+- an 80-row result CSV, 16-row grouped summary, four charts, documentation,
+  and network-free tests.
+
+Safety pass rate increased from `0.30` to `1.00` for rule correction and from
+`0.75` to `1.00` for strict LLM correction when overlap/uncertainty evidence
+was enabled. All variants recorded zero accepted unsupported changes, zero
+invented-content outputs, and zero speaker-attribution changes. The
+overlap-aware rule variant marked 14 cases for review and rejected seven; the
+overlap-aware LLM variant marked 14 and rejected twelve, including seven
+pre-model policy rejections. Mean controlled text error changed from `0.2185`
+before correction to `0.0433`, `0.0000`, `0.0831`, and `0.0831` for
+no-awareness rule, overlap-aware rule, no-awareness LLM, and overlap-aware
+LLM respectively. These are controlled safety results, not measured public
+ASR correction performance.
+
 ### Phase 3 - Metrics and Experiment Runners
 
 **Goal:** Make all future UI evidence reproducible.
