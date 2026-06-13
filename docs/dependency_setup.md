@@ -56,6 +56,23 @@ python -m pip install opencc-python-reimplemented
 Without it, ASR inference still works, but Traditional/Simplified character
 differences remain in CER and are explicitly flagged in metric metadata.
 
+## Optional LLM API
+
+`python-dotenv` is already a core dependency, so a local `.env` file can be
+loaded when present without making API access mandatory.
+
+```bash
+cp .env.example .env
+python scripts/run_llm_correction_smoke.py --mode rule_fallback
+python scripts/run_llm_correction_smoke.py --mode llm
+```
+
+Strict `llm` mode fails when configuration or the API call is unavailable.
+`llm_with_rule_fallback` is the only API mode allowed to downgrade, and it
+records that downgrade explicitly. See
+[`llm_api_setup.md`](llm_api_setup.md) for secure configuration, cost, and
+privacy guidance.
+
 When a named model such as `tiny` is used for the first time,
 `faster-whisper` automatically downloads the corresponding CTranslate2 model
 from the Hugging Face Hub. This is a model download, not a TalkWeaver source

@@ -98,6 +98,13 @@ class CorrectionAudit(JsonSerializable):
     hallucination_risk: str = "low"
     needs_review: bool = False
     evidence: list[dict[str, Any]] = field(default_factory=list)
+    correction_mode: str = "rule_fallback"
+    llm_provider: str = ""
+    llm_model: str = ""
+    prompt_version: str = ""
+    temperature: float = 0.0
+    api_used: bool = False
+    fallback_used: bool = False
 
 
 @dataclass

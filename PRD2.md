@@ -1726,6 +1726,27 @@ correction changed no text. WER/CER therefore remained equal to the fixed
 ASR baseline. This validates evidence completeness and auditability, not
 correction accuracy improvement.
 
+### Phase 2F-0 - Secure Optional LLM API Preparation
+
+**Status: implemented on June 13, 2026.**
+
+Prepared for the controlled Phase 2F correction experiment:
+
+- generic `.env` configuration for DeepSeek, Qwen, and OpenAI-compatible
+  endpoints;
+- a credential-safe `LLMConfig` loader with strict validation and masked
+  metadata;
+- explicit `rule_fallback`, `llm`, and `llm_with_rule_fallback` modes;
+- strict failure behavior that never reports a failed API call as successful
+  LLM correction;
+- correction audits recording provider, model, prompt version, temperature,
+  API use, fallback use, unsupported changes, and review risk;
+- an offline rule smoke path and an optional real API smoke command.
+
+No real API call or correction-quality result is claimed by this preparation
+phase. Normal tests remain network-free, and deterministic correction remains
+available without credentials.
+
 ### Phase 3 - Metrics and Experiment Runners
 
 **Goal:** Make all future UI evidence reproducible.

@@ -127,13 +127,12 @@ CPU, GPU, cache, and troubleshooting policies.
 
 ```env
 HF_TOKEN=
-OPENAI_API_KEY=
-DEEPSEEK_API_KEY=
-QWEN_API_KEY=
-LLM_PROVIDER=auto
-OPENAI_MODEL=gpt-4.1-mini
-DEEPSEEK_MODEL=deepseek-v4-pro
-QWEN_MODEL=qwen-plus
+LLM_PROVIDER=deepseek
+LLM_API_KEY=replace_me
+LLM_MODEL=deepseek-chat
+LLM_BASE_URL=https://api.deepseek.com
+LLM_TEMPERATURE=0
+LLM_TIMEOUT_SECONDS=30
 ASR_MODEL_SIZE=medium
 USE_MOCK_ASR=false
 USE_MOCK_DIARIZATION=false
@@ -141,6 +140,30 @@ USE_MOCK_LLM=true
 ```
 
 Never commit `.env` or credentials.
+
+## Optional LLM API Setup
+
+External LLM correction is optional. The deterministic rule fallback remains
+the default for tests and reproducible offline runs.
+
+```bash
+cp .env.example .env
+python scripts/run_llm_correction_smoke.py --mode rule_fallback
+```
+
+After setting `LLM_API_KEY`, provider, model, and base URL in the local
+`.env`, run the strict smoke test:
+
+```bash
+python scripts/run_llm_correction_smoke.py --mode llm
+```
+
+Use `--mode llm_with_rule_fallback` only when an explicitly recorded fallback
+is acceptable. Correction audits store provider, model, prompt version,
+temperature, API usage, and fallback status, but never the key. Do not send
+private or restricted transcripts to an external provider. See
+[`docs/llm_api_setup.md`](docs/llm_api_setup.md) for configuration, cost,
+privacy, and failure semantics.
 
 ## Downloading Small Formal Evaluation Subsets
 

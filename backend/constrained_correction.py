@@ -6,6 +6,7 @@ import re
 from difflib import SequenceMatcher
 from typing import Any
 
+from backend.llm_config import LLMConfig, PROMPT_VERSION
 from backend.llm_correction import correct_segments, rule_based_correction
 from backend.schemas import (
     ConversationEvent,
@@ -160,6 +161,18 @@ def apply_constrained_correction(
 
     config = dict(llm_config or {})
     use_api = bool(config.get("use_api", False))
+    correction_mode = str(
+        config.get(
+            "correction_mode",
+            "llm_with_rule_fallback" if use_api else "rule_fallback",
+        )
+    )
+    runtime_config = config.get("runtime_config")
+    if runtime_config is not None and not isinstance(
+        runtime_config,
+        LLMConfig,
+    ):
+        raise TypeError("runtime_config must be an LLMConfig object.")
     segment_payloads = []
     for anchor in anchors:
         segment_payloads.append(
@@ -196,6 +209,13 @@ def apply_constrained_correction(
                 "https://dashscope.aliyuncs.com/compatible-mode/v1",
             )
         ),
+        correction_mode=correction_mode,
+        llm_config=runtime_config,
+        temperature=float(config.get("temperature", 0.0)),
+        timeout_seconds=float(config.get("timeout_seconds", 30.0)),
+        prompt_version=str(
+            config.get("prompt_version", PROMPT_VERSION)
+        ),
     )
     audits: list[CorrectionAudit] = []
     for index, (anchor, corrected) in enumerate(
@@ -217,6 +237,33 @@ def apply_constrained_correction(
             corrected_text,
             candidates=candidate_list,
             neighboring_text=neighboring_text,
+        )
+        audit.correction_mode = str(
+            corrected.get("correction_mode", correction_mode)
+        )
+        audit.llm_provider = str(corrected.get("llm_provider", ""))
+        audit.llm_model = str(corrected.get("llm_model", ""))
+        audit.prompt_version = str(
+            corrected.get("prompt_version", PROMPT_VERSION)
+        )
+        audit.temperature = float(
+            corrected.get("llm_temperature", 0.0)
+        )
+        audit.api_used = bool(corrected.get("api_used", False))
+        audit.fallback_used = bool(
+            corrected.get("fallback_used", False)
+        )
+        audit.evidence.append(
+            {
+                "type": "correction_execution",
+                "correction_mode": audit.correction_mode,
+                "provider": audit.llm_provider,
+                "model": audit.llm_model,
+                "prompt_version": audit.prompt_version,
+                "temperature": audit.temperature,
+                "api_used": audit.api_used,
+                "fallback_used": audit.fallback_used,
+            }
         )
         anchor.corrected_text = (
             anchor.raw_text if audit.unsupported_changes else corrected_text

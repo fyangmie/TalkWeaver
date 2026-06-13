@@ -5,11 +5,16 @@ from __future__ import annotations
 import json
 import logging
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
+from backend.llm_config import (
+    CORRECTION_MODES,
+    PROMPT_VERSION,
+    LLMConfig,
+)
 from backend.prompting import build_correction_messages, format_segment_prompt
 
 
@@ -29,9 +34,12 @@ class LLMProvider:
     """OpenAI-compatible provider configuration."""
 
     name: str
-    api_key: str
+    api_key: str = field(repr=False)
     base_url: str
     model: str
+    temperature: float = 0.0
+    timeout_seconds: float = 30.0
+    prompt_version: str = PROMPT_VERSION
 
 
 def select_provider(
@@ -129,8 +137,6 @@ def _extract_json_object(content: str) -> dict[str, Any]:
 def _chat_completion(
     llm: LLMProvider,
     messages: list[dict[str, str]],
-    *,
-    timeout_seconds: float = 30.0,
 ) -> dict[str, Any]:
     endpoint = f"{llm.base_url.rstrip('/')}/chat/completions"
     request = Request(
@@ -139,7 +145,7 @@ def _chat_completion(
             {
                 "model": llm.model,
                 "messages": messages,
-                "temperature": 0,
+                "temperature": llm.temperature,
                 "stream": False,
             }
         ).encode("utf-8"),
@@ -150,10 +156,15 @@ def _chat_completion(
         method="POST",
     )
     try:
-        with urlopen(request, timeout=timeout_seconds) as response:
+        with urlopen(
+            request,
+            timeout=llm.timeout_seconds,
+        ) as response:
             payload = json.loads(response.read().decode("utf-8"))
     except HTTPError as exc:
         details = exc.read().decode("utf-8", errors="replace")
+        if llm.api_key:
+            details = details.replace(llm.api_key, "[REDACTED]")
         raise RuntimeError(
             f"{llm.name} returned HTTP {exc.code}: {details[:300]}"
         ) from exc
@@ -215,42 +226,74 @@ def _correct_one_segment(
     *,
     mock: bool,
     llm: LLMProvider | None,
+    correction_mode: str,
+    provider_name: str,
+    model_name: str,
+    prompt_version: str,
+    temperature: float,
 ) -> dict[str, Any]:
     raw_text = str(segment["raw_text"])
     terms = [str(term) for term in segment.get("retrieved_terms", [])]
     prompt = format_segment_prompt(segment)
     fallback_text = rule_based_correction(raw_text, terms)
     corrected_text = fallback_text
-    mode = "mock_rule_based" if mock else "no_api_rule_based"
+    backend_mode = "mock_rule_based" if mock else "rule_based"
     note = "Deterministic glossary correction grounded in retrieved terms."
     validation_note = "API validation was not required."
     api_uncertain = False
+    api_used = False
+    fallback_used = False
 
-    if not mock and llm is not None:
-        try:
-            response = _chat_completion(
-                llm,
-                build_correction_messages(segment),
+    if correction_mode in {"llm", "llm_with_rule_fallback"}:
+        if llm is None:
+            if correction_mode == "llm":
+                raise RuntimeError(
+                    "Real LLM correction requested but no valid API "
+                    "configuration is available."
+                )
+            fallback_used = True
+            backend_mode = "api_unconfigured_fallback_rule_based"
+            note = (
+                "LLM API configuration was unavailable; deterministic "
+                "rule fallback was used."
             )
-            candidate = str(response.get("corrected_text", ""))
-            valid, validation_note = validate_corrected_text(
-                raw_text,
-                candidate,
-                terms,
-            )
-            if not valid:
-                raise ValueError(validation_note)
-            corrected_text = candidate.strip()
-            mode = f"api_{llm.name}"
-            note = str(response.get("note", "")).strip() or validation_note
-            api_uncertain = bool(response.get("uncertain", False))
-        except (RuntimeError, ValueError, json.JSONDecodeError) as exc:
-            LOGGER.warning(
-                "LLM correction fell back to deterministic rules: %s",
-                exc,
-            )
-            mode = f"api_{llm.name}_fallback_rule_based"
-            note = f"API correction rejected or unavailable: {exc}"
+        else:
+            api_used = True
+            try:
+                response = _chat_completion(
+                    llm,
+                    build_correction_messages(segment),
+                )
+                candidate = str(response.get("corrected_text", ""))
+                valid, validation_note = validate_corrected_text(
+                    raw_text,
+                    candidate,
+                    terms,
+                )
+                if not valid:
+                    raise ValueError(validation_note)
+                corrected_text = candidate.strip()
+                backend_mode = f"api_{llm.name}"
+                note = (
+                    str(response.get("note", "")).strip()
+                    or validation_note
+                )
+                api_uncertain = bool(response.get("uncertain", False))
+            except (RuntimeError, ValueError, json.JSONDecodeError) as exc:
+                if correction_mode == "llm":
+                    raise RuntimeError(
+                        f"LLM correction failed for provider {llm.name}: "
+                        f"{exc}"
+                    ) from exc
+                LOGGER.warning(
+                    "LLM correction fell back to deterministic rules: %s",
+                    exc,
+                )
+                fallback_used = True
+                backend_mode = (
+                    f"api_{llm.name}_fallback_rule_based"
+                )
+                note = f"API correction rejected or unavailable: {exc}"
 
     overlap = bool(segment.get("overlap"))
     correction_uncertain = (
@@ -260,8 +303,15 @@ def _correct_one_segment(
     )
     updated = dict(segment)
     updated["corrected_text"] = corrected_text
-    updated["correction_mode"] = mode
+    updated["correction_mode"] = correction_mode
+    updated["correction_backend_mode"] = backend_mode
     updated["correction_prompt"] = prompt
+    updated["prompt_version"] = prompt_version
+    updated["llm_provider"] = provider_name
+    updated["llm_model"] = model_name
+    updated["llm_temperature"] = temperature
+    updated["api_used"] = api_used
+    updated["fallback_used"] = fallback_used
     updated["correction_uncertain"] = correction_uncertain
     updated["correction_note"] = (
         "Overlapping speech: conservative correction retained for review. "
@@ -291,11 +341,52 @@ def correct_segments(
     qwen_base_url: str = (
         "https://dashscope.aliyuncs.com/compatible-mode/v1"
     ),
+    correction_mode: str | None = None,
+    llm_config: LLMConfig | None = None,
+    temperature: float = 0.0,
+    timeout_seconds: float = 30.0,
+    prompt_version: str = PROMPT_VERSION,
 ) -> list[dict[str, Any]]:
     """Correct segments independently while preserving their audit fields."""
 
+    configured_key = any(
+        (openai_api_key, deepseek_api_key, qwen_api_key)
+    )
+    selected_mode = correction_mode
+    if selected_mode is None:
+        selected_mode = (
+            "rule_fallback"
+            if mock or not (configured_key or llm_config)
+            else "llm_with_rule_fallback"
+        )
+    if selected_mode not in CORRECTION_MODES:
+        raise ValueError(
+            "correction_mode must be rule_fallback, llm, or "
+            "llm_with_rule_fallback."
+        )
+
     llm = None
-    if not mock:
+    provider_name = ""
+    model_name = ""
+    selected_prompt_version = prompt_version
+    selected_temperature = temperature
+    if llm_config is not None:
+        llm_config.validate(require_api=selected_mode == "llm")
+        provider_name = llm_config.provider
+        model_name = llm_config.model
+        selected_prompt_version = llm_config.prompt_version
+        selected_temperature = llm_config.temperature
+        if llm_config.is_configured:
+            llm = LLMProvider(
+                name=llm_config.provider,
+                api_key=llm_config.api_key,
+                base_url=llm_config.base_url,
+                model=llm_config.model,
+                temperature=llm_config.temperature,
+                timeout_seconds=llm_config.timeout_seconds,
+                prompt_version=llm_config.prompt_version,
+            )
+    elif not mock and selected_mode != "rule_fallback":
         llm = select_provider(
             provider=provider,
             openai_api_key=openai_api_key,
@@ -308,7 +399,34 @@ def correct_segments(
             deepseek_base_url=deepseek_base_url,
             qwen_base_url=qwen_base_url,
         )
+        if llm is not None:
+            llm = LLMProvider(
+                name=llm.name,
+                api_key=llm.api_key,
+                base_url=llm.base_url,
+                model=llm.model,
+                temperature=temperature,
+                timeout_seconds=timeout_seconds,
+                prompt_version=prompt_version,
+            )
+            provider_name = llm.name
+            model_name = llm.model
+    if selected_mode == "llm" and llm is None:
+        raise RuntimeError(
+            "Real LLM correction requested but LLM_API_KEY is missing or "
+            "the selected provider is not configured."
+        )
+
     return [
-        _correct_one_segment(segment, mock=mock, llm=llm)
+        _correct_one_segment(
+            segment,
+            mock=mock,
+            llm=llm,
+            correction_mode=selected_mode,
+            provider_name=provider_name,
+            model_name=model_name,
+            prompt_version=selected_prompt_version,
+            temperature=selected_temperature,
+        )
         for segment in segments
     ]

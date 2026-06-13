@@ -65,8 +65,10 @@ def _diarization_mode_label(mode: str) -> str:
 
 
 def _llm_mode_label(mode: str) -> str:
-    if "rule_based" in mode:
+    if mode == "rule_fallback" or "rule_based" in mode:
         return "rule_fallback"
+    if mode in {"llm", "llm_with_rule_fallback"}:
+        return mode
     if mode.startswith("api_"):
         return "api_llm"
     return mode
@@ -267,6 +269,16 @@ def build_conversation_map(
         "asr_backend_mode": asr_mode,
         "diarization_backend_mode": diarization_mode,
         "correction_backend_mode": correction_mode,
+        "llm_provider": audits[0].llm_provider if audits else "",
+        "llm_model": audits[0].llm_model if audits else "",
+        "llm_prompt_version": (
+            audits[0].prompt_version if audits else ""
+        ),
+        "llm_temperature": audits[0].temperature if audits else 0.0,
+        "llm_api_used": any(audit.api_used for audit in audits),
+        "llm_fallback_used": any(
+            audit.fallback_used for audit in audits
+        ),
         "reference_assisted": (
             asr_mode == "reference" or diarization_mode == "reference"
         ),

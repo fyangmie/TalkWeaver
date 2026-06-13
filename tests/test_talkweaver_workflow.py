@@ -176,8 +176,11 @@ class RetrievalAndCorrectionTests(unittest.TestCase):
             "We use pyannote for diarization.",
         )
         self.assertEqual(anchors[0].speaker, "SPEAKER_00")
-        self.assertIn("rule_based", mode)
+        self.assertEqual(mode, "rule_fallback")
         self.assertEqual(audits[0].unsupported_changes, [])
+        self.assertEqual(audits[0].correction_mode, "rule_fallback")
+        self.assertFalse(audits[0].api_used)
+        self.assertFalse(audits[0].fallback_used)
 
     def test_audit_flags_unsupported_large_change(self) -> None:
         audit = audit_correction(

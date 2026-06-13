@@ -21,6 +21,7 @@ from backend.export import (
     write_json,
 )
 from backend.llm_correction import correct_segments
+from backend.llm_config import load_llm_config
 from backend.overlap import detect_overlap_regions
 from backend.preprocessing import preprocess_audio
 from backend.rag import enrich_segments_with_terms
@@ -144,28 +145,24 @@ def _run_pipeline(
     )
 
     correction_mock = mock or settings.use_mock_llm
+    requested_correction_mode = (
+        "rule_fallback"
+        if correction_mock
+        else "llm_with_rule_fallback"
+    )
+    runtime_llm_config = load_llm_config(
+        correction_mode=requested_correction_mode,
+    )
     corrected = correct_segments(
         rag_transcript,
         mock=correction_mock,
-        provider=settings.llm_provider,
-        openai_api_key=settings.openai_api_key,
-        deepseek_api_key=settings.deepseek_api_key,
-        qwen_api_key=settings.qwen_api_key,
-        openai_model=settings.openai_model,
-        deepseek_model=settings.deepseek_model,
-        qwen_model=settings.qwen_model,
-        openai_base_url=settings.openai_base_url,
-        deepseek_base_url=settings.deepseek_base_url,
-        qwen_base_url=settings.qwen_base_url,
+        correction_mode=requested_correction_mode,
+        llm_config=runtime_llm_config,
     )
     correction_mode = (
-        "mock_rule_based"
-        if correction_mock
-        else (
-            corrected[0].get("correction_mode", "unknown")
-            if corrected
-            else "no_segments"
-        )
+        corrected[0].get("correction_mode", "unknown")
+        if corrected
+        else "no_segments"
     )
     corrected_paths = export_corrected_transcript(
         settings.output_dir / "corrected_transcripts",
@@ -188,7 +185,11 @@ def _run_pipeline(
         )
     )
     uses_rule_based_correction = any(
-        "rule_based" in str(segment.get("correction_mode", ""))
+        (
+            segment.get("correction_mode") == "rule_fallback"
+            or "rule_based"
+            in str(segment.get("correction_backend_mode", ""))
+        )
         for segment in corrected
     )
     if mock:

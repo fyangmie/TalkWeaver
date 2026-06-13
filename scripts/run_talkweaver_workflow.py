@@ -21,6 +21,7 @@ from backend.conversation_map import (  # noqa: E402
     save_conversation_map,
 )
 from backend.diarization import diarize_with_metadata  # noqa: E402
+from backend.llm_config import load_llm_config  # noqa: E402
 from backend.reference_evidence import (  # noqa: E402
     load_reference_evidence,
     resolve_project_path,
@@ -183,12 +184,13 @@ def main() -> int:
                 provided_events = []
 
         settings = get_settings()
-        use_api = not settings.use_mock_llm and any(
-            (
-                settings.openai_api_key,
-                settings.deepseek_api_key,
-                settings.qwen_api_key,
-            )
+        correction_mode = (
+            "rule_fallback"
+            if settings.use_mock_llm
+            else "llm_with_rule_fallback"
+        )
+        runtime_llm_config = load_llm_config(
+            correction_mode=correction_mode,
         )
         conversation_map = build_conversation_map(
             {
@@ -207,17 +209,8 @@ def main() -> int:
             provided_events,
             settings.knowledge_base_dir,
             {
-                "use_api": use_api,
-                "provider": settings.llm_provider,
-                "openai_api_key": settings.openai_api_key,
-                "deepseek_api_key": settings.deepseek_api_key,
-                "qwen_api_key": settings.qwen_api_key,
-                "openai_model": settings.openai_model,
-                "deepseek_model": settings.deepseek_model,
-                "qwen_model": settings.qwen_model,
-                "openai_base_url": settings.openai_base_url,
-                "deepseek_base_url": settings.deepseek_base_url,
-                "qwen_base_url": settings.qwen_base_url,
+                "correction_mode": correction_mode,
+                "runtime_config": runtime_llm_config,
             },
         )
         output_path = save_conversation_map(

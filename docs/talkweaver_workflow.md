@@ -215,9 +215,16 @@ Correction is performed independently per temporal anchor:
 `needs_review=true` is set for overlap/unknown anchors and for unsupported,
 large, or length-expanding corrections.
 
-When an API key and provider are explicitly enabled, the existing
-OpenAI-compatible correction adapter may be used. Without a configured API,
-the deterministic glossary fallback runs and is labeled `rule_fallback`.
+Correction supports three explicit modes:
+
+- `rule_fallback`: deterministic glossary substitutions, no API call;
+- `llm`: strict API mode with no silent fallback;
+- `llm_with_rule_fallback`: API attempt followed by an explicitly recorded
+  deterministic fallback if unavailable or rejected.
+
+Every audit records provider, model, prompt version, temperature,
+`api_used`, and `fallback_used`. See
+[`llm_api_setup.md`](llm_api_setup.md) for secure configuration.
 
 ## Current Implementation
 
@@ -235,12 +242,12 @@ Implemented:
 
 Not implemented yet:
 
-- TalkWeaver workflow ablations beyond the completed ASR-only Phase 2C
-  baseline;
+- controlled technical-term and real-LLM correction ablations beyond the
+  completed Phase 2E workflow ablation;
 - automatic semantic interruption classification;
 - validated stance extraction;
 - paper baseline model inference;
-- real LLM correction evaluation;
+- real LLM correction evaluation beyond the configuration smoke path;
 - automatic pyannote inference in the current environment;
 - the AI Meeting Detective frontend pages that consume this schema.
 

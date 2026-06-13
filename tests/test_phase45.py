@@ -132,7 +132,16 @@ class PromptAndCorrectionTests(unittest.TestCase):
                 openai_api_key="test-key",
             )
 
-        self.assertEqual(corrected[0]["correction_mode"], "api_openai")
+        self.assertEqual(
+            corrected[0]["correction_mode"],
+            "llm_with_rule_fallback",
+        )
+        self.assertEqual(
+            corrected[0]["correction_backend_mode"],
+            "api_openai",
+        )
+        self.assertTrue(corrected[0]["api_used"])
+        self.assertFalse(corrected[0]["fallback_used"])
         self.assertEqual(corrected[0]["start"], self.enriched[0]["start"])
         self.assertEqual(corrected[0]["speaker"], "SPEAKER_00")
 
@@ -141,7 +150,7 @@ class PromptAndCorrectionTests(unittest.TestCase):
 
         self.assertEqual(
             corrected[0]["correction_mode"],
-            "no_api_rule_based",
+            "rule_fallback",
         )
         self.assertEqual(
             corrected[0]["corrected_text"],
