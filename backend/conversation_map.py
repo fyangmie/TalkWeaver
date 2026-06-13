@@ -45,7 +45,9 @@ def _asr_mode_label(mode: str) -> str:
         return "mock"
     if mode == "reference":
         return "reference"
-    return "real_asr"
+    if mode == "faster_whisper":
+        return "real"
+    return "unknown"
 
 
 def _diarization_mode_label(mode: str) -> str:

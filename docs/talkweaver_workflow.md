@@ -110,6 +110,16 @@ as automatic diarization performance.
 
 ### Real ASR With Reference Diarization
 
+Check and install the optional runtime first:
+
+```bash
+python scripts/check_optional_dependencies.py
+pip install -r requirements-optional.txt
+python scripts/check_optional_dependencies.py --strict faster-whisper
+```
+
+Then run the CPU smoke path:
+
 ```bash
 python scripts/run_talkweaver_workflow.py \
   --manifest data/manifests/formal_eval_real.csv \
@@ -123,9 +133,18 @@ python scripts/run_talkweaver_workflow.py \
 
 Real ASR calls `faster-whisper` with mock fallback disabled. If the package or
 model is unavailable, the command exits non-zero. It never relabels mock text
-as real ASR. Automatic diarization similarly requires configured
+as real ASR, and `asr_mode=real` is written only after the backend reports a
+successful `faster_whisper` run. The recommended first configuration is
+`--asr-model tiny --device cpu --compute-type int8`.
+
+The first model use downloads CTranslate2 weights from Hugging Face. Model
+caches, raw audio, and generated outputs must remain outside Git. Automatic
+diarization similarly requires configured
 `pyannote.audio` and `HF_TOKEN`; otherwise use the explicitly requested
 reference mode during workflow development.
+
+See [`dependency_setup.md`](dependency_setup.md) for Python compatibility,
+CPU/GPU setup, cache policy, and troubleshooting.
 
 ## Event Rules
 
@@ -203,6 +222,12 @@ At the June 13, 2026 smoke run, `faster-whisper` and `pyannote.audio` were not
 installed, `HF_TOKEN` was unset, and no supported LLM API key was configured.
 Mock and reference-assisted workflows run. Real ASR correctly exits with an
 explicit missing-dependency message and does not create fake real output.
+
+Recheck the local environment at any time:
+
+```bash
+python scripts/check_optional_dependencies.py
+```
 
 ## Output
 

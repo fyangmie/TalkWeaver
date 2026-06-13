@@ -10,6 +10,11 @@ from typing import Any
 
 LOGGER = logging.getLogger(__name__)
 
+REAL_ASR_DEPENDENCY_ERROR = (
+    "Real ASR requested but faster-whisper is not installed. "
+    "Install with: pip install -r requirements-optional.txt"
+)
+
 MOCK_ASR_SEGMENTS: list[dict[str, Any]] = [
     {
         "start": 0.0,
@@ -153,11 +158,7 @@ def transcribe_with_metadata(
                 "inference."
             )
         else:
-            message = (
-                "faster-whisper is not installed; real ASR cannot run and "
-                "mock fallback is disabled. Install it with "
-                "`pip install faster-whisper`."
-            )
+            message = REAL_ASR_DEPENDENCY_ERROR
         if not fallback_to_mock:
             raise RuntimeError(message) from exc
         LOGGER.warning(message)

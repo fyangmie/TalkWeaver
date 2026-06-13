@@ -28,6 +28,10 @@ Thumbs.db
 *.pth
 *.safetensors
 models/
+.cache/
+.huggingface/
+huggingface_cache/
+model-cache/
 
 # Local audio and generated data
 data/raw/**

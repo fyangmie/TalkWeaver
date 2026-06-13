@@ -203,6 +203,34 @@ class ConversationMapTests(unittest.TestCase):
         self.assertTrue(exported["anchors"])
         self.assertIn("correction_audits", exported)
 
+    def test_real_mode_requires_faster_whisper_backend_metadata(self) -> None:
+        diarization = {
+            "mode": "reference",
+            "turns": build_mock_speaker_turns(),
+        }
+        real_map = build_conversation_map(
+            {"clip_id": "real_clip", "language": "en"},
+            {
+                "mode": "faster_whisper",
+                "segments": MOCK_ASR_SEGMENTS,
+            },
+            diarization,
+            [],
+            ROOT / "docs" / "knowledge_base",
+            {"use_api": False},
+        )
+        unknown_map = build_conversation_map(
+            {"clip_id": "unknown_clip", "language": "en"},
+            {"mode": "unexpected_backend", "segments": MOCK_ASR_SEGMENTS},
+            diarization,
+            [],
+            ROOT / "docs" / "knowledge_base",
+            {"use_api": False},
+        )
+
+        self.assertEqual(real_map.metadata["asr_mode"], "real")
+        self.assertEqual(unknown_map.metadata["asr_mode"], "unknown")
+
     def test_cli_help_requires_no_models(self) -> None:
         result = subprocess.run(
             [

@@ -107,14 +107,21 @@ M4A.
 Install the optional ASR, denoising, and diarization packages when needed:
 
 ```bash
+python scripts/check_optional_dependencies.py
 pip install -r requirements-optional.txt
 ```
 
-`faster-whisper` model weights are downloaded on first use when a model name is
-selected. GPU execution additionally requires a compatible CUDA/cuDNN setup.
+Real ASR remains optional so mock and reference-assisted workflows work
+without model packages. `faster-whisper` downloads CTranslate2 model weights
+from Hugging Face on first use; these caches must not be committed. Start with
+`--asr-model tiny --device cpu --compute-type int8`. GPU execution additionally
+requires a compatible CUDA/cuDNN setup.
 Real diarization uses
 `pyannote/speaker-diarization-community-1` and requires an accepted model
 license plus a Hugging Face access token in `HF_TOKEN`.
+
+See [`docs/dependency_setup.md`](docs/dependency_setup.md) for the minimal,
+CPU, GPU, cache, and troubleshooting policies.
 
 ## Environment Variables
 
@@ -202,6 +209,9 @@ python scripts/run_talkweaver_workflow.py \
 Real ASR with reference diarization:
 
 ```bash
+python scripts/check_optional_dependencies.py
+pip install -r requirements-optional.txt
+
 python scripts/run_talkweaver_workflow.py \
   --manifest data/manifests/formal_eval_real.csv \
   --clip-id ami_es2002a_01 \
@@ -219,8 +229,10 @@ oracle/reference evidence, not automatic diarization. Output is written to
 
 See [`docs/talkweaver_workflow.md`](docs/talkweaver_workflow.md) for the
 paper-to-module mapping, schema, evidence modes, correction rules, and current
-limitations. This is a paper-inspired proxy workflow; it is not claimed as a
-reproduction of DiarizationLM, DM-ASR, Diarization-Aware MS-ASR, or TagSpeech.
+limitations, and [`docs/dependency_setup.md`](docs/dependency_setup.md) for
+optional real-ASR setup. This is a paper-inspired proxy workflow; it is not
+claimed as a reproduction of DiarizationLM, DM-ASR, Diarization-Aware MS-ASR,
+or TagSpeech.
 
 ## Quickstart: Mock Mode
 

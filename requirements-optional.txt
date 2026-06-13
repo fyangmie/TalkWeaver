@@ -1,4 +1,5 @@
-# Optional Phase 2 and Phase 3 model dependencies.
+# Optional model and evaluation dependencies.
+# Mock and reference-assisted workflows do not require this file.
 faster-whisper>=1.1,<2
 noisereduce>=3.0,<4
 pyannote.audio>=4.0,<5
