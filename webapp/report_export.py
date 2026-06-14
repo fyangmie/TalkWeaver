@@ -9,6 +9,7 @@ from typing import Any, Iterable
 from webapp.data_loader import (
     build_clip_detective_summary,
     build_speaker_evidence_cards,
+    get_best_evidence_gate_model,
     get_event_investigation_rows,
     resolve_local_audio_path,
 )
@@ -92,6 +93,29 @@ def build_detective_report(
         "| Time | Speaker(s) | Raw evidence | Corrected text | Flags |",
         "| --- | --- | --- | --- | --- |",
     ]
+    evidence_gate = get_best_evidence_gate_model()
+    gate_section = ["## EvidenceGate Safety Model", ""]
+    if evidence_gate:
+        gate_section.extend(
+            [
+                f"- Best controlled test model: {_safe_text(evidence_gate.get('model_name'))}",
+                f"- Macro F1: {float(evidence_gate.get('macro_f1', 0.0)):.3f}",
+                f"- False-accept rate: {float(evidence_gate.get('false_accept_rate', 0.0)):.3f}",
+                f"- Unsafe-accept rate: {float(evidence_gate.get('unsafe_accept_rate', 0.0)):.3f}",
+                f"- Needs-review recall: {float(evidence_gate.get('needs_review_recall', 0.0)):.3f}",
+                "- Scope: controlled and semi-synthetic correction-safety data; not real-audio generalization.",
+                "",
+            ]
+        )
+    else:
+        gate_section.extend(
+            [
+                "- EvidenceGate results are not available. Regenerate them with the Phase 2H training commands.",
+                "",
+            ]
+        )
+    temporal_index = lines.index("## Temporal Anchors")
+    lines[temporal_index:temporal_index] = gate_section
     for anchor in anchors[:max_anchors]:
         speakers = anchor.get("speakers") or [anchor.get("speaker", "UNKNOWN")]
         flags = []

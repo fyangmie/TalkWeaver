@@ -28,6 +28,10 @@ Thumbs.db
 *.pth
 *.safetensors
 models/
+!models/
+models/*
+!models/evidence_gate/
+!models/evidence_gate/*.joblib
 .cache/
 .huggingface/
 huggingface_cache/
@@ -99,6 +103,11 @@ assets/result_charts/*.png
 !assets/result_charts/overlap_unsupported_changes.png
 !assets/result_charts/overlap_review_flags.png
 !assets/result_charts/overlap_error_delta.png
+!assets/result_charts/evidence_gate_macro_f1.png
+!assets/result_charts/evidence_gate_false_accept_rate.png
+!assets/result_charts/evidence_gate_confusion_matrix.png
+!assets/result_charts/evidence_gate_feature_importance.png
+!assets/result_charts/evidence_gate_class_recall.png
 assets/screenshots/*
 assets/demo_gifs/*
 !assets/**/.gitkeep

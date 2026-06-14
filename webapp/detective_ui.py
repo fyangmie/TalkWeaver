@@ -33,6 +33,13 @@ CHART_GROUPS = {
         "overlap_review_flags.png",
         "overlap_error_delta.png",
     ),
+    "EvidenceGate trained safety model": (
+        "evidence_gate_macro_f1.png",
+        "evidence_gate_false_accept_rate.png",
+        "evidence_gate_confusion_matrix.png",
+        "evidence_gate_feature_importance.png",
+        "evidence_gate_class_recall.png",
+    ),
 }
 
 

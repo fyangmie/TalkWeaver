@@ -24,6 +24,7 @@ from webapp.data_loader import (
     load_conversation_map,
 )
 from webapp.views.dashboard import render_dashboard
+from webapp.views.evidence_gate import render_evidence_gate
 from webapp.views.home import render_crime_scene, render_home
 from webapp.views.report import render_export
 from webapp.views.safety import (
@@ -43,6 +44,7 @@ PAGES = (
     "Cross-talk and Overlap Warning",
     "Misheard Word Rescue",
     "Hallucination Watchdog",
+    "EvidenceGate Model",
     "Evidence Dashboard",
     "Export / Report Preview",
 )
@@ -104,6 +106,7 @@ def main() -> None:
         "Cross-talk and Overlap Warning": render_overlap,
         "Misheard Word Rescue": render_term_rescue,
         "Hallucination Watchdog": render_watchdog,
+        "EvidenceGate Model": render_evidence_gate,
         "Evidence Dashboard": render_dashboard,
         "Export / Report Preview": render_export,
     }

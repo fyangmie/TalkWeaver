@@ -41,6 +41,11 @@ def render_dashboard(_: dict[str, Any]) -> None:
     second_row[1].warning(
         "**Controlled overlap safety:** overlap awareness increases review and conservative rejection where evidence is weak."
     )
+    st.info(
+        "**EvidenceGate:** a lightweight trained classifier adds an explicit "
+        "accept / reject / needs-review decision after correction proposals. "
+        "Its current evidence is controlled and semi-synthetic."
+    )
 
     asr = load_asr_summary()
     workflow = load_workflow_ablation()

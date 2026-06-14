@@ -1809,6 +1809,41 @@ no-awareness rule, overlap-aware rule, no-awareness LLM, and overlap-aware
 LLM respectively. These are controlled safety results, not measured public
 ASR correction performance.
 
+### Phase 2H - EvidenceGate Trained Correction Safety Model
+
+**Status: implemented on June 14, 2026.**
+
+TalkWeaver now includes its own trained lightweight safety classifier:
+EvidenceGate. It classifies correction proposals as `accept`, `reject`, or
+`needs_review` after ASR, temporal evidence, retrieval, and rule/LLM
+correction proposal.
+
+Implemented:
+
+- a reusable EvidenceGate schema, feature extractor, conservative label
+  policy, and sklearn wrapper;
+- 255 normalized Phase 2F/2G seed decisions;
+- 270 transparent rule-based augmentations, producing 525 controlled rows;
+- `template_group` train/validation/test isolation with 361/63/101 rows and
+  no source-case variant leakage;
+- logistic regression, random forest, and gradient boosting models;
+- accuracy, macro F1, class metrics, false-accept rate, unsafe-accept rate,
+  confusion matrix, and baseline comparison;
+- committed predictions, metrics, feature importance, small joblib models,
+  five charts, documentation, network-free tests, and an EvidenceGate
+  frontend page.
+
+All three models achieved controlled test macro F1 `1.0`, unsafe-accept rate
+`0.0`, needs-review recall `1.0`, and reject recall `1.0`. The direct rule
+baseline reached macro F1 `0.928`. These results are explicitly scoped as
+controlled safety-policy distillation. Audit-policy features and
+deterministic augmentation make the current task highly separable; they do
+not demonstrate real-audio or out-of-domain generalization. Independent
+human-adjudicated correction proposals remain required before deployment
+claims.
+
+See [`docs/evidence_gate.md`](docs/evidence_gate.md).
+
 ### Phase 3 - Metrics and Experiment Runners
 
 **Goal:** Make all future UI evidence reproducible.

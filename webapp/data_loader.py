@@ -23,6 +23,18 @@ TERM_RESCUE_SUMMARY_PATH = RESULTS_DIR / "term_rescue_summary_controlled.csv"
 TERM_RESCUE_RESULTS_PATH = RESULTS_DIR / "term_rescue_controlled.csv"
 OVERLAP_SAFETY_SUMMARY_PATH = RESULTS_DIR / "overlap_safety_summary_controlled.csv"
 OVERLAP_SAFETY_RESULTS_PATH = RESULTS_DIR / "overlap_safety_controlled.csv"
+EVIDENCE_GATE_DIR = RESULTS_DIR / "evidence_gate"
+EVIDENCE_GATE_METRICS_PATH = EVIDENCE_GATE_DIR / "evidence_gate_metrics.csv"
+EVIDENCE_GATE_EVAL_PATH = EVIDENCE_GATE_DIR / "evidence_gate_eval_summary.csv"
+EVIDENCE_GATE_PREDICTIONS_PATH = (
+    EVIDENCE_GATE_DIR / "evidence_gate_predictions.csv"
+)
+EVIDENCE_GATE_IMPORTANCE_PATH = (
+    EVIDENCE_GATE_DIR / "evidence_gate_feature_importance.csv"
+)
+EVIDENCE_GATE_SPLIT_PATH = (
+    EVIDENCE_GATE_DIR / "evidence_gate_split_summary.csv"
+)
 
 STOPWORDS = {
     "about",
@@ -546,6 +558,103 @@ def load_overlap_safety_cases(
     """Load row-level controlled overlap correction case results."""
 
     return _load_csv(path, "controlled overlap safety cases")
+
+
+def load_evidence_gate_metrics(
+    path: str | Path = EVIDENCE_GATE_METRICS_PATH,
+) -> pd.DataFrame:
+    return _load_csv(path, "EvidenceGate model metrics")
+
+
+def load_evidence_gate_evaluation(
+    path: str | Path = EVIDENCE_GATE_EVAL_PATH,
+) -> pd.DataFrame:
+    return _load_csv(path, "EvidenceGate evaluation and baselines")
+
+
+def load_evidence_gate_predictions(
+    path: str | Path = EVIDENCE_GATE_PREDICTIONS_PATH,
+) -> pd.DataFrame:
+    return _load_csv(path, "EvidenceGate predictions")
+
+
+def load_evidence_gate_feature_importance(
+    path: str | Path = EVIDENCE_GATE_IMPORTANCE_PATH,
+) -> pd.DataFrame:
+    return _load_csv(path, "EvidenceGate feature importance")
+
+
+def load_evidence_gate_split_summary(
+    path: str | Path = EVIDENCE_GATE_SPLIT_PATH,
+) -> pd.DataFrame:
+    return _load_csv(path, "EvidenceGate split summary")
+
+
+def get_best_evidence_gate_model(
+    path: str | Path = EVIDENCE_GATE_METRICS_PATH,
+) -> dict[str, Any] | None:
+    """Return the strongest test model by macro F1 then unsafe-accept rate."""
+
+    frame = load_evidence_gate_metrics(path)
+    if frame.empty:
+        return None
+    candidates = frame.copy()
+    if "split" in candidates:
+        test = candidates[candidates["split"].eq("test")]
+        if not test.empty:
+            candidates = test
+    required = {"model_name", "macro_f1", "unsafe_accept_rate"}
+    if not required.issubset(candidates.columns):
+        return None
+    return (
+        candidates.sort_values(
+            ["macro_f1", "unsafe_accept_rate", "model_name"],
+            ascending=[False, True, True],
+        )
+        .iloc[0]
+        .to_dict()
+    )
+
+
+def get_evidence_gate_examples(
+    predictions_path: str | Path = EVIDENCE_GATE_PREDICTIONS_PATH,
+    metrics_path: str | Path = EVIDENCE_GATE_METRICS_PATH,
+) -> dict[str, pd.DataFrame]:
+    """Return one accepted, rejected, and review example for the best model."""
+
+    predictions = load_evidence_gate_predictions(predictions_path)
+    best = get_best_evidence_gate_model(metrics_path)
+    empty = {
+        "accept": pd.DataFrame(),
+        "reject": pd.DataFrame(),
+        "needs_review": pd.DataFrame(),
+    }
+    if predictions.empty or best is None:
+        return empty
+    frame = predictions[
+        predictions["model_name"].eq(best["model_name"])
+        & predictions["split"].eq("test")
+        & predictions["predicted_label"].eq(predictions["true_label"])
+    ].copy()
+    examples: dict[str, pd.DataFrame] = {}
+    for label in empty:
+        candidates = frame[frame["true_label"].eq(label)].copy()
+        if label == "accept" and {"raw_text", "corrected_text"}.issubset(candidates):
+            changed = candidates[
+                candidates["raw_text"].fillna("").ne(
+                    candidates["corrected_text"].fillna("")
+                )
+            ]
+            if not changed.empty:
+                candidates = changed
+        probability_column = f"prob_{label}"
+        if probability_column in candidates:
+            candidates = candidates.sort_values(
+                probability_column,
+                ascending=False,
+            )
+        examples[label] = candidates.head(1).reset_index(drop=True)
+    return examples
 
 
 def _nonempty_text(series: pd.Series) -> pd.Series:

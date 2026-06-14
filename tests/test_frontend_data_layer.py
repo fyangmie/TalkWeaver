@@ -14,9 +14,12 @@ from webapp.data_loader import (
     build_speaker_evidence_cards,
     discover_charts,
     frame_warning,
+    get_best_evidence_gate_model,
     get_best_term_rescue_examples,
     get_best_available_demo_clip,
+    get_evidence_gate_examples,
     get_event_audio_window,
+    load_evidence_gate_metrics,
     load_overlap_safety_cases,
     list_available_conversation_maps,
     load_asr_summary,
@@ -150,6 +153,30 @@ class FrontendDataLoaderTests(unittest.TestCase):
         self.assertIn("raw_asr_text", term_cases)
         self.assertIn("correction_rejected", overlap_cases)
 
+    def test_evidence_gate_artifacts_are_loadable(self) -> None:
+        metrics = load_evidence_gate_metrics()
+        best = get_best_evidence_gate_model()
+        examples = get_evidence_gate_examples()
+
+        self.assertFalse(metrics.empty)
+        self.assertIsNotNone(best)
+        self.assertIn(best["model_name"], metrics["model_name"].tolist())
+        self.assertFalse(examples["accept"].empty)
+        self.assertFalse(examples["reject"].empty)
+        self.assertFalse(examples["needs_review"].empty)
+
+    def test_evidence_gate_missing_results_are_graceful(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            metrics = load_evidence_gate_metrics(root / "missing_metrics.csv")
+            examples = get_evidence_gate_examples(
+                root / "missing_predictions.csv",
+                root / "missing_metrics.csv",
+            )
+
+        self.assertTrue(metrics.empty)
+        self.assertTrue(all(frame.empty for frame in examples.values()))
+
     def test_curated_term_examples_include_visible_corrections(self) -> None:
         examples = get_best_term_rescue_examples()
 
@@ -214,6 +241,7 @@ class DetectiveReportTests(unittest.TestCase):
         self.assertIn("SPEAKER_00", saved)
         self.assertIn("Audio window", saved)
         self.assertIn("pyannote", saved)
+        self.assertIn("EvidenceGate Safety Model", saved)
 
     def test_app_import_does_not_start_streamlit_main(self) -> None:
         module = importlib.import_module("webapp.app")

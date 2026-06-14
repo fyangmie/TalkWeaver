@@ -106,6 +106,19 @@ common-word negative controls. Each case exposes raw text, corrected or
 retained text, unsupported changes, review/rejection status, API use,
 fallback use, and the recorded reason.
 
+### EvidenceGate Model
+
+Presents TalkWeaver's trained lightweight `accept / reject / needs_review`
+classifier. The page compares logistic regression, random forest, gradient
+boosting, and transparent baselines; displays the group-aware split, macro
+F1, false/unsafe accept rates, class recall, confusion matrix, and feature
+importance; and exposes one correctly classified case file per decision.
+
+EvidenceGate results are explicitly labeled controlled/semi-synthetic. The
+current near-perfect scores reflect a safety-policy distillation task with
+rule-based augmentation and must not be interpreted as real-audio
+generalization.
+
 ### Evidence Dashboard
 
 Displays:
@@ -115,6 +128,8 @@ Displays:
 - workflow ablation;
 - controlled term rescue charts;
 - controlled overlap safety charts.
+- EvidenceGate model, false-accept, confusion-matrix, feature-importance, and
+  class-recall charts.
 
 WER and CER, public and controlled evidence, and oracle versus automatic
 speaker evidence remain visibly separated.
@@ -174,6 +189,8 @@ The frontend data layer is `webapp/data_loader.py`.
 | Term rescue summary | `experiments/results/term_rescue_summary_controlled.csv` | Controlled authored text fixtures |
 | Overlap safety cases | `experiments/results/overlap_safety_controlled.csv` | Controlled correction/rejection cases |
 | Overlap safety summary | `experiments/results/overlap_safety_summary_controlled.csv` | Controlled authored text fixtures |
+| EvidenceGate predictions and metrics | `experiments/results/evidence_gate/` | Trained controlled/semi-synthetic safety classifier |
+| EvidenceGate models | `models/evidence_gate/` | Small reproducible sklearn joblib artifacts |
 | Charts | `assets/result_charts/` | Derived from the corresponding CSV scope |
 
 ## Why Public Clips May Show No Correction
@@ -204,6 +221,8 @@ For a final-video correction demonstration:
    anchors.
 6. Open **Speaker Evidence Cards** and verify an extractive statement against
    its timestamped quote.
+7. Open **EvidenceGate Model** and compare the trained classifier with
+   always-accept, always-review, and direct-rule baselines.
 
 The controlled fixture label remains visible throughout this flow.
 
@@ -222,6 +241,9 @@ workflow or reference-map scripts documented in
 - Reference speaker-time is oracle-assisted, not automatic diarization.
 - Controlled term and overlap fixtures are text safety tests, not acoustic
   generalization evidence.
+- EvidenceGate is trained on those controlled fixtures and deterministic
+  augmentations; independent human-audited external validation is still
+  required.
 - Event-level playback requires the ignored local audio file and browser
   support for seek offsets.
 - Speaker cards remain extractive fallback evidence unless an LLM-assisted

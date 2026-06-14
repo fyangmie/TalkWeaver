@@ -464,6 +464,40 @@ python experiments/plot_results.py
 Generated demo outputs are written under `outputs/` and
 `experiments/results/`.
 
+## Training EvidenceGate
+
+EvidenceGate is TalkWeaver's lightweight trained correction-safety model. It
+classifies a proposed correction as `accept`, `reject`, or `needs_review`
+using Phase 2F/2G audit evidence. It does not train ASR or an LLM and requires
+no API key or audio.
+
+```bash
+python experiments/build_evidence_gate_dataset.py \
+  --term-input experiments/results/term_rescue_controlled.csv \
+  --overlap-input experiments/results/overlap_safety_controlled.csv \
+  --output data/controlled_evidence_gate/evidence_gate_examples.csv
+
+python experiments/augment_evidence_gate_examples.py \
+  --input data/controlled_evidence_gate/evidence_gate_examples.csv \
+  --output data/controlled_evidence_gate/evidence_gate_examples_augmented.csv
+
+python experiments/train_evidence_gate.py \
+  --input data/controlled_evidence_gate/evidence_gate_examples_augmented.csv \
+  --output-dir experiments/results/evidence_gate \
+  --models logistic_regression random_forest gradient_boosting \
+  --group-split-column template_group \
+  --random-seed 42
+
+python experiments/evaluate_evidence_gate.py
+python experiments/plot_evidence_gate.py
+```
+
+The committed controlled run uses 255 seed rows and 270 transparent
+augmentations. The split is group-aware, so variants and augmentations from
+one source case cannot cross train, validation, and test boundaries. Current
+scores are controlled policy-distillation results, not claims of real-audio
+generalization. See [`docs/evidence_gate.md`](docs/evidence_gate.md).
+
 ## Running AI Meeting Detective Frontend
 
 Phase 3A adds the investigation-oriented frontend over existing
@@ -482,6 +516,7 @@ The app provides:
 - Cross-talk and Overlap Warning;
 - Misheard Word Rescue;
 - Hallucination Watchdog;
+- EvidenceGate Model;
 - Evidence Dashboard;
 - Export / Report Preview.
 
