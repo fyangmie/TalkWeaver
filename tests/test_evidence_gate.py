@@ -11,9 +11,16 @@ from pathlib import Path
 import pandas as pd
 
 from backend.evidence_gate import (
+    DIRECT_LABEL_PROXY_FEATURES,
+    EVIDENCE_ONLY_FEATURES,
     FEATURE_COLUMNS,
+    REFERENCE_DERIVED_FEATURES,
+    RISK_ONLY_FEATURES,
     extract_evidence_features,
     normalize_evidence_label,
+)
+from experiments.audit_evidence_gate_features import (
+    build_feature_leakage_audit,
 )
 from experiments.augment_evidence_gate_examples import (
     augment_evidence_gate_examples,
@@ -21,10 +28,19 @@ from experiments.augment_evidence_gate_examples import (
 from experiments.build_evidence_gate_dataset import (
     build_evidence_gate_dataset,
 )
+from experiments.build_evidence_gate_heldout import (
+    build_independent_heldout,
+)
+from experiments.evaluate_evidence_gate_heldout import (
+    evaluate_all_feature_sets,
+)
 from experiments.evaluate_evidence_gate import (
     compute_evidence_gate_metrics,
 )
 from experiments.plot_evidence_gate import plot_evidence_gate_results
+from experiments.plot_evidence_gate_validation import (
+    plot_evidence_gate_validation,
+)
 from experiments.train_evidence_gate import (
     group_train_validation_test_split,
     train_evidence_gate_models,
@@ -126,6 +142,60 @@ class EvidenceGateFeatureTests(unittest.TestCase):
         self.assertEqual(label, "reject")
         self.assertEqual(review, "needs_review")
 
+    def test_leakage_audit_flags_proxy_features(self) -> None:
+        audit = build_feature_leakage_audit().set_index("feature_or_field")
+
+        self.assertEqual(
+            audit.loc["correction_rejected_input_flag", "category"],
+            "direct_label_proxy_features",
+        )
+        self.assertEqual(
+            audit.loc["invented_content_flag", "category"],
+            "final_audit_outcome_features",
+        )
+        self.assertFalse(
+            bool(audit.loc["needs_review_input_flag", "evidence_only"])
+        )
+
+    def test_strict_feature_sets_exclude_leakage(self) -> None:
+        excluded = (
+            DIRECT_LABEL_PROXY_FEATURES
+            | REFERENCE_DERIVED_FEATURES
+            | {
+                "unsupported_change_count",
+                "forbidden_change_count",
+                "invented_content_flag",
+                "speaker_attribution_changed_flag",
+            }
+        )
+
+        self.assertFalse(set(EVIDENCE_ONLY_FEATURES) & excluded)
+        self.assertFalse(set(RISK_ONLY_FEATURES) & excluded)
+
+    def test_context_risk_ignores_final_audit_outcomes(self) -> None:
+        proposal = {
+            "raw_text": "we use piano note",
+            "corrected_text": "we use pyannote",
+            "overlap": True,
+            "uncertainty_level": "medium",
+        }
+        clean = extract_evidence_features(proposal)
+        outcome_changed = extract_evidence_features(
+            {
+                **proposal,
+                "needs_review": True,
+                "correction_rejected": True,
+                "unsupported_change_count": 3,
+                "invented_content": True,
+                "speaker_attribution_changed": True,
+            }
+        )
+
+        self.assertEqual(
+            clean["context_risk_score"],
+            outcome_changed["context_risk_score"],
+        )
+
 
 class EvidenceGateDatasetTests(unittest.TestCase):
     def test_dataset_builder_normalizes_two_sources(self) -> None:
@@ -201,6 +271,19 @@ class EvidenceGateDatasetTests(unittest.TestCase):
         self.assertFalse(groups[0] & groups[2])
         self.assertFalse(groups[1] & groups[2])
 
+    def test_independent_heldout_has_new_balanced_groups(self) -> None:
+        heldout = build_independent_heldout()
+
+        self.assertEqual(len(heldout), 90)
+        self.assertEqual(heldout["template_group"].nunique(), 30)
+        self.assertEqual(
+            heldout["expected_label"].value_counts().to_dict(),
+            {"accept": 30, "reject": 30, "needs_review": 30},
+        )
+        self.assertTrue(
+            heldout["template_group"].str.startswith("independent:").all()
+        )
+
 
 class EvidenceGateTrainingTests(unittest.TestCase):
     def test_training_evaluation_and_plotting_on_tiny_data(self) -> None:
@@ -223,10 +306,52 @@ class EvidenceGateTrainingTests(unittest.TestCase):
 
             self.assertTrue(Path(result["prediction_path"]).exists())
             self.assertTrue(
-                (root / "models" / "evidence_gate_logistic_regression.joblib").exists()
+                (
+                    root
+                    / "models"
+                    / "evidence_gate_audit_aware_logistic_regression.joblib"
+                ).exists()
             )
             self.assertEqual(len(charts), 5)
             self.assertTrue(all(path.exists() for path in charts))
+
+    def test_independent_heldout_evaluator_and_validation_plot(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = _training_frame()
+            for feature_set in ("audit_aware", "evidence_only", "risk_only"):
+                train_evidence_gate_models(
+                    source,
+                    root / "results",
+                    ["logistic_regression", "random_forest", "gradient_boosting"],
+                    group_split_column="template_group",
+                    random_seed=42,
+                    models_dir=root / "models",
+                    feature_set=feature_set,
+                )
+            predictions, metrics = evaluate_all_feature_sets(
+                build_independent_heldout(),
+                root / "results",
+                root / "models",
+            )
+            charts = plot_evidence_gate_validation(
+                build_feature_leakage_audit(),
+                metrics,
+                predictions,
+                root / "validation_charts",
+            )
+
+        self.assertIn("independent_heldout", set(metrics["split"]))
+        self.assertEqual(
+            {"audit_aware", "evidence_only", "risk_only"},
+            set(
+                metrics.loc[
+                    ~metrics["is_baseline"].astype(bool),
+                    "feature_set",
+                ]
+            ),
+        )
+        self.assertEqual(len(charts), 4)
 
     def test_safety_metrics_count_unsafe_accepts(self) -> None:
         metrics = compute_evidence_gate_metrics(
@@ -245,6 +370,10 @@ class EvidenceGateTrainingTests(unittest.TestCase):
             "train_evidence_gate.py",
             "evaluate_evidence_gate.py",
             "plot_evidence_gate.py",
+            "audit_evidence_gate_features.py",
+            "build_evidence_gate_heldout.py",
+            "evaluate_evidence_gate_heldout.py",
+            "plot_evidence_gate_validation.py",
         )
         for script in scripts:
             result = subprocess.run(

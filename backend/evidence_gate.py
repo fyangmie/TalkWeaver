@@ -18,7 +18,7 @@ from typing import Any, Iterable, Mapping
 
 
 LABELS = ("accept", "reject", "needs_review")
-FEATURE_COLUMNS = (
+AUDIT_AWARE_FEATURES = (
     "retrieval_candidate_count",
     "applied_correction_count",
     "expected_term_count",
@@ -48,7 +48,82 @@ FEATURE_COLUMNS = (
     "rule_variant_flag",
     "negative_control_flag",
     "context_risk_score",
+    "language_en_flag",
+    "language_fr_flag",
+    "language_zh_flag",
+    "language_other_flag",
+    "source_term_rescue_flag",
+    "source_overlap_safety_flag",
+    "source_independent_flag",
 )
+EVIDENCE_ONLY_FEATURES = (
+    "retrieval_candidate_count",
+    "applied_correction_count",
+    "num_changed_tokens",
+    "changed_token_ratio",
+    "edit_distance_ratio",
+    "overlap_flag",
+    "heavy_overlap_flag",
+    "uncertainty_score",
+    "context_risk_score",
+    "api_used_flag",
+    "llm_variant_flag",
+    "rule_variant_flag",
+    "language_en_flag",
+    "language_fr_flag",
+    "language_zh_flag",
+    "language_other_flag",
+    "source_term_rescue_flag",
+    "source_overlap_safety_flag",
+    "source_independent_flag",
+)
+RISK_ONLY_FEATURES = (
+    "num_changed_tokens",
+    "changed_token_ratio",
+    "edit_distance_ratio",
+    "overlap_flag",
+    "heavy_overlap_flag",
+    "uncertainty_score",
+    "context_risk_score",
+    "api_used_flag",
+    "llm_variant_flag",
+    "rule_variant_flag",
+    "language_en_flag",
+    "language_fr_flag",
+    "language_zh_flag",
+    "language_other_flag",
+)
+FEATURE_SETS = {
+    "audit_aware": AUDIT_AWARE_FEATURES,
+    "evidence_only": EVIDENCE_ONLY_FEATURES,
+    "risk_only": RISK_ONLY_FEATURES,
+}
+# Backward-compatible alias for existing dataset builders and tests.
+FEATURE_COLUMNS = AUDIT_AWARE_FEATURES
+
+REFERENCE_DERIVED_FEATURES = {
+    "expected_term_count",
+    "text_error_before",
+    "negative_control_flag",
+}
+DIRECT_LABEL_PROXY_FEATURES = {
+    "needs_review_input_flag",
+    "correction_rejected_input_flag",
+    "true_positive_term_count",
+    "false_positive_term_count",
+    "missed_term_count",
+    "term_precision",
+    "term_recall",
+    "term_f1",
+    "text_error_after",
+    "error_delta",
+}
+FINAL_AUDIT_OUTCOME_FEATURES = {
+    "unsupported_change_count",
+    "forbidden_change_count",
+    "invented_content_flag",
+    "speaker_attribution_changed_flag",
+}
 
 _TOKEN_PATTERN = re.compile(r"[A-Za-z0-9]+(?:[.-][A-Za-z0-9]+)*|[\u3400-\u9fff]")
 
@@ -177,6 +252,53 @@ def _count_or_value(row: Mapping[str, Any], count_key: str, list_key: str) -> in
     return len(parse_list(row.get(list_key)))
 
 
+def get_feature_columns(feature_set: str) -> tuple[str, ...]:
+    """Return an explicit feature set or raise a CLI-friendly error."""
+
+    try:
+        return FEATURE_SETS[feature_set]
+    except KeyError as exc:
+        raise ValueError(
+            f"Unknown EvidenceGate feature set: {feature_set}. "
+            f"Choose one of: {', '.join(FEATURE_SETS)}."
+        ) from exc
+
+
+def _language_flags(value: Any) -> dict[str, float]:
+    language = str(value or "unknown").strip().lower().replace("_", "-")
+    is_en = (
+        language == "en"
+        or language.startswith("en-")
+        or "english" in language
+    )
+    is_fr = (
+        language == "fr"
+        or language.startswith("fr-")
+        or "french" in language
+    )
+    is_zh = (
+        language in {"zh", "cmn"}
+        or language.startswith(("zh-", "cmn-"))
+        or "chinese" in language
+        or "mandarin" in language
+    )
+    return {
+        "language_en_flag": float(is_en),
+        "language_fr_flag": float(is_fr),
+        "language_zh_flag": float(is_zh),
+        "language_other_flag": float(not (is_en or is_fr or is_zh)),
+    }
+
+
+def _source_flags(value: Any) -> dict[str, float]:
+    source = str(value or "").strip().lower()
+    return {
+        "source_term_rescue_flag": float("term_rescue" in source),
+        "source_overlap_safety_flag": float("overlap_safety" in source),
+        "source_independent_flag": float("independent" in source),
+    }
+
+
 def extract_evidence_features(row: Mapping[str, Any]) -> dict[str, float]:
     """Extract deterministic numeric features from one correction decision."""
 
@@ -208,19 +330,17 @@ def extract_evidence_features(row: Mapping[str, Any]) -> dict[str, float]:
         or "heavy" in str(row.get("notes", "")).lower()
     )
     negative_control = infer_negative_control(row)
+    # This score is intentionally pre-decision only. It must not use final
+    # audit outcomes such as unsupported changes, rejection, or review flags.
     context_risk = min(
         1.0,
-        0.20 * overlap
-        + 0.25 * heavy_overlap
-        + 0.20 * uncertainty
-        + 0.10 * needs_review
-        + 0.15 * (unsupported > 0)
-        + 0.15 * (forbidden > 0)
-        + 0.20 * invented
-        + 0.20 * speaker_changed
-        + 0.10 * (negative_control and changed_tokens > 0),
+        0.18 * overlap
+        + 0.27 * heavy_overlap
+        + 0.25 * uncertainty
+        + 0.18 * changed_ratio
+        + 0.12 * edit_distance_ratio(raw_text, corrected_text),
     )
-    return {
+    features = {
         "retrieval_candidate_count": float(
             len(parse_list(row.get("retrieved_candidates")))
         ),
@@ -263,6 +383,9 @@ def extract_evidence_features(row: Mapping[str, Any]) -> dict[str, float]:
         "negative_control_flag": float(negative_control),
         "context_risk_score": context_risk,
     }
+    features.update(_language_flags(row.get("language")))
+    features.update(_source_flags(row.get("source_experiment")))
+    return features
 
 
 def normalize_evidence_label(
@@ -380,9 +503,20 @@ class EvidenceGatePrediction:
 class EvidenceGateModel:
     """Thin sklearn wrapper with stable model names and feature ordering."""
 
-    def __init__(self, model_name: str, random_seed: int = 42) -> None:
+    def __init__(
+        self,
+        model_name: str,
+        random_seed: int = 42,
+        *,
+        feature_set: str = "audit_aware",
+        feature_columns: Iterable[str] | None = None,
+    ) -> None:
         self.model_name = model_name
         self.random_seed = random_seed
+        self.feature_set = feature_set
+        self.feature_columns = tuple(
+            feature_columns or get_feature_columns(feature_set)
+        )
         self.estimator = self._build_estimator()
 
     def _build_estimator(self) -> Any:
@@ -429,10 +563,9 @@ class EvidenceGateModel:
             "Choose logistic_regression, random_forest, or gradient_boosting."
         )
 
-    @staticmethod
-    def _matrix(rows: Iterable[Mapping[str, Any]]) -> list[list[float]]:
+    def _matrix(self, rows: Iterable[Mapping[str, Any]]) -> list[list[float]]:
         return [
-            [as_float(row.get(feature)) for feature in FEATURE_COLUMNS]
+            [as_float(row.get(feature)) for feature in self.feature_columns]
             for row in rows
         ]
 
@@ -475,7 +608,7 @@ class EvidenceGateModel:
             values = getattr(estimator, "feature_importances_", [])
         return {
             feature: float(value)
-            for feature, value in zip(FEATURE_COLUMNS, values)
+            for feature, value in zip(self.feature_columns, values)
         }
 
     def save(self, path: str | Path) -> Path:
@@ -489,7 +622,8 @@ class EvidenceGateModel:
             {
                 "model_name": self.model_name,
                 "random_seed": self.random_seed,
-                "feature_columns": FEATURE_COLUMNS,
+                "feature_set": self.feature_set,
+                "feature_columns": self.feature_columns,
                 "estimator": self.estimator,
             },
             destination,
@@ -503,6 +637,11 @@ class EvidenceGateModel:
         except ImportError as exc:
             raise RuntimeError("Loading EvidenceGate requires joblib.") from exc
         payload = joblib.load(path)
-        model = cls(payload["model_name"], payload.get("random_seed", 42))
+        model = cls(
+            payload["model_name"],
+            payload.get("random_seed", 42),
+            feature_set=payload.get("feature_set", "audit_aware"),
+            feature_columns=payload.get("feature_columns"),
+        )
         model.estimator = payload["estimator"]
         return model

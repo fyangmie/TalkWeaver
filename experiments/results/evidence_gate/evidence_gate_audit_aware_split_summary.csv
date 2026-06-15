@@ -1,0 +1,4 @@
+split,feature_set,num_examples,num_template_groups,accept,reject,needs_review
+train,audit_aware,361,31,166,104,91
+validation,audit_aware,63,6,28,18,17
+test,audit_aware,101,8,56,19,26

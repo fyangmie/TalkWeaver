@@ -9,7 +9,7 @@ from typing import Any, Iterable
 from webapp.data_loader import (
     build_clip_detective_summary,
     build_speaker_evidence_cards,
-    get_best_evidence_gate_model,
+    get_best_evidence_gate_validation,
     get_event_investigation_rows,
     resolve_local_audio_path,
 )
@@ -93,17 +93,17 @@ def build_detective_report(
         "| Time | Speaker(s) | Raw evidence | Corrected text | Flags |",
         "| --- | --- | --- | --- | --- |",
     ]
-    evidence_gate = get_best_evidence_gate_model()
+    evidence_gate = get_best_evidence_gate_validation()
     gate_section = ["## EvidenceGate Safety Model", ""]
     if evidence_gate:
         gate_section.extend(
             [
-                f"- Best controlled test model: {_safe_text(evidence_gate.get('model_name'))}",
+                f"- Best strict independent-heldout model: {_safe_text(evidence_gate.get('feature_set'))} / {_safe_text(evidence_gate.get('model_name'))}",
                 f"- Macro F1: {float(evidence_gate.get('macro_f1', 0.0)):.3f}",
                 f"- False-accept rate: {float(evidence_gate.get('false_accept_rate', 0.0)):.3f}",
                 f"- Unsafe-accept rate: {float(evidence_gate.get('unsafe_accept_rate', 0.0)):.3f}",
                 f"- Needs-review recall: {float(evidence_gate.get('needs_review_recall', 0.0)):.3f}",
-                "- Scope: controlled and semi-synthetic correction-safety data; not real-audio generalization.",
+                "- Scope: independent controlled text proposals; performance is weak and does not establish real-audio generalization.",
                 "",
             ]
         )

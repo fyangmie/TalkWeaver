@@ -1,0 +1,42 @@
+feature_or_field,category,audit_aware,evidence_only,risk_only,excluded_from_strict_models,rationale
+api_used_flag,allowed_pre_decision_features,True,True,True,False,"Available from the proposal, retrieval trace, overlap evidence, or model metadata."
+applied_correction_count,allowed_pre_decision_features,True,True,False,False,"Available from the proposal, retrieval trace, overlap evidence, or model metadata."
+changed_token_ratio,allowed_pre_decision_features,True,True,True,False,"Available from the proposal, retrieval trace, overlap evidence, or model metadata."
+context_risk_score,allowed_pre_decision_features,True,True,True,False,"Available from the proposal, retrieval trace, overlap evidence, or model metadata."
+correction_rejected,direct_label_proxy_features,False,False,False,True,Final rejection decision; direct target proxy.
+correction_rejected_input_flag,direct_label_proxy_features,True,False,False,True,Direct encoding of the review/rejection target decision.
+edit_distance_ratio,allowed_pre_decision_features,True,True,True,False,"Available from the proposal, retrieval trace, overlap evidence, or model metadata."
+error_delta,direct_label_proxy_features,True,False,False,True,Direct encoding of the review/rejection target decision.
+expected_label,direct_label_proxy_features,False,False,False,True,Training target and never a model input.
+expected_term_count,risky_reference_derived_features,True,False,False,True,"Requires reference labels, expected terms, or derived correctness."
+false_positive_term_count,direct_label_proxy_features,True,False,False,True,Direct encoding of the review/rejection target decision.
+forbidden_change_count,final_audit_outcome_features,True,False,False,True,Post-correction audit outcome unavailable before gating.
+heavy_overlap_flag,allowed_pre_decision_features,True,True,True,False,"Available from the proposal, retrieval trace, overlap evidence, or model metadata."
+invented_content_flag,final_audit_outcome_features,True,False,False,True,Post-correction audit outcome unavailable before gating.
+language_en_flag,allowed_pre_decision_features,True,True,True,False,"Available from the proposal, retrieval trace, overlap evidence, or model metadata."
+language_fr_flag,allowed_pre_decision_features,True,True,True,False,"Available from the proposal, retrieval trace, overlap evidence, or model metadata."
+language_other_flag,allowed_pre_decision_features,True,True,True,False,"Available from the proposal, retrieval trace, overlap evidence, or model metadata."
+language_zh_flag,allowed_pre_decision_features,True,True,True,False,"Available from the proposal, retrieval trace, overlap evidence, or model metadata."
+llm_variant_flag,allowed_pre_decision_features,True,True,True,False,"Available from the proposal, retrieval trace, overlap evidence, or model metadata."
+missed_term_count,direct_label_proxy_features,True,False,False,True,Direct encoding of the review/rejection target decision.
+needs_review,direct_label_proxy_features,False,False,False,True,Final review decision; direct target proxy.
+needs_review_input_flag,direct_label_proxy_features,True,False,False,True,Direct encoding of the review/rejection target decision.
+negative_control_flag,risky_reference_derived_features,True,False,False,True,"Requires reference labels, expected terms, or derived correctness."
+num_changed_tokens,allowed_pre_decision_features,True,True,True,False,"Available from the proposal, retrieval trace, overlap evidence, or model metadata."
+overlap_flag,allowed_pre_decision_features,True,True,True,False,"Available from the proposal, retrieval trace, overlap evidence, or model metadata."
+reference_text,risky_reference_derived_features,False,False,False,True,Ground-truth text unavailable at deployment time.
+retrieval_candidate_count,allowed_pre_decision_features,True,True,False,False,"Available from the proposal, retrieval trace, overlap evidence, or model metadata."
+rule_variant_flag,allowed_pre_decision_features,True,True,True,False,"Available from the proposal, retrieval trace, overlap evidence, or model metadata."
+safety_pass,direct_label_proxy_features,False,False,False,True,Final policy pass/fail value used to derive the target label.
+source_independent_flag,allowed_pre_decision_features,True,True,False,False,"Available from the proposal, retrieval trace, overlap evidence, or model metadata."
+source_overlap_safety_flag,allowed_pre_decision_features,True,True,False,False,"Available from the proposal, retrieval trace, overlap evidence, or model metadata."
+source_term_rescue_flag,allowed_pre_decision_features,True,True,False,False,"Available from the proposal, retrieval trace, overlap evidence, or model metadata."
+speaker_attribution_changed_flag,final_audit_outcome_features,True,False,False,True,Post-correction audit outcome unavailable before gating.
+term_f1,direct_label_proxy_features,True,False,False,True,Direct encoding of the review/rejection target decision.
+term_precision,direct_label_proxy_features,True,False,False,True,Direct encoding of the review/rejection target decision.
+term_recall,direct_label_proxy_features,True,False,False,True,Direct encoding of the review/rejection target decision.
+text_error_after,direct_label_proxy_features,True,False,False,True,Direct encoding of the review/rejection target decision.
+text_error_before,risky_reference_derived_features,True,False,False,True,"Requires reference labels, expected terms, or derived correctness."
+true_positive_term_count,direct_label_proxy_features,True,False,False,True,Direct encoding of the review/rejection target decision.
+uncertainty_score,allowed_pre_decision_features,True,True,True,False,"Available from the proposal, retrieval trace, overlap evidence, or model metadata."
+unsupported_change_count,final_audit_outcome_features,True,False,False,True,Post-correction audit outcome unavailable before gating.

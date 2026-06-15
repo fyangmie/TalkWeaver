@@ -9,17 +9,22 @@ import unittest
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
+import pandas as pd
+
 from webapp.data_loader import (
     audio_available,
     build_speaker_evidence_cards,
     discover_charts,
     frame_warning,
     get_best_evidence_gate_model,
+    get_best_evidence_gate_validation,
     get_best_term_rescue_examples,
     get_best_available_demo_clip,
     get_evidence_gate_examples,
+    get_evidence_gate_validation_examples,
     get_event_audio_window,
     load_evidence_gate_metrics,
+    load_evidence_gate_validation_metrics,
     load_overlap_safety_cases,
     list_available_conversation_maps,
     load_asr_summary,
@@ -165,6 +170,13 @@ class FrontendDataLoaderTests(unittest.TestCase):
         self.assertFalse(examples["reject"].empty)
         self.assertFalse(examples["needs_review"].empty)
 
+        validation = load_evidence_gate_validation_metrics()
+        strict_best = get_best_evidence_gate_validation()
+        heldout_examples = get_evidence_gate_validation_examples()
+        self.assertFalse(validation.empty)
+        self.assertIn(strict_best["feature_set"], {"evidence_only", "risk_only"})
+        self.assertTrue(all(not frame.empty for frame in heldout_examples.values()))
+
     def test_evidence_gate_missing_results_are_graceful(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -176,6 +188,11 @@ class FrontendDataLoaderTests(unittest.TestCase):
 
         self.assertTrue(metrics.empty)
         self.assertTrue(all(frame.empty for frame in examples.values()))
+        self.assertIsNone(
+            get_best_evidence_gate_validation(
+                path=root / "missing_validation.csv"
+            )
+        )
 
     def test_curated_term_examples_include_visible_corrections(self) -> None:
         examples = get_best_term_rescue_examples()
@@ -246,6 +263,32 @@ class DetectiveReportTests(unittest.TestCase):
     def test_app_import_does_not_start_streamlit_main(self) -> None:
         module = importlib.import_module("webapp.app")
         self.assertTrue(callable(module.main))
+
+    def test_evidence_gate_view_handles_missing_validation_results(self) -> None:
+        module = importlib.import_module("webapp.views.evidence_gate")
+        empty = pd.DataFrame()
+        empty.attrs["warning"] = "missing validation"
+        with (
+            patch.object(module, "st", MagicMock()),
+            patch.object(module, "page_header"),
+            patch.object(module, "show_frame_warning"),
+            patch.object(
+                module,
+                "load_evidence_gate_validation_metrics",
+                return_value=empty,
+            ),
+            patch.object(
+                module,
+                "load_evidence_gate_leakage_audit",
+                return_value=empty,
+            ),
+            patch.object(
+                module,
+                "get_best_evidence_gate_validation",
+                return_value=None,
+            ),
+        ):
+            module.render_evidence_gate({})
 
 
 class TextDiffTests(unittest.TestCase):

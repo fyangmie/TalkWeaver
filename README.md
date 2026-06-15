@@ -481,22 +481,25 @@ python experiments/augment_evidence_gate_examples.py \
   --input data/controlled_evidence_gate/evidence_gate_examples.csv \
   --output data/controlled_evidence_gate/evidence_gate_examples_augmented.csv
 
-python experiments/train_evidence_gate.py \
-  --input data/controlled_evidence_gate/evidence_gate_examples_augmented.csv \
-  --output-dir experiments/results/evidence_gate \
-  --models logistic_regression random_forest gradient_boosting \
-  --group-split-column template_group \
-  --random-seed 42
-
-python experiments/evaluate_evidence_gate.py
-python experiments/plot_evidence_gate.py
+python experiments/audit_evidence_gate_features.py
+python experiments/build_evidence_gate_heldout.py
+python experiments/train_evidence_gate.py --feature-set audit_aware
+python experiments/train_evidence_gate.py --feature-set evidence_only
+python experiments/train_evidence_gate.py --feature-set risk_only
+python experiments/evaluate_evidence_gate_heldout.py
+python experiments/plot_evidence_gate_validation.py
 ```
 
 The committed controlled run uses 255 seed rows and 270 transparent
 augmentations. The split is group-aware, so variants and augmentations from
-one source case cannot cross train, validation, and test boundaries. Current
-scores are controlled policy-distillation results, not claims of real-audio
-generalization. See [`docs/evidence_gate.md`](docs/evidence_gate.md).
+one source case cannot cross train, validation, and test boundaries.
+
+**Leakage warning:** the initial audit-aware `1.000` result is a
+policy-distillation sanity check driven by reference and final-audit proxies.
+On 90 new manually authored proposals, the best strict macro F1 is `0.325`;
+needs-review recall is at most `0.033`. EvidenceGate is not integrated into
+the main workflow and does not demonstrate real-audio generalization. See
+[`docs/evidence_gate.md`](docs/evidence_gate.md).
 
 ## Running AI Meeting Detective Frontend
 

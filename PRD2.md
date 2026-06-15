@@ -1833,14 +1833,19 @@ Implemented:
   five charts, documentation, network-free tests, and an EvidenceGate
   frontend page.
 
-All three models achieved controlled test macro F1 `1.0`, unsafe-accept rate
-`0.0`, needs-review recall `1.0`, and reject recall `1.0`. The direct rule
-baseline reached macro F1 `0.928`. These results are explicitly scoped as
-controlled safety-policy distillation. Audit-policy features and
-deterministic augmentation make the current task highly separable; they do
-not demonstrate real-audio or out-of-domain generalization. Independent
-human-adjudicated correction proposals remain required before deployment
-claims.
+The initial audit-aware models achieved grouped-test macro F1 `1.0`. A
+subsequent leakage audit found direct review/rejection proxies, final audit
+outcomes, and reference-derived correctness features in that configuration.
+The `1.0` result is therefore retained only as a **policy-distillation sanity
+check**.
+
+Evidence-only and risk-only feature sets now exclude those fields. On the
+same grouped split, their best macro F1 values are `0.976` and `0.924`.
+More importantly, on 90 new manually authored independent proposals, the
+best strict macro F1 is only `0.325`; strict unsafe-accept rate ranges from
+`0.067` to `0.267`, and needs-review recall is only `0.000` to `0.033`.
+EvidenceGate is not ready for main-workflow integration. These controlled
+results do not demonstrate real-audio or out-of-domain generalization.
 
 See [`docs/evidence_gate.md`](docs/evidence_gate.md).
 

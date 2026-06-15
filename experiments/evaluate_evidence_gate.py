@@ -70,6 +70,8 @@ def compute_evidence_gate_metrics(
 
 
 def rule_policy_predictions(frame: pd.DataFrame) -> list[str]:
+    """Legacy audit-aware policy baseline containing outcome proxies."""
+
     predictions = []
     for row in frame.to_dict("records"):
         unsafe = (
@@ -84,6 +86,30 @@ def rule_policy_predictions(frame: pd.DataFrame) -> list[str]:
         elif (
             float(row.get("needs_review_input_flag", 0) or 0) > 0
             or float(row.get("heavy_overlap_flag", 0) or 0) > 0
+        ):
+            predictions.append("needs_review")
+        else:
+            predictions.append("accept")
+    return predictions
+
+
+def predecision_rule_predictions(frame: pd.DataFrame) -> list[str]:
+    """Conservative baseline using only proposal-time risk signals."""
+
+    predictions = []
+    for row in frame.to_dict("records"):
+        changed_ratio = float(row.get("changed_token_ratio", 0) or 0)
+        edit_ratio = float(row.get("edit_distance_ratio", 0) or 0)
+        uncertainty = float(row.get("uncertainty_score", 0) or 0)
+        heavy_overlap = float(row.get("heavy_overlap_flag", 0) or 0) > 0
+        overlap = float(row.get("overlap_flag", 0) or 0) > 0
+        candidates = float(row.get("retrieval_candidate_count", 0) or 0)
+        if changed_ratio >= 0.75 and candidates == 0 and not overlap:
+            predictions.append("reject")
+        elif (
+            heavy_overlap
+            or uncertainty >= 0.9
+            or (overlap and (changed_ratio >= 0.25 or edit_ratio >= 0.20))
         ):
             predictions.append("needs_review")
         else:
@@ -116,7 +142,15 @@ def evaluate_prediction_frame(
         raise ValueError(f"Prediction CSV is missing columns: {sorted(missing)}")
 
     rows: list[dict[str, Any]] = []
-    for (model_name, split), group in frame.groupby(["model_name", "split"]):
+    grouping = ["model_name", "split"]
+    if "feature_set" in frame:
+        grouping.insert(0, "feature_set")
+    for keys, group in frame.groupby(grouping):
+        if "feature_set" in frame:
+            feature_set, model_name, split = keys
+        else:
+            model_name, split = keys
+            feature_set = "legacy_audit_aware"
         metrics = compute_evidence_gate_metrics(
             group["true_label"],
             group["predicted_label"],
@@ -124,6 +158,7 @@ def evaluate_prediction_frame(
         rows.append(
             {
                 "model_name": model_name,
+                "feature_set": feature_set,
                 "split": split,
                 "is_baseline": False,
                 **metrics,
@@ -132,17 +167,27 @@ def evaluate_prediction_frame(
 
     if include_baselines:
         unique_examples = frame.drop_duplicates(["example_id", "split"])
-        for split, group in unique_examples.groupby("split"):
+        baseline_grouping = ["split"]
+        if "feature_set" in unique_examples:
+            baseline_grouping.insert(0, "feature_set")
+        for keys, group in unique_examples.groupby(baseline_grouping):
+            if "feature_set" in unique_examples:
+                feature_set, split = keys
+            else:
+                split = keys
+                feature_set = "legacy_audit_aware"
             baseline_predictions = {
                 "always_accept": ["accept"] * len(group),
                 "always_review": ["needs_review"] * len(group),
-                "rule_policy_baseline": rule_policy_predictions(group),
+                "audit_rule_policy_baseline": rule_policy_predictions(group),
+                "predecision_rule_baseline": predecision_rule_predictions(group),
                 "llm_variant_raw": llm_raw_predictions(group),
             }
             for name, predictions in baseline_predictions.items():
                 rows.append(
                     {
                         "model_name": name,
+                        "feature_set": feature_set,
                         "split": split,
                         "is_baseline": True,
                         **compute_evidence_gate_metrics(
@@ -152,8 +197,8 @@ def evaluate_prediction_frame(
                     }
                 )
     return pd.DataFrame(rows).sort_values(
-        ["split", "is_baseline", "macro_f1"],
-        ascending=[True, True, False],
+        ["split", "feature_set", "is_baseline", "macro_f1"],
+        ascending=[True, True, True, False],
     )
 
 

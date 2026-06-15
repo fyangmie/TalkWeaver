@@ -18,8 +18,10 @@ if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
 from backend.evidence_gate import (
-    FEATURE_COLUMNS,
+    AUDIT_AWARE_FEATURES,
+    FEATURE_SETS,
     EvidenceGateModel,
+    get_feature_columns,
 )
 from experiments.evaluate_evidence_gate import evaluate_prediction_frame
 
@@ -89,6 +91,7 @@ def _prediction_rows(
     model: EvidenceGateModel,
     frame: pd.DataFrame,
     split: str,
+    feature_set: str,
 ) -> list[dict]:
     records = frame.to_dict("records")
     predicted = model.predict(records)
@@ -117,6 +120,7 @@ def _prediction_rows(
                 "true_label": source["expected_label"],
                 "predicted_label": label,
                 "model_name": model.model_name,
+                "feature_set": feature_set,
                 "split": split,
                 "prob_accept": probability.get("accept", 0.0),
                 "prob_reject": probability.get("reject", 0.0),
@@ -127,7 +131,7 @@ def _prediction_rows(
         row.update(
             {
                 feature: float(source.get(feature, 0.0) or 0.0)
-                for feature in FEATURE_COLUMNS
+                for feature in AUDIT_AWARE_FEATURES
             }
         )
         rows.append(row)
@@ -142,13 +146,15 @@ def train_evidence_gate_models(
     group_split_column: str = "template_group",
     random_seed: int = 42,
     models_dir: str | Path | None = None,
+    feature_set: str = "audit_aware",
 ) -> dict[str, Path | pd.DataFrame]:
     """Train requested models and write reproducible result artifacts."""
 
     unknown = set(models) - set(SUPPORTED_MODELS)
     if unknown:
         raise ValueError(f"Unsupported model(s): {sorted(unknown)}")
-    missing = set(FEATURE_COLUMNS) - set(frame.columns)
+    feature_columns = get_feature_columns(feature_set)
+    missing = set(feature_columns) - set(frame.columns)
     if missing:
         raise ValueError(f"Dataset is missing feature columns: {sorted(missing)}")
     if set(frame["expected_label"]) - {"accept", "reject", "needs_review"}:
@@ -171,12 +177,22 @@ def train_evidence_gate_models(
     train_labels = train["expected_label"].astype(str).tolist()
     weights = compute_sample_weight("balanced", train_labels)
     for model_name in models:
-        model = EvidenceGateModel(model_name, random_seed=random_seed)
+        model = EvidenceGateModel(
+            model_name,
+            random_seed=random_seed,
+            feature_set=feature_set,
+        )
         model.fit(train_records, train_labels, sample_weight=weights)
-        model_path = model.save(model_output / f"evidence_gate_{model_name}.joblib")
+        model_path = model.save(
+            model_output / f"evidence_gate_{feature_set}_{model_name}.joblib"
+        )
         model_paths[model_name] = model_path
-        prediction_rows.extend(_prediction_rows(model, validation, "validation"))
-        prediction_rows.extend(_prediction_rows(model, test, "test"))
+        prediction_rows.extend(
+            _prediction_rows(model, validation, "validation", feature_set)
+        )
+        prediction_rows.extend(
+            _prediction_rows(model, test, "test", feature_set)
+        )
         importances = model.feature_importance()
         for rank, (feature, importance) in enumerate(
             sorted(importances.items(), key=lambda item: item[1], reverse=True),
@@ -185,6 +201,7 @@ def train_evidence_gate_models(
             importance_rows.append(
                 {
                     "model_name": model_name,
+                    "feature_set": feature_set,
                     "feature": feature,
                     "importance": importance,
                     "rank": rank,
@@ -198,6 +215,7 @@ def train_evidence_gate_models(
         [
             {
                 "split": name,
+                "feature_set": feature_set,
                 "num_examples": len(part),
                 "num_template_groups": part[group_split_column].nunique(),
                 "accept": int(part["expected_label"].eq("accept").sum()),
@@ -214,10 +232,11 @@ def train_evidence_gate_models(
         ]
     )
 
-    prediction_path = output / "evidence_gate_predictions.csv"
-    metrics_path = output / "evidence_gate_metrics.csv"
-    importance_path = output / "evidence_gate_feature_importance.csv"
-    split_path = output / "evidence_gate_split_summary.csv"
+    prefix = f"evidence_gate_{feature_set}"
+    prediction_path = output / f"{prefix}_predictions.csv"
+    metrics_path = output / f"{prefix}_metrics.csv"
+    importance_path = output / f"{prefix}_feature_importance.csv"
+    split_path = output / f"{prefix}_split_summary.csv"
     predictions.to_csv(prediction_path, index=False)
     metrics.to_csv(metrics_path, index=False)
     importance.to_csv(importance_path, index=False)
@@ -262,6 +281,15 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--group-split-column", default="template_group")
     parser.add_argument("--random-seed", type=int, default=42)
     parser.add_argument("--models-dir", default="models/evidence_gate")
+    parser.add_argument(
+        "--feature-set",
+        choices=tuple(FEATURE_SETS),
+        default="audit_aware",
+        help=(
+            "audit_aware reproduces the controlled policy; evidence_only and "
+            "risk_only exclude reference-derived and final-audit features."
+        ),
+    )
     return parser.parse_args()
 
 
@@ -277,6 +305,7 @@ def main() -> int:
         group_split_column=args.group_split_column,
         random_seed=args.random_seed,
         models_dir=args.models_dir,
+        feature_set=args.feature_set,
     )
     print(result["split_summary"].to_string(index=False))
     test_metrics = result["metrics"]
@@ -296,6 +325,7 @@ def main() -> int:
     print(f"Predictions: {result['prediction_path']}")
     print(f"Metrics: {result['metrics_path']}")
     print(f"Feature importance: {result['importance_path']}")
+    print(f"Feature set: {args.feature_set}")
     print(f"Models: {args.models_dir}")
     return 0
 

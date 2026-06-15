@@ -108,6 +108,10 @@ assets/result_charts/*.png
 !assets/result_charts/evidence_gate_confusion_matrix.png
 !assets/result_charts/evidence_gate_feature_importance.png
 !assets/result_charts/evidence_gate_class_recall.png
+!assets/result_charts/evidence_gate_feature_leakage_audit.png
+!assets/result_charts/evidence_gate_feature_set_macro_f1.png
+!assets/result_charts/evidence_gate_feature_set_unsafe_accept.png
+!assets/result_charts/evidence_gate_heldout_confusion_matrix.png
 assets/screenshots/*
 assets/demo_gifs/*
 !assets/**/.gitkeep

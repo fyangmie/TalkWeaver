@@ -35,6 +35,15 @@ EVIDENCE_GATE_IMPORTANCE_PATH = (
 EVIDENCE_GATE_SPLIT_PATH = (
     EVIDENCE_GATE_DIR / "evidence_gate_split_summary.csv"
 )
+EVIDENCE_GATE_VALIDATION_METRICS_PATH = (
+    EVIDENCE_GATE_DIR / "evidence_gate_validation_metrics.csv"
+)
+EVIDENCE_GATE_VALIDATION_PREDICTIONS_PATH = (
+    EVIDENCE_GATE_DIR / "evidence_gate_validation_predictions.csv"
+)
+EVIDENCE_GATE_LEAKAGE_AUDIT_PATH = (
+    EVIDENCE_GATE_DIR / "evidence_gate_feature_leakage_audit.csv"
+)
 
 STOPWORDS = {
     "about",
@@ -590,6 +599,52 @@ def load_evidence_gate_split_summary(
     return _load_csv(path, "EvidenceGate split summary")
 
 
+def load_evidence_gate_validation_metrics(
+    path: str | Path = EVIDENCE_GATE_VALIDATION_METRICS_PATH,
+) -> pd.DataFrame:
+    return _load_csv(path, "EvidenceGate strict validation metrics")
+
+
+def load_evidence_gate_validation_predictions(
+    path: str | Path = EVIDENCE_GATE_VALIDATION_PREDICTIONS_PATH,
+) -> pd.DataFrame:
+    return _load_csv(path, "EvidenceGate strict validation predictions")
+
+
+def load_evidence_gate_leakage_audit(
+    path: str | Path = EVIDENCE_GATE_LEAKAGE_AUDIT_PATH,
+) -> pd.DataFrame:
+    return _load_csv(path, "EvidenceGate feature leakage audit")
+
+
+def get_best_evidence_gate_validation(
+    *,
+    feature_sets: tuple[str, ...] = ("evidence_only", "risk_only"),
+    split: str = "independent_heldout",
+    path: str | Path = EVIDENCE_GATE_VALIDATION_METRICS_PATH,
+) -> dict[str, Any] | None:
+    """Return the best non-baseline strict validation row."""
+
+    frame = load_evidence_gate_validation_metrics(path)
+    if frame.empty:
+        return None
+    candidates = frame[
+        frame["split"].eq(split)
+        & frame["feature_set"].isin(feature_sets)
+        & ~_boolean_series(frame["is_baseline"])
+    ].copy()
+    if candidates.empty:
+        return None
+    return (
+        candidates.sort_values(
+            ["macro_f1", "unsafe_accept_rate", "model_name"],
+            ascending=[False, True, True],
+        )
+        .iloc[0]
+        .to_dict()
+    )
+
+
 def get_best_evidence_gate_model(
     path: str | Path = EVIDENCE_GATE_METRICS_PATH,
 ) -> dict[str, Any] | None:
@@ -655,6 +710,35 @@ def get_evidence_gate_examples(
             )
         examples[label] = candidates.head(1).reset_index(drop=True)
     return examples
+
+
+def get_evidence_gate_validation_examples(
+    predictions_path: str | Path = EVIDENCE_GATE_VALIDATION_PREDICTIONS_PATH,
+    metrics_path: str | Path = EVIDENCE_GATE_VALIDATION_METRICS_PATH,
+) -> dict[str, pd.DataFrame]:
+    """Return heldout examples for the strongest strict feature-set model."""
+
+    predictions = load_evidence_gate_validation_predictions(predictions_path)
+    best = get_best_evidence_gate_validation(path=metrics_path)
+    labels = ("accept", "reject", "needs_review")
+    empty = {label: pd.DataFrame() for label in labels}
+    if predictions.empty or best is None:
+        return empty
+    frame = predictions[
+        predictions["split"].eq("independent_heldout")
+        & predictions["feature_set"].eq(best["feature_set"])
+        & predictions["model_name"].eq(best["model_name"])
+    ].copy()
+    result: dict[str, pd.DataFrame] = {}
+    for label in labels:
+        candidates = frame[frame["true_label"].eq(label)].copy()
+        mistakes = candidates[
+            candidates["predicted_label"].ne(candidates["true_label"])
+        ]
+        if not mistakes.empty:
+            candidates = mistakes
+        result[label] = candidates.head(1).reset_index(drop=True)
+    return result
 
 
 def _nonempty_text(series: pd.Series) -> pd.Series:

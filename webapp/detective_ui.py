@@ -33,12 +33,18 @@ CHART_GROUPS = {
         "overlap_review_flags.png",
         "overlap_error_delta.png",
     ),
-    "EvidenceGate trained safety model": (
+    "EvidenceGate policy-distillation sanity check (legacy)": (
         "evidence_gate_macro_f1.png",
         "evidence_gate_false_accept_rate.png",
         "evidence_gate_confusion_matrix.png",
         "evidence_gate_feature_importance.png",
         "evidence_gate_class_recall.png",
+    ),
+    "EvidenceGate leakage and strict validation": (
+        "evidence_gate_feature_leakage_audit.png",
+        "evidence_gate_feature_set_macro_f1.png",
+        "evidence_gate_feature_set_unsafe_accept.png",
+        "evidence_gate_heldout_confusion_matrix.png",
     ),
 }
 

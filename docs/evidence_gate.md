@@ -1,5 +1,9 @@
 # TalkWeaver EvidenceGate
 
+> **Leakage warning:** The initial EvidenceGate result is a
+> policy-distillation sanity check. Perfect scores likely reflect label-proxy
+> features and should not be interpreted as real-world generalization.
+
 ## Purpose
 
 EvidenceGate is TalkWeaver's trained lightweight model component. It decides
@@ -36,8 +40,9 @@ The seed rows come from:
 
 The augmented rows are deterministic rule-generated perturbations. No raw
 audio, API call, private transcript, ASR training, or LLM training is used.
-The results measure policy distillation on this controlled task. They do not
-establish real-world audio generalization.
+The results measure policy distillation and controlled risk prediction. They
+do not establish real-world audio generalization. The final report must not
+use the initial `1.000` scores as a primary model-performance claim.
 
 ## Dataset
 
@@ -96,35 +101,69 @@ The policy is conservative:
 
 The policy and reason are stored as `expected_label` and `label_reason`.
 
-## Features
+## Three Feature Sets
 
-EvidenceGate uses numeric evidence already available at correction-decision
-time:
+### Audit-aware
 
-- retrieval, expected-term, true-positive, false-positive, and missed-term
-  counts;
-- term precision, recall, and F1;
-- text error before/after and error delta;
+Uses every original feature, including reference-derived correctness values
+and final audit outcomes. It answers only:
+
+> Can a classifier reproduce the controlled safety policy when given fields
+> that substantially encode that policy?
+
+This is the **policy-distillation sanity check**. It is not a deployable
+pre-decision gate and is expected to score optimistically.
+
+### Evidence-only
+
+Excludes reference-derived correctness and final audit decisions. It uses:
+
+- retrieval candidate and proposed correction counts;
+- changed-token and edit-distance magnitude;
+- overlap, heavy-overlap, and uncertainty;
+- a pre-decision context-risk score;
+- API/rule/LLM metadata;
+- language and source-experiment indicators.
+
+### Risk-only
+
+Uses the strictest proposal-time subset:
+
 - changed-token count and ratio;
 - edit-distance ratio;
-- overlap, heavy-overlap, and uncertainty indicators;
-- upstream review and rejection flags;
-- unsupported, forbidden, invented-content, and speaker-change indicators;
-- API, LLM-variant, rule-variant, and negative-control indicators;
-- a deterministic context-risk score.
+- overlap and heavy-overlap;
+- uncertainty and pre-decision context risk;
+- API/rule/LLM metadata;
+- language.
 
-The strongest features in the current gradient-boosting model are:
+Neither strict feature set sees `needs_review`, `correction_rejected`,
+`safety_pass`, unsupported changes, forbidden changes, invented content,
+speaker-attribution outcomes, reference term scores, or post-correction text
+error.
 
-1. `correction_rejected_input_flag`;
-2. `uncertainty_score`;
-3. `missed_term_count`;
-4. `context_risk_score`;
-5. `needs_review_input_flag`.
+## Feature Leakage Audit
 
-These are intentionally audit-oriented. Because the labels are derived from
-related safety rules, the current task is closer to **policy distillation**
-than independent semantic safety discovery. This explains why controlled
-scores are high and is a major limitation, not a result to hide.
+The audit classifies 41 model features and related dataset fields:
+
+| Category | Count |
+| --- | ---: |
+| Allowed pre-decision | 19 |
+| Risky reference-derived | 4 |
+| Direct label proxy | 14 |
+| Final audit outcome | 4 |
+
+Flagged fields include:
+
+- `safety_pass`, `needs_review`, and `correction_rejected`;
+- `needs_review_input_flag` and `correction_rejected_input_flag`;
+- unsupported, forbidden, invented-content, and speaker-change outcomes;
+- reference term precision/recall/F1;
+- true-positive, false-positive, and missed-term counts;
+- `text_error_after` and `error_delta`.
+
+The original `context_risk_score` also included final audit outcomes. It has
+been replaced with a pre-decision score based only on overlap, uncertainty,
+and proposed edit magnitude.
 
 ## Leakage Prevention
 
@@ -159,9 +198,9 @@ The resulting joblib files are approximately 4 KB, 696 KB, and 372 KB. They
 are small enough to keep with the project and can also be regenerated from
 the committed controlled datasets.
 
-## Controlled Results
+## Initial Policy-Distillation Sanity Check
 
-All three trained classifiers produced the same controlled test result:
+The audit-aware models retain the original grouped-test result:
 
 | Model | Macro F1 | False accept | Unsafe accept | Review recall | Reject recall |
 | --- | ---: | ---: | ---: | ---: | ---: |
@@ -169,24 +208,58 @@ All three trained classifiers produced the same controlled test result:
 | Random forest | 1.000 | 0.000 | 0.000 | 1.000 | 1.000 |
 | Gradient boosting | 1.000 | 0.000 | 0.000 | 1.000 | 1.000 |
 
-Ties are reported as ties. The frontend selects gradient boosting
-deterministically by model name only after macro F1 and unsafe-accept rate
-tie.
+These scores are now labeled **policy-distillation sanity check** everywhere.
+They demonstrate that sklearn models can reproduce the authored policy when
+given label-proxy inputs. They do not demonstrate correction-safety
+generalization.
+
+## Strict Grouped-Test Results
+
+Removing proxy and reference-derived features lowers grouped-test results:
+
+| Feature set / best model | Macro F1 | False accept | Unsafe accept | Review recall | Reject recall |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Evidence-only / random forest | 0.976 | 0.000 | 0.000 | 0.962 | 1.000 |
+| Risk-only / random forest | 0.924 | 0.133 | 0.000 | 0.769 | 0.947 |
+
+These rows still share Phase 2F/2G source structure and deterministic
+augmentation patterns. They remain optimistic internal validation.
+
+## Independent Heldout
+
+The independent set contains 90 manually authored proposals across 30 new
+template groups:
+
+- 30 accept;
+- 30 reject;
+- 30 needs-review;
+- 75 English, 6 French, 6 Mandarin Chinese, and 3 German examples.
+
+It includes technical corrections, ordinary-word negative controls,
+`WER/where`, `RAG/rack`, and `DER/dear` ambiguities, heavy-overlap partial
+utterances, speaker-attribution risk, fluent hallucinations, no-change cases,
+and multilingual examples. It does not reuse augmentation templates and
+intentionally omits final audit outcome fields.
+
+| Feature set / model | Macro F1 | False accept | Unsafe accept | Review recall | Reject recall |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Audit-aware / random forest | 0.312 | 0.400 | 0.433 | 0.000 | 0.567 |
+| Evidence-only / random forest | **0.325** | 0.217 | 0.167 | 0.033 | 0.833 |
+| Evidence-only / logistic regression | 0.316 | **0.100** | **0.067** | 0.000 | **0.933** |
+| Risk-only / logistic regression | 0.295 | 0.200 | 0.133 | 0.000 | 0.867 |
+
+The independent result is intentionally not flattering. No strict model
+reliably identifies `needs_review`; recall is `0.000` to `0.033`. The best
+macro F1 is only `0.325`, and even the safest strict model still accepts
+`6.7%` of truly reject examples. EvidenceGate is therefore not ready for
+main-workflow integration.
 
 ### Baselines
 
-| Baseline | Macro F1 | False accept | Unsafe accept | Review recall | Reject recall |
-| --- | ---: | ---: | ---: | ---: | ---: |
-| Rule policy baseline | 0.928 | 0.156 | 0.053 | 0.769 | 0.947 |
-| Raw LLM-variant signal | 0.331 | 0.933 | 0.895 | 0.038 | 0.105 |
-| Always accept | 0.238 | 1.000 | 1.000 | 0.000 | 0.000 |
-| Always review | 0.136 | 0.000 | 0.000 | 1.000 | 0.000 |
-
-`always_review` has zero unsafe accepts but is operationally useless because
-it rejects automation entirely. The rule baseline remains strong and
-interpretable. EvidenceGate's practical value must therefore be tested on
-future independently human-labeled proposals, not inferred from this
-controlled score alone.
+On independent heldout, `always_accept` and `always_review` both have macro
+F1 `0.167`. The pre-decision rule baseline reaches macro F1 `0.269` but has
+unsafe-accept rate `0.733`. The old audit-rule baseline is not a valid
+deployment comparator because its strongest inputs are absent by design.
 
 ## Metrics
 
@@ -214,22 +287,13 @@ python experiments/augment_evidence_gate_examples.py \
   --input data/controlled_evidence_gate/evidence_gate_examples.csv \
   --output data/controlled_evidence_gate/evidence_gate_examples_augmented.csv
 
-python experiments/train_evidence_gate.py \
-  --input data/controlled_evidence_gate/evidence_gate_examples_augmented.csv \
-  --output-dir experiments/results/evidence_gate \
-  --models logistic_regression random_forest gradient_boosting \
-  --group-split-column template_group \
-  --random-seed 42
-
-python experiments/evaluate_evidence_gate.py \
-  --predictions experiments/results/evidence_gate/evidence_gate_predictions.csv \
-  --output experiments/results/evidence_gate/evidence_gate_eval_summary.csv
-
-python experiments/plot_evidence_gate.py \
-  --metrics experiments/results/evidence_gate/evidence_gate_metrics.csv \
-  --predictions experiments/results/evidence_gate/evidence_gate_predictions.csv \
-  --feature-importance experiments/results/evidence_gate/evidence_gate_feature_importance.csv \
-  --output-dir assets/result_charts
+python experiments/audit_evidence_gate_features.py
+python experiments/build_evidence_gate_heldout.py
+python experiments/train_evidence_gate.py --feature-set audit_aware
+python experiments/train_evidence_gate.py --feature-set evidence_only
+python experiments/train_evidence_gate.py --feature-set risk_only
+python experiments/evaluate_evidence_gate_heldout.py
+python experiments/plot_evidence_gate_validation.py
 ```
 
 ## Artifacts
@@ -237,28 +301,25 @@ python experiments/plot_evidence_gate.py \
 ```text
 data/controlled_evidence_gate/evidence_gate_examples.csv
 data/controlled_evidence_gate/evidence_gate_examples_augmented.csv
-experiments/results/evidence_gate/evidence_gate_predictions.csv
-experiments/results/evidence_gate/evidence_gate_metrics.csv
-experiments/results/evidence_gate/evidence_gate_eval_summary.csv
-experiments/results/evidence_gate/evidence_gate_feature_importance.csv
-experiments/results/evidence_gate/evidence_gate_split_summary.csv
-models/evidence_gate/evidence_gate_logistic_regression.joblib
-models/evidence_gate/evidence_gate_random_forest.joblib
-models/evidence_gate/evidence_gate_gradient_boosting.joblib
+data/controlled_evidence_gate/evidence_gate_independent_heldout.csv
+experiments/results/evidence_gate/evidence_gate_feature_leakage_audit.csv
+experiments/results/evidence_gate/evidence_gate_<feature_set>_*.csv
+experiments/results/evidence_gate/evidence_gate_validation_metrics.csv
+experiments/results/evidence_gate/evidence_gate_validation_predictions.csv
+models/evidence_gate/evidence_gate_<feature_set>_<model>.joblib
 assets/result_charts/evidence_gate_*.png
 ```
 
 ## Frontend
 
-The **EvidenceGate Model** page shows:
+The **EvidenceGate Model** page now leads with the leakage warning and shows:
 
-- model and baseline comparison;
-- macro F1 and unsafe-accept metrics;
-- group-aware split sizes;
-- confusion matrix;
-- feature importance;
-- class recall;
-- accepted, rejected, and needs-review case files.
+- the audit-aware, evidence-only, and risk-only distinction;
+- the leakage audit;
+- grouped versus independent metrics;
+- strict heldout confusion matrix;
+- unsafe-accept comparison;
+- diagnostic heldout errors rather than success-only examples.
 
 The Evidence Dashboard includes the same charts, and detective report exports
 include the best available controlled EvidenceGate summary.
@@ -267,13 +328,25 @@ include the best available controlled EvidenceGate summary.
 
 - Seed data is controlled authored text, not raw-audio correction decisions.
 - Augmentation is deterministic and structurally simpler than real failures.
-- Labels and features share explicit audit-policy signals.
+- The audit-aware labels and features share explicit policy signals.
 - The original seed set is small.
 - No ASR or LLM backbone is fine-tuned.
-- There is no independent human-adjudicated external test set yet.
+- The new heldout is manually authored but not independently annotated by
+  multiple humans.
 - Perfect controlled scores must not be described as real deployment
   performance.
+- Strict models currently fail to recover the needs-review class.
 
-The next meaningful EvidenceGate step is to collect blind, human-labeled
-correction proposals from held-out multilingual and overlap audio, then test
-the frozen model without changing its label policy or thresholds.
+## Final Report Wording
+
+Use this wording:
+
+> EvidenceGate is a trained lightweight correction-safety model. The
+> audit-aware version can reproduce the controlled safety policy, while
+> evidence-only and risk-only evaluations test whether correction risk can be
+> predicted without direct audit labels. These results are controlled and do
+> not demonstrate real-audio generalization.
+
+The next meaningful step is blind, multi-annotator labeling of correction
+proposals from held-out multilingual and overlap audio, followed by a frozen
+external evaluation without changing labels, features, or thresholds.

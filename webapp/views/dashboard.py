@@ -44,7 +44,8 @@ def render_dashboard(_: dict[str, Any]) -> None:
     st.info(
         "**EvidenceGate:** a lightweight trained classifier adds an explicit "
         "accept / reject / needs-review decision after correction proposals. "
-        "Its current evidence is controlled and semi-synthetic."
+        "The original perfect score is now labeled a policy-distillation "
+        "sanity check; strict independent-heldout performance remains weak."
     )
 
     asr = load_asr_summary()

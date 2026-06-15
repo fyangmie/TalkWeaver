@@ -1,0 +1,4 @@
+split,feature_set,num_examples,num_template_groups,accept,reject,needs_review
+train,risk_only,361,31,166,104,91
+validation,risk_only,63,6,28,18,17
+test,risk_only,101,8,56,19,26

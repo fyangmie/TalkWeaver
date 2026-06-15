@@ -109,15 +109,18 @@ fallback use, and the recorded reason.
 ### EvidenceGate Model
 
 Presents TalkWeaver's trained lightweight `accept / reject / needs_review`
-classifier. The page compares logistic regression, random forest, gradient
-boosting, and transparent baselines; displays the group-aware split, macro
-F1, false/unsafe accept rates, class recall, confusion matrix, and feature
-importance; and exposes one correctly classified case file per decision.
+classifier. The page now leads with a leakage warning and separates:
 
-EvidenceGate results are explicitly labeled controlled/semi-synthetic. The
-current near-perfect scores reflect a safety-policy distillation task with
-rule-based augmentation and must not be interpreted as real-audio
-generalization.
+- audit-aware policy-distillation sanity checks;
+- evidence-only models without reference/final-audit fields;
+- risk-only models using proposal magnitude, overlap, uncertainty, language,
+  and model metadata.
+
+It displays the leakage audit, grouped versus independent metrics,
+false/unsafe accept rates, heldout confusion matrix, and diagnostic failures.
+The original perfect scores are not presented as a generalization claim. On
+the 90-row independent heldout, strict macro F1 is at most `0.325` and
+needs-review recall is at most `0.033`.
 
 ### Evidence Dashboard
 
@@ -128,8 +131,8 @@ Displays:
 - workflow ablation;
 - controlled term rescue charts;
 - controlled overlap safety charts.
-- EvidenceGate model, false-accept, confusion-matrix, feature-importance, and
-  class-recall charts.
+- EvidenceGate leakage audit, feature-set macro F1, unsafe-accept, and
+  independent-heldout confusion-matrix charts.
 
 WER and CER, public and controlled evidence, and oracle versus automatic
 speaker evidence remain visibly separated.
@@ -189,7 +192,8 @@ The frontend data layer is `webapp/data_loader.py`.
 | Term rescue summary | `experiments/results/term_rescue_summary_controlled.csv` | Controlled authored text fixtures |
 | Overlap safety cases | `experiments/results/overlap_safety_controlled.csv` | Controlled correction/rejection cases |
 | Overlap safety summary | `experiments/results/overlap_safety_summary_controlled.csv` | Controlled authored text fixtures |
-| EvidenceGate predictions and metrics | `experiments/results/evidence_gate/` | Trained controlled/semi-synthetic safety classifier |
+| EvidenceGate predictions and metrics | `experiments/results/evidence_gate/` | Policy-distillation plus strict controlled validation |
+| EvidenceGate independent heldout | `data/controlled_evidence_gate/evidence_gate_independent_heldout.csv` | 90 manually authored proposals without final audit fields |
 | EvidenceGate models | `models/evidence_gate/` | Small reproducible sklearn joblib artifacts |
 | Charts | `assets/result_charts/` | Derived from the corresponding CSV scope |
 
@@ -242,7 +246,8 @@ workflow or reference-map scripts documented in
 - Controlled term and overlap fixtures are text safety tests, not acoustic
   generalization evidence.
 - EvidenceGate is trained on those controlled fixtures and deterministic
-  augmentations; independent human-audited external validation is still
+  augmentations. Its manually authored heldout exposes poor review
+  generalization; independent multi-annotator external validation is still
   required.
 - Event-level playback requires the ignored local audio file and browser
   support for seek offsets.
