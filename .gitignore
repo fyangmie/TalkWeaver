@@ -116,6 +116,11 @@ assets/result_charts/*.png
 !assets/result_charts/pilot_needs_review_recall.png
 !assets/result_charts/pilot_macro_f1.png
 !assets/result_charts/pilot_category_failure.png
+!assets/result_charts/binary_safe_apply_macro_f1.png
+!assets/result_charts/binary_unsafe_apply_rate.png
+!assets/result_charts/binary_false_block_rate.png
+!assets/result_charts/binary_error_delta_when_applied.png
+!assets/result_charts/binary_category_failure.png
 assets/screenshots/*
 assets/demo_gifs/*
 !assets/**/.gitkeep

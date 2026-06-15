@@ -1881,6 +1881,43 @@ Phase R0 remains partial until both real LLM self-judge modes are run and a
 stratified subset is manually checked. See
 [`docs/pilot_selective_correction.md`](docs/pilot_selective_correction.md).
 
+### Phase R1 - Binary Safe-to-Apply Correction Pilot
+
+**Status: implemented on June 15, 2026, including real optional LLM
+evaluation.**
+
+R1 narrows correction safety to the reproducible binary decision
+`safe_to_apply / do_not_apply`. Controlled term and overlap proposals use
+reference-derived WER/CER improvement with a `0.01` margin, plus explicit
+unsupported-content safety overrides. R0 proposals without references remain
+separately marked `pilot_suggested_if_no_reference`.
+
+Implemented:
+
+- a 327-row benchmark with 255 controlled-reference proposals and 72 secondary
+  pilot-suggested proposals;
+- binary EccoGate using only retrieval, context, temporal uncertainty,
+  speaker ambiguity, and edit-risk evidence;
+- optional no-evidence and evidence-conditioned real LLM self-judges that do
+  not receive references or labels and never silently fall back;
+- always-apply, never-apply, retrieval-only, overlap-unaware, and EccoGate
+  baselines;
+- accuracy, macro F1, safe-apply precision/recall, unsafe application, false
+  blocking, coverage, accepted error reduction, category analysis, five
+  charts, documentation, and network-free tests.
+
+The binary task is now the focused feasibility pilot. The earlier three-way
+R0 and EvidenceGate work remains exploratory. No Phase R1 result should be
+presented as a full paper benchmark or real-audio generalization claim. See
+[`docs/binary_safe_apply_correction.md`](docs/binary_safe_apply_correction.md).
+
+The configured DeepSeek evaluation completed for both LLM modes. Adding
+retrieval and cross-speech evidence improved LLM macro F1 from `0.379` to
+`0.596` and reduced unsafe application from `0.522` to `0.324`, but binary
+EccoGate remained substantially safer at `0.053` unsafe application with
+macro F1 `0.883`. This supports further study of evidence-aware safety
+policies, not a claim that the current gate generalizes.
+
 ### Phase 3 - Metrics and Experiment Runners
 
 **Goal:** Make all future UI evidence reproducible.

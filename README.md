@@ -492,6 +492,44 @@ always-accept, always-review, and deterministic EccoGate methods; no LLM rows
 are claimed unless real API calls complete. See
 [`docs/pilot_selective_correction.md`](docs/pilot_selective_correction.md).
 
+## Binary Safe-to-Apply Correction Pilot
+
+Phase R1 is the current focused correction-safety pilot. It replaces the
+subjective three-way target with:
+
+```text
+safe_to_apply / do_not_apply
+```
+
+Controlled rows use reference-derived WER/CER improvement with a configurable
+margin and safety overrides. R0 rows without references remain a separately
+labeled secondary slice.
+
+```bash
+python experiments/build_binary_safe_apply_benchmark.py \
+  --output data/pilot/binary_safe_apply_benchmark.csv \
+  --margin 0.01
+
+python experiments/run_binary_llm_self_judge.py \
+  --mode no_evidence
+
+python experiments/run_binary_llm_self_judge.py \
+  --mode with_evidence \
+  --append
+
+python experiments/run_binary_safe_apply_experiment.py
+python experiments/plot_binary_safe_apply_results.py
+```
+
+The LLM judge is optional, uses the secure `.env` configuration, never sees
+the reference transcript, and has no rule fallback. See
+[`docs/binary_safe_apply_correction.md`](docs/binary_safe_apply_correction.md).
+
+The committed real DeepSeek pilot shows that evidence conditioning improves
+the LLM self-judge (`0.379` to `0.596` macro F1; `0.522` to `0.324` unsafe
+application), but binary EccoGate remains safer (`0.053` unsafe application).
+These are controlled feasibility results, not real-audio generalization.
+
 ## Training EvidenceGate
 
 EvidenceGate is TalkWeaver's lightweight trained correction-safety model. It

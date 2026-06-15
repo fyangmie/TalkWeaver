@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import logging
 import re
+from http.client import IncompleteRead
 from dataclasses import dataclass, field
 from typing import Any
 from urllib.error import HTTPError, URLError
@@ -184,7 +185,7 @@ def _chat_completion(
         raise RuntimeError(
             f"{llm.name} returned HTTP {exc.code}: {details[:300]}"
         ) from exc
-    except (URLError, TimeoutError) as exc:
+    except (URLError, TimeoutError, IncompleteRead, ConnectionError) as exc:
         raise RuntimeError(f"{llm.name} request failed: {exc}") from exc
 
     try:
