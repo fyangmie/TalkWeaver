@@ -464,6 +464,34 @@ python experiments/plot_results.py
 Generated demo outputs are written under `outputs/` and
 `experiments/results/`.
 
+## Selective Correction Feasibility Pilot
+
+Phase R0 tests whether correction proposals should be accepted, rejected, or
+deferred to human review before committing to a full human-labeled benchmark.
+The 72-row controlled pilot is balanced across the three decisions and eight
+hard-case categories. Suggested labels are explicitly marked
+`pilot_auto_labeled`.
+
+```bash
+python experiments/build_selective_correction_pilot.py
+
+python experiments/run_pilot_llm_self_judge.py \
+  --mode no_evidence
+
+python experiments/run_pilot_llm_self_judge.py \
+  --mode with_evidence \
+  --append
+
+python experiments/run_pilot_selective_correction_eval.py
+python experiments/plot_pilot_selective_correction.py
+```
+
+The LLM commands require the optional secure API configuration in `.env` and
+never use a rule fallback. The current committed comparison contains the
+always-accept, always-review, and deterministic EccoGate methods; no LLM rows
+are claimed unless real API calls complete. See
+[`docs/pilot_selective_correction.md`](docs/pilot_selective_correction.md).
+
 ## Training EvidenceGate
 
 EvidenceGate is TalkWeaver's lightweight trained correction-safety model. It

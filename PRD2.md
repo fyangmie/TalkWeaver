@@ -1849,6 +1849,38 @@ results do not demonstrate real-audio or out-of-domain generalization.
 
 See [`docs/evidence_gate.md`](docs/evidence_gate.md).
 
+### Phase R0 - Selective Correction Feasibility Pilot
+
+**Status: partially implemented on June 15, 2026.**
+
+Before a full human-labeled selective-correction benchmark, TalkWeaver now
+includes a 72-proposal controlled feasibility pilot for the working research
+direction:
+
+> **When Not to Correct: Evidence-Calibrated LLM-ASR Correction with
+> Abstention in Overlapped Multi-Speaker Meetings**
+
+Implemented:
+
+- balanced pilot proposals across accept, reject, and needs-review;
+- technical-term, negative-control, weak-evidence, overlap, partial-utterance,
+  attribution, hallucination, no-change, and multilingual cases;
+- deterministic pre-decision EccoGate scoring without an LLM;
+- real-API LLM self-judge scripts for no-evidence and evidence-conditioned
+  prompts, with no fake fallback;
+- safety, abstention, coverage, category-failure evaluation and four charts;
+- explicit `pilot_auto_labeled` provenance and network-free tests.
+
+The current committed result includes baselines and EccoGate only because the
+configured external LLM call was not authorized in the automated environment.
+EccoGate achieved pilot macro F1 `0.819`, unsafe-accept rate `0.000`,
+needs-review recall `0.667`, and coverage `0.708`. These are controlled,
+auto-labeled policy-sanity results, not real-audio or paper-level claims.
+
+Phase R0 remains partial until both real LLM self-judge modes are run and a
+stratified subset is manually checked. See
+[`docs/pilot_selective_correction.md`](docs/pilot_selective_correction.md).
+
 ### Phase 3 - Metrics and Experiment Runners
 
 **Goal:** Make all future UI evidence reproducible.

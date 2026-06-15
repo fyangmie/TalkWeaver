@@ -112,6 +112,10 @@ assets/result_charts/*.png
 !assets/result_charts/evidence_gate_feature_set_macro_f1.png
 !assets/result_charts/evidence_gate_feature_set_unsafe_accept.png
 !assets/result_charts/evidence_gate_heldout_confusion_matrix.png
+!assets/result_charts/pilot_unsafe_accept_rate.png
+!assets/result_charts/pilot_needs_review_recall.png
+!assets/result_charts/pilot_macro_f1.png
+!assets/result_charts/pilot_category_failure.png
 assets/screenshots/*
 assets/demo_gifs/*
 !assets/**/.gitkeep

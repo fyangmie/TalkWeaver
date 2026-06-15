@@ -1,0 +1,217 @@
+proposal_id,category,language,method,gold_label,label_source,predicted_label,correct,unsafe_accept,covered,support_score,risk_score,explanation,provider,model,api_used,fallback_used
+pilot_001,technical_term_recovery,en,always_accept,accept,pilot_auto_labeled,accept,True,False,True,,,Baseline always accepts.,,,False,False
+pilot_002,technical_term_recovery,en,always_accept,reject,pilot_auto_labeled,accept,False,True,True,,,Baseline always accepts.,,,False,False
+pilot_003,technical_term_recovery,en,always_accept,needs_review,pilot_auto_labeled,accept,False,True,True,,,Baseline always accepts.,,,False,False
+pilot_004,technical_term_recovery,en,always_accept,accept,pilot_auto_labeled,accept,True,False,True,,,Baseline always accepts.,,,False,False
+pilot_005,technical_term_recovery,en,always_accept,reject,pilot_auto_labeled,accept,False,True,True,,,Baseline always accepts.,,,False,False
+pilot_006,technical_term_recovery,en,always_accept,needs_review,pilot_auto_labeled,accept,False,True,True,,,Baseline always accepts.,,,False,False
+pilot_007,technical_term_recovery,en,always_accept,accept,pilot_auto_labeled,accept,True,False,True,,,Baseline always accepts.,,,False,False
+pilot_008,technical_term_recovery,en,always_accept,reject,pilot_auto_labeled,accept,False,True,True,,,Baseline always accepts.,,,False,False
+pilot_009,technical_term_recovery,en,always_accept,needs_review,pilot_auto_labeled,accept,False,True,True,,,Baseline always accepts.,,,False,False
+pilot_010,ordinary_word_negative_control,en,always_accept,accept,pilot_auto_labeled,accept,True,False,True,,,Baseline always accepts.,,,False,False
+pilot_011,ordinary_word_negative_control,en,always_accept,reject,pilot_auto_labeled,accept,False,True,True,,,Baseline always accepts.,,,False,False
+pilot_012,ordinary_word_negative_control,en,always_accept,needs_review,pilot_auto_labeled,accept,False,True,True,,,Baseline always accepts.,,,False,False
+pilot_013,ordinary_word_negative_control,en,always_accept,accept,pilot_auto_labeled,accept,True,False,True,,,Baseline always accepts.,,,False,False
+pilot_014,ordinary_word_negative_control,en,always_accept,reject,pilot_auto_labeled,accept,False,True,True,,,Baseline always accepts.,,,False,False
+pilot_015,ordinary_word_negative_control,en,always_accept,needs_review,pilot_auto_labeled,accept,False,True,True,,,Baseline always accepts.,,,False,False
+pilot_016,ordinary_word_negative_control,en,always_accept,accept,pilot_auto_labeled,accept,True,False,True,,,Baseline always accepts.,,,False,False
+pilot_017,ordinary_word_negative_control,en,always_accept,reject,pilot_auto_labeled,accept,False,True,True,,,Baseline always accepts.,,,False,False
+pilot_018,ordinary_word_negative_control,en,always_accept,needs_review,pilot_auto_labeled,accept,False,True,True,,,Baseline always accepts.,,,False,False
+pilot_019,weak_retrieval_evidence,zh-CN,always_accept,accept,pilot_auto_labeled,accept,True,False,True,,,Baseline always accepts.,,,False,False
+pilot_020,weak_retrieval_evidence,zh-CN,always_accept,reject,pilot_auto_labeled,accept,False,True,True,,,Baseline always accepts.,,,False,False
+pilot_021,weak_retrieval_evidence,zh-CN,always_accept,needs_review,pilot_auto_labeled,accept,False,True,True,,,Baseline always accepts.,,,False,False
+pilot_022,weak_retrieval_evidence,en,always_accept,accept,pilot_auto_labeled,accept,True,False,True,,,Baseline always accepts.,,,False,False
+pilot_023,weak_retrieval_evidence,en,always_accept,reject,pilot_auto_labeled,accept,False,True,True,,,Baseline always accepts.,,,False,False
+pilot_024,weak_retrieval_evidence,en,always_accept,needs_review,pilot_auto_labeled,accept,False,True,True,,,Baseline always accepts.,,,False,False
+pilot_025,weak_retrieval_evidence,en,always_accept,accept,pilot_auto_labeled,accept,True,False,True,,,Baseline always accepts.,,,False,False
+pilot_026,weak_retrieval_evidence,en,always_accept,reject,pilot_auto_labeled,accept,False,True,True,,,Baseline always accepts.,,,False,False
+pilot_027,weak_retrieval_evidence,en,always_accept,needs_review,pilot_auto_labeled,accept,False,True,True,,,Baseline always accepts.,,,False,False
+pilot_028,heavy_overlap,en,always_accept,accept,pilot_auto_labeled,accept,True,False,True,,,Baseline always accepts.,,,False,False
+pilot_029,heavy_overlap,en,always_accept,reject,pilot_auto_labeled,accept,False,True,True,,,Baseline always accepts.,,,False,False
+pilot_030,heavy_overlap,en,always_accept,needs_review,pilot_auto_labeled,accept,False,True,True,,,Baseline always accepts.,,,False,False
+pilot_031,heavy_overlap,en,always_accept,accept,pilot_auto_labeled,accept,True,False,True,,,Baseline always accepts.,,,False,False
+pilot_032,heavy_overlap,en,always_accept,reject,pilot_auto_labeled,accept,False,True,True,,,Baseline always accepts.,,,False,False
+pilot_033,heavy_overlap,en,always_accept,needs_review,pilot_auto_labeled,accept,False,True,True,,,Baseline always accepts.,,,False,False
+pilot_034,heavy_overlap,en,always_accept,accept,pilot_auto_labeled,accept,True,False,True,,,Baseline always accepts.,,,False,False
+pilot_035,heavy_overlap,en,always_accept,reject,pilot_auto_labeled,accept,False,True,True,,,Baseline always accepts.,,,False,False
+pilot_036,heavy_overlap,en,always_accept,needs_review,pilot_auto_labeled,accept,False,True,True,,,Baseline always accepts.,,,False,False
+pilot_037,partial_utterance,en,always_accept,accept,pilot_auto_labeled,accept,True,False,True,,,Baseline always accepts.,,,False,False
+pilot_038,partial_utterance,en,always_accept,reject,pilot_auto_labeled,accept,False,True,True,,,Baseline always accepts.,,,False,False
+pilot_039,partial_utterance,en,always_accept,needs_review,pilot_auto_labeled,accept,False,True,True,,,Baseline always accepts.,,,False,False
+pilot_040,partial_utterance,en,always_accept,accept,pilot_auto_labeled,accept,True,False,True,,,Baseline always accepts.,,,False,False
+pilot_041,partial_utterance,en,always_accept,reject,pilot_auto_labeled,accept,False,True,True,,,Baseline always accepts.,,,False,False
+pilot_042,partial_utterance,en,always_accept,needs_review,pilot_auto_labeled,accept,False,True,True,,,Baseline always accepts.,,,False,False
+pilot_043,partial_utterance,en,always_accept,accept,pilot_auto_labeled,accept,True,False,True,,,Baseline always accepts.,,,False,False
+pilot_044,partial_utterance,en,always_accept,reject,pilot_auto_labeled,accept,False,True,True,,,Baseline always accepts.,,,False,False
+pilot_045,partial_utterance,en,always_accept,needs_review,pilot_auto_labeled,accept,False,True,True,,,Baseline always accepts.,,,False,False
+pilot_046,speaker_attribution_risk,en,always_accept,accept,pilot_auto_labeled,accept,True,False,True,,,Baseline always accepts.,,,False,False
+pilot_047,speaker_attribution_risk,en,always_accept,reject,pilot_auto_labeled,accept,False,True,True,,,Baseline always accepts.,,,False,False
+pilot_048,speaker_attribution_risk,en,always_accept,needs_review,pilot_auto_labeled,accept,False,True,True,,,Baseline always accepts.,,,False,False
+pilot_049,speaker_attribution_risk,en,always_accept,accept,pilot_auto_labeled,accept,True,False,True,,,Baseline always accepts.,,,False,False
+pilot_050,speaker_attribution_risk,en,always_accept,reject,pilot_auto_labeled,accept,False,True,True,,,Baseline always accepts.,,,False,False
+pilot_051,speaker_attribution_risk,en,always_accept,needs_review,pilot_auto_labeled,accept,False,True,True,,,Baseline always accepts.,,,False,False
+pilot_052,speaker_attribution_risk,en,always_accept,accept,pilot_auto_labeled,accept,True,False,True,,,Baseline always accepts.,,,False,False
+pilot_053,speaker_attribution_risk,en,always_accept,reject,pilot_auto_labeled,accept,False,True,True,,,Baseline always accepts.,,,False,False
+pilot_054,speaker_attribution_risk,en,always_accept,needs_review,pilot_auto_labeled,accept,False,True,True,,,Baseline always accepts.,,,False,False
+pilot_055,fluent_hallucination,en,always_accept,accept,pilot_auto_labeled,accept,True,False,True,,,Baseline always accepts.,,,False,False
+pilot_056,fluent_hallucination,en,always_accept,reject,pilot_auto_labeled,accept,False,True,True,,,Baseline always accepts.,,,False,False
+pilot_057,fluent_hallucination,en,always_accept,needs_review,pilot_auto_labeled,accept,False,True,True,,,Baseline always accepts.,,,False,False
+pilot_058,fluent_hallucination,en,always_accept,accept,pilot_auto_labeled,accept,True,False,True,,,Baseline always accepts.,,,False,False
+pilot_059,fluent_hallucination,en,always_accept,reject,pilot_auto_labeled,accept,False,True,True,,,Baseline always accepts.,,,False,False
+pilot_060,fluent_hallucination,en,always_accept,needs_review,pilot_auto_labeled,accept,False,True,True,,,Baseline always accepts.,,,False,False
+pilot_061,fluent_hallucination,en,always_accept,accept,pilot_auto_labeled,accept,True,False,True,,,Baseline always accepts.,,,False,False
+pilot_062,fluent_hallucination,en,always_accept,reject,pilot_auto_labeled,accept,False,True,True,,,Baseline always accepts.,,,False,False
+pilot_063,fluent_hallucination,en,always_accept,needs_review,pilot_auto_labeled,accept,False,True,True,,,Baseline always accepts.,,,False,False
+pilot_064,no_change_case,en,always_accept,accept,pilot_auto_labeled,accept,True,False,True,,,Baseline always accepts.,,,False,False
+pilot_065,no_change_case,en,always_accept,reject,pilot_auto_labeled,accept,False,True,True,,,Baseline always accepts.,,,False,False
+pilot_066,no_change_case,en,always_accept,needs_review,pilot_auto_labeled,accept,False,True,True,,,Baseline always accepts.,,,False,False
+pilot_067,no_change_case,en,always_accept,accept,pilot_auto_labeled,accept,True,False,True,,,Baseline always accepts.,,,False,False
+pilot_068,no_change_case,en,always_accept,reject,pilot_auto_labeled,accept,False,True,True,,,Baseline always accepts.,,,False,False
+pilot_069,no_change_case,en,always_accept,needs_review,pilot_auto_labeled,accept,False,True,True,,,Baseline always accepts.,,,False,False
+pilot_070,no_change_case,fr,always_accept,accept,pilot_auto_labeled,accept,True,False,True,,,Baseline always accepts.,,,False,False
+pilot_071,no_change_case,fr,always_accept,reject,pilot_auto_labeled,accept,False,True,True,,,Baseline always accepts.,,,False,False
+pilot_072,no_change_case,fr,always_accept,needs_review,pilot_auto_labeled,accept,False,True,True,,,Baseline always accepts.,,,False,False
+pilot_001,technical_term_recovery,en,always_review,accept,pilot_auto_labeled,needs_review,False,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_002,technical_term_recovery,en,always_review,reject,pilot_auto_labeled,needs_review,False,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_003,technical_term_recovery,en,always_review,needs_review,pilot_auto_labeled,needs_review,True,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_004,technical_term_recovery,en,always_review,accept,pilot_auto_labeled,needs_review,False,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_005,technical_term_recovery,en,always_review,reject,pilot_auto_labeled,needs_review,False,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_006,technical_term_recovery,en,always_review,needs_review,pilot_auto_labeled,needs_review,True,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_007,technical_term_recovery,en,always_review,accept,pilot_auto_labeled,needs_review,False,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_008,technical_term_recovery,en,always_review,reject,pilot_auto_labeled,needs_review,False,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_009,technical_term_recovery,en,always_review,needs_review,pilot_auto_labeled,needs_review,True,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_010,ordinary_word_negative_control,en,always_review,accept,pilot_auto_labeled,needs_review,False,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_011,ordinary_word_negative_control,en,always_review,reject,pilot_auto_labeled,needs_review,False,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_012,ordinary_word_negative_control,en,always_review,needs_review,pilot_auto_labeled,needs_review,True,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_013,ordinary_word_negative_control,en,always_review,accept,pilot_auto_labeled,needs_review,False,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_014,ordinary_word_negative_control,en,always_review,reject,pilot_auto_labeled,needs_review,False,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_015,ordinary_word_negative_control,en,always_review,needs_review,pilot_auto_labeled,needs_review,True,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_016,ordinary_word_negative_control,en,always_review,accept,pilot_auto_labeled,needs_review,False,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_017,ordinary_word_negative_control,en,always_review,reject,pilot_auto_labeled,needs_review,False,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_018,ordinary_word_negative_control,en,always_review,needs_review,pilot_auto_labeled,needs_review,True,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_019,weak_retrieval_evidence,zh-CN,always_review,accept,pilot_auto_labeled,needs_review,False,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_020,weak_retrieval_evidence,zh-CN,always_review,reject,pilot_auto_labeled,needs_review,False,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_021,weak_retrieval_evidence,zh-CN,always_review,needs_review,pilot_auto_labeled,needs_review,True,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_022,weak_retrieval_evidence,en,always_review,accept,pilot_auto_labeled,needs_review,False,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_023,weak_retrieval_evidence,en,always_review,reject,pilot_auto_labeled,needs_review,False,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_024,weak_retrieval_evidence,en,always_review,needs_review,pilot_auto_labeled,needs_review,True,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_025,weak_retrieval_evidence,en,always_review,accept,pilot_auto_labeled,needs_review,False,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_026,weak_retrieval_evidence,en,always_review,reject,pilot_auto_labeled,needs_review,False,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_027,weak_retrieval_evidence,en,always_review,needs_review,pilot_auto_labeled,needs_review,True,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_028,heavy_overlap,en,always_review,accept,pilot_auto_labeled,needs_review,False,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_029,heavy_overlap,en,always_review,reject,pilot_auto_labeled,needs_review,False,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_030,heavy_overlap,en,always_review,needs_review,pilot_auto_labeled,needs_review,True,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_031,heavy_overlap,en,always_review,accept,pilot_auto_labeled,needs_review,False,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_032,heavy_overlap,en,always_review,reject,pilot_auto_labeled,needs_review,False,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_033,heavy_overlap,en,always_review,needs_review,pilot_auto_labeled,needs_review,True,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_034,heavy_overlap,en,always_review,accept,pilot_auto_labeled,needs_review,False,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_035,heavy_overlap,en,always_review,reject,pilot_auto_labeled,needs_review,False,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_036,heavy_overlap,en,always_review,needs_review,pilot_auto_labeled,needs_review,True,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_037,partial_utterance,en,always_review,accept,pilot_auto_labeled,needs_review,False,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_038,partial_utterance,en,always_review,reject,pilot_auto_labeled,needs_review,False,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_039,partial_utterance,en,always_review,needs_review,pilot_auto_labeled,needs_review,True,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_040,partial_utterance,en,always_review,accept,pilot_auto_labeled,needs_review,False,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_041,partial_utterance,en,always_review,reject,pilot_auto_labeled,needs_review,False,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_042,partial_utterance,en,always_review,needs_review,pilot_auto_labeled,needs_review,True,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_043,partial_utterance,en,always_review,accept,pilot_auto_labeled,needs_review,False,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_044,partial_utterance,en,always_review,reject,pilot_auto_labeled,needs_review,False,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_045,partial_utterance,en,always_review,needs_review,pilot_auto_labeled,needs_review,True,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_046,speaker_attribution_risk,en,always_review,accept,pilot_auto_labeled,needs_review,False,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_047,speaker_attribution_risk,en,always_review,reject,pilot_auto_labeled,needs_review,False,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_048,speaker_attribution_risk,en,always_review,needs_review,pilot_auto_labeled,needs_review,True,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_049,speaker_attribution_risk,en,always_review,accept,pilot_auto_labeled,needs_review,False,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_050,speaker_attribution_risk,en,always_review,reject,pilot_auto_labeled,needs_review,False,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_051,speaker_attribution_risk,en,always_review,needs_review,pilot_auto_labeled,needs_review,True,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_052,speaker_attribution_risk,en,always_review,accept,pilot_auto_labeled,needs_review,False,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_053,speaker_attribution_risk,en,always_review,reject,pilot_auto_labeled,needs_review,False,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_054,speaker_attribution_risk,en,always_review,needs_review,pilot_auto_labeled,needs_review,True,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_055,fluent_hallucination,en,always_review,accept,pilot_auto_labeled,needs_review,False,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_056,fluent_hallucination,en,always_review,reject,pilot_auto_labeled,needs_review,False,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_057,fluent_hallucination,en,always_review,needs_review,pilot_auto_labeled,needs_review,True,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_058,fluent_hallucination,en,always_review,accept,pilot_auto_labeled,needs_review,False,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_059,fluent_hallucination,en,always_review,reject,pilot_auto_labeled,needs_review,False,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_060,fluent_hallucination,en,always_review,needs_review,pilot_auto_labeled,needs_review,True,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_061,fluent_hallucination,en,always_review,accept,pilot_auto_labeled,needs_review,False,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_062,fluent_hallucination,en,always_review,reject,pilot_auto_labeled,needs_review,False,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_063,fluent_hallucination,en,always_review,needs_review,pilot_auto_labeled,needs_review,True,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_064,no_change_case,en,always_review,accept,pilot_auto_labeled,needs_review,False,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_065,no_change_case,en,always_review,reject,pilot_auto_labeled,needs_review,False,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_066,no_change_case,en,always_review,needs_review,pilot_auto_labeled,needs_review,True,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_067,no_change_case,en,always_review,accept,pilot_auto_labeled,needs_review,False,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_068,no_change_case,en,always_review,reject,pilot_auto_labeled,needs_review,False,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_069,no_change_case,en,always_review,needs_review,pilot_auto_labeled,needs_review,True,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_070,no_change_case,fr,always_review,accept,pilot_auto_labeled,needs_review,False,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_071,no_change_case,fr,always_review,reject,pilot_auto_labeled,needs_review,False,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_072,no_change_case,fr,always_review,needs_review,pilot_auto_labeled,needs_review,True,False,False,,,Baseline always abstains for review.,,,False,False
+pilot_001,technical_term_recovery,en,EccoGate,accept,pilot_auto_labeled,accept,True,False,True,0.8,0.05,accept: retrieval and context support pyannote; most inserted tokens are grounded; observed risk: low edit risk.,,,False,False
+pilot_002,technical_term_recovery,en,EccoGate,reject,pilot_auto_labeled,reject,True,False,True,0.0,0.8,"reject: most inserted tokens are grounded; observed risk: retrieval term lacks matching context, context contradicts the proposed domain edit.",,,False,False
+pilot_003,technical_term_recovery,en,EccoGate,needs_review,pilot_auto_labeled,needs_review,True,False,False,0.65,0.43,needs_review: retrieval and context support pyannote; most inserted tokens are grounded; observed risk: context explicitly signals ambiguity.,,,False,False
+pilot_004,technical_term_recovery,en,EccoGate,accept,pilot_auto_labeled,accept,True,False,True,0.8,0.05,accept: retrieval and context support diarization; most inserted tokens are grounded; observed risk: low edit risk.,,,False,False
+pilot_005,technical_term_recovery,en,EccoGate,reject,pilot_auto_labeled,needs_review,False,False,False,0.35,0.3,needs_review: most inserted tokens are grounded; observed risk: retrieval term lacks matching context.,,,False,False
+pilot_006,technical_term_recovery,en,EccoGate,needs_review,pilot_auto_labeled,needs_review,True,False,False,0.65,0.43,needs_review: retrieval and context support diarization; most inserted tokens are grounded; observed risk: context explicitly signals ambiguity.,,,False,False
+pilot_007,technical_term_recovery,en,EccoGate,accept,pilot_auto_labeled,accept,True,False,True,0.8,0.05,accept: retrieval and context support temporal anchor; most inserted tokens are grounded; observed risk: low edit risk.,,,False,False
+pilot_008,technical_term_recovery,en,EccoGate,reject,pilot_auto_labeled,reject,True,False,True,0.0,0.8,"reject: most inserted tokens are grounded; observed risk: retrieval term lacks matching context, context contradicts the proposed domain edit.",,,False,False
+pilot_009,technical_term_recovery,en,EccoGate,needs_review,pilot_auto_labeled,reject,False,False,True,0.2,0.58,"reject: most inserted tokens are grounded; observed risk: retrieval term lacks matching context, context explicitly signals ambiguity.",,,False,False
+pilot_010,ordinary_word_negative_control,en,EccoGate,accept,pilot_auto_labeled,accept,True,False,True,0.8,0.05,accept: retrieval and context support RAG; most inserted tokens are grounded; observed risk: low edit risk.,,,False,False
+pilot_011,ordinary_word_negative_control,en,EccoGate,reject,pilot_auto_labeled,reject,True,False,True,0.0,0.8,"reject: most inserted tokens are grounded; observed risk: retrieval term lacks matching context, context contradicts the proposed domain edit.",,,False,False
+pilot_012,ordinary_word_negative_control,en,EccoGate,needs_review,pilot_auto_labeled,needs_review,True,False,False,0.65,0.33,needs_review: retrieval and context support RAG; most inserted tokens are grounded; observed risk: context explicitly signals ambiguity.,,,False,False
+pilot_013,ordinary_word_negative_control,en,EccoGate,accept,pilot_auto_labeled,accept,True,False,True,0.8,0.05,accept: retrieval and context support WER; most inserted tokens are grounded; observed risk: low edit risk.,,,False,False
+pilot_014,ordinary_word_negative_control,en,EccoGate,reject,pilot_auto_labeled,needs_review,False,False,False,0.35,0.3,needs_review: most inserted tokens are grounded; observed risk: retrieval term lacks matching context.,,,False,False
+pilot_015,ordinary_word_negative_control,en,EccoGate,needs_review,pilot_auto_labeled,needs_review,True,False,False,0.65,0.33,needs_review: retrieval and context support WER; most inserted tokens are grounded; observed risk: context explicitly signals ambiguity.,,,False,False
+pilot_016,ordinary_word_negative_control,en,EccoGate,accept,pilot_auto_labeled,accept,True,False,True,0.8,0.05,accept: retrieval and context support DER; most inserted tokens are grounded; observed risk: low edit risk.,,,False,False
+pilot_017,ordinary_word_negative_control,en,EccoGate,reject,pilot_auto_labeled,reject,True,False,True,0.0,0.8,"reject: most inserted tokens are grounded; observed risk: retrieval term lacks matching context, context contradicts the proposed domain edit.",,,False,False
+pilot_018,ordinary_word_negative_control,en,EccoGate,needs_review,pilot_auto_labeled,needs_review,True,False,False,0.65,0.33,needs_review: retrieval and context support DER; most inserted tokens are grounded; observed risk: context explicitly signals ambiguity.,,,False,False
+pilot_019,weak_retrieval_evidence,zh-CN,EccoGate,accept,pilot_auto_labeled,accept,True,False,True,0.8,0.15,accept: retrieval and context support Qwen; most inserted tokens are grounded; observed risk: low edit risk.,,,False,False
+pilot_020,weak_retrieval_evidence,zh-CN,EccoGate,reject,pilot_auto_labeled,reject,True,False,True,0.15,1.0,"reject: no strong support evidence; observed risk: large edit, substantial unsupported expansion, retrieval term lacks matching context, inserted tokens are weakly grounded.",,,False,False
+pilot_021,weak_retrieval_evidence,zh-CN,EccoGate,needs_review,pilot_auto_labeled,needs_review,True,False,False,0.65,0.53,"needs_review: retrieval and context support Qwen; most inserted tokens are grounded; observed risk: large edit, context explicitly signals ambiguity.",,,False,False
+pilot_022,weak_retrieval_evidence,en,EccoGate,accept,pilot_auto_labeled,accept,True,False,True,0.8,0.05,accept: retrieval and context support TagSpeech; most inserted tokens are grounded; observed risk: low edit risk.,,,False,False
+pilot_023,weak_retrieval_evidence,en,EccoGate,reject,pilot_auto_labeled,needs_review,False,False,False,0.4,0.65,needs_review: retrieval and context support TagSpeech; most inserted tokens are grounded; observed risk: context contradicts the proposed domain edit.,,,False,False
+pilot_024,weak_retrieval_evidence,en,EccoGate,needs_review,pilot_auto_labeled,needs_review,True,False,False,0.65,0.33,needs_review: retrieval and context support TagSpeech; most inserted tokens are grounded; observed risk: context explicitly signals ambiguity.,,,False,False
+pilot_025,weak_retrieval_evidence,en,EccoGate,accept,pilot_auto_labeled,accept,True,False,True,0.8,0.05,accept: retrieval and context support DM-ASR; most inserted tokens are grounded; observed risk: low edit risk.,,,False,False
+pilot_026,weak_retrieval_evidence,en,EccoGate,reject,pilot_auto_labeled,needs_review,False,False,False,0.4,0.55,needs_review: retrieval and context support DM-ASR; most inserted tokens are grounded; observed risk: context contradicts the proposed domain edit.,,,False,False
+pilot_027,weak_retrieval_evidence,en,EccoGate,needs_review,pilot_auto_labeled,needs_review,True,False,False,0.65,0.43,needs_review: retrieval and context support DM-ASR; most inserted tokens are grounded; observed risk: context explicitly signals ambiguity.,,,False,False
+pilot_028,heavy_overlap,en,EccoGate,accept,pilot_auto_labeled,accept,True,False,True,0.8,0.27,accept: retrieval and context support pyannote; most inserted tokens are grounded; observed risk: overlap.,,,False,False
+pilot_029,heavy_overlap,en,EccoGate,reject,pilot_auto_labeled,reject,True,False,True,0.15,1.0,"reject: no strong support evidence; observed risk: overlap, heavy overlap, partial utterance, retrieval term lacks matching context, inserted tokens are weakly grounded.",,,False,False
+pilot_030,heavy_overlap,en,EccoGate,needs_review,pilot_auto_labeled,needs_review,True,False,False,0.8,0.73,"needs_review: retrieval and context support RAG; most inserted tokens are grounded; observed risk: overlap, heavy overlap, speaker ambiguity.",,,False,False
+pilot_031,heavy_overlap,en,EccoGate,accept,pilot_auto_labeled,accept,True,False,True,0.8,0.17,accept: retrieval and context support WER; most inserted tokens are grounded; observed risk: overlap.,,,False,False
+pilot_032,heavy_overlap,en,EccoGate,reject,pilot_auto_labeled,reject,True,False,True,0.15,1.0,"reject: no strong support evidence; observed risk: overlap, heavy overlap, partial utterance, large edit, substantial unsupported expansion, retrieval term lacks matching context, inserted tokens are weakly grounded.",,,False,False
+pilot_033,heavy_overlap,en,EccoGate,needs_review,pilot_auto_labeled,needs_review,True,False,False,0.8,0.73,"needs_review: retrieval and context support WER; most inserted tokens are grounded; observed risk: overlap, heavy overlap, speaker ambiguity.",,,False,False
+pilot_034,heavy_overlap,en,EccoGate,accept,pilot_auto_labeled,accept,True,False,True,0.8,0.17,accept: retrieval and context support diarization; most inserted tokens are grounded; observed risk: overlap.,,,False,False
+pilot_035,heavy_overlap,en,EccoGate,reject,pilot_auto_labeled,reject,True,False,True,0.6,1.0,"reject: retrieval and context support diarization; observed risk: overlap, heavy overlap, speaker ambiguity, partial utterance, substantial unsupported expansion, inserted tokens are weakly grounded.",,,False,False
+pilot_036,heavy_overlap,en,EccoGate,needs_review,pilot_auto_labeled,reject,False,False,True,0.1,1.0,"reject: no strong support evidence; observed risk: overlap, heavy overlap, partial utterance, large edit, retrieval term lacks matching context, context explicitly signals ambiguity.",,,False,False
+pilot_037,partial_utterance,en,EccoGate,accept,pilot_auto_labeled,accept,True,False,True,0.8,0.35,accept: retrieval and context support faster-whisper; most inserted tokens are grounded; observed risk: partial utterance.,,,False,False
+pilot_038,partial_utterance,en,EccoGate,reject,pilot_auto_labeled,reject,True,False,True,0.6,1.0,"reject: retrieval and context support faster-whisper; observed risk: partial utterance, large edit, substantial unsupported expansion, inserted tokens are weakly grounded.",,,False,False
+pilot_039,partial_utterance,en,EccoGate,needs_review,pilot_auto_labeled,reject,False,False,True,0.55,0.78,"reject: retrieval and context support faster-whisper; observed risk: partial utterance, context explicitly signals ambiguity.",,,False,False
+pilot_040,partial_utterance,en,EccoGate,accept,pilot_auto_labeled,accept,True,False,True,0.8,0.35,accept: retrieval and context support CTranslate2; most inserted tokens are grounded; observed risk: partial utterance.,,,False,False
+pilot_041,partial_utterance,en,EccoGate,reject,pilot_auto_labeled,reject,True,False,True,0.2,1.0,"reject: retrieval and context support CTranslate2; observed risk: partial utterance, large edit, substantial unsupported expansion, context contradicts the proposed domain edit, inserted tokens are weakly grounded.",,,False,False
+pilot_042,partial_utterance,en,EccoGate,needs_review,pilot_auto_labeled,reject,False,False,True,0.45,1.0,"reject: retrieval and context support CTranslate2; observed risk: partial utterance, large edit, context explicitly signals ambiguity, inserted tokens are weakly grounded.",,,False,False
+pilot_043,partial_utterance,en,EccoGate,accept,pilot_auto_labeled,accept,True,False,True,0.8,0.35,accept: retrieval and context support DER; most inserted tokens are grounded; observed risk: partial utterance.,,,False,False
+pilot_044,partial_utterance,en,EccoGate,reject,pilot_auto_labeled,reject,True,False,True,0.6,0.95,"reject: retrieval and context support DER; observed risk: partial utterance, substantial unsupported expansion, inserted tokens are weakly grounded.",,,False,False
+pilot_045,partial_utterance,en,EccoGate,needs_review,pilot_auto_labeled,needs_review,True,False,False,0.7,0.45,"needs_review: retrieval and context support DER; observed risk: partial utterance, large edit.",,,False,False
+pilot_046,speaker_attribution_risk,en,EccoGate,accept,pilot_auto_labeled,accept,True,False,True,0.8,0.05,accept: retrieval and context support pyannote; most inserted tokens are grounded; observed risk: low edit risk.,,,False,False
+pilot_047,speaker_attribution_risk,en,EccoGate,reject,pilot_auto_labeled,reject,True,False,True,0.7,0.98,"reject: retrieval and context support pyannote; observed risk: speaker ambiguity, speaker attribution changed.",,,False,False
+pilot_048,speaker_attribution_risk,en,EccoGate,needs_review,pilot_auto_labeled,needs_review,True,False,False,0.65,0.71,"needs_review: retrieval and context support pyannote; most inserted tokens are grounded; observed risk: speaker ambiguity, context explicitly signals ambiguity.",,,False,False
+pilot_049,speaker_attribution_risk,en,EccoGate,accept,pilot_auto_labeled,accept,True,False,True,0.8,0.05,accept: retrieval and context support WER; most inserted tokens are grounded; observed risk: low edit risk.,,,False,False
+pilot_050,speaker_attribution_risk,en,EccoGate,reject,pilot_auto_labeled,reject,True,False,True,0.0,1.0,"reject: no strong support evidence; observed risk: speaker ambiguity, retrieval term lacks matching context, context contradicts the proposed domain edit, speaker attribution changed.",,,False,False
+pilot_051,speaker_attribution_risk,en,EccoGate,needs_review,pilot_auto_labeled,needs_review,True,False,False,0.8,0.55,"needs_review: retrieval and context support WER; most inserted tokens are grounded; observed risk: overlap, speaker ambiguity.",,,False,False
+pilot_052,speaker_attribution_risk,en,EccoGate,accept,pilot_auto_labeled,accept,True,False,True,0.8,0.15,accept: retrieval and context support diarization; most inserted tokens are grounded; observed risk: low edit risk.,,,False,False
+pilot_053,speaker_attribution_risk,en,EccoGate,reject,pilot_auto_labeled,reject,True,False,True,0.2,1.0,"reject: retrieval and context support diarization; observed risk: speaker ambiguity, large edit, substantial unsupported expansion, context contradicts the proposed domain edit, inserted tokens are weakly grounded, speaker attribution changed.",,,False,False
+pilot_054,speaker_attribution_risk,en,EccoGate,needs_review,pilot_auto_labeled,reject,False,False,True,0.7,1.0,"reject: retrieval and context support diarization; observed risk: speaker ambiguity, large edit, speaker attribution changed.",,,False,False
+pilot_055,fluent_hallucination,en,EccoGate,accept,pilot_auto_labeled,accept,True,False,True,0.8,0.15,accept: retrieval and context support WER; most inserted tokens are grounded; observed risk: low edit risk.,,,False,False
+pilot_056,fluent_hallucination,en,EccoGate,reject,pilot_auto_labeled,reject,True,False,True,0.0,1.0,"reject: no strong support evidence; observed risk: large edit, substantial unsupported expansion, retrieval term lacks matching context, context contradicts the proposed domain edit, inserted tokens are weakly grounded.",,,False,False
+pilot_057,fluent_hallucination,en,EccoGate,needs_review,pilot_auto_labeled,reject,False,False,True,0.0,1.0,"reject: no strong support evidence; observed risk: substantial unsupported expansion, retrieval term lacks matching context, context contradicts the proposed domain edit, inserted tokens are weakly grounded.",,,False,False
+pilot_058,fluent_hallucination,en,EccoGate,accept,pilot_auto_labeled,accept,True,False,True,0.8,0.05,accept: retrieval and context support RAG; most inserted tokens are grounded; observed risk: low edit risk.,,,False,False
+pilot_059,fluent_hallucination,en,EccoGate,reject,pilot_auto_labeled,reject,True,False,True,0.0,1.0,"reject: no strong support evidence; observed risk: substantial unsupported expansion, retrieval term lacks matching context, context contradicts the proposed domain edit, inserted tokens are weakly grounded.",,,False,False
+pilot_060,fluent_hallucination,en,EccoGate,needs_review,pilot_auto_labeled,reject,False,False,True,0.6,0.85,"reject: retrieval and context support RAG; observed risk: large edit, substantial unsupported expansion, inserted tokens are weakly grounded.",,,False,False
+pilot_061,fluent_hallucination,en,EccoGate,accept,pilot_auto_labeled,accept,True,False,True,0.8,0.15,accept: retrieval and context support TagSpeech; most inserted tokens are grounded; observed risk: low edit risk.,,,False,False
+pilot_062,fluent_hallucination,en,EccoGate,reject,pilot_auto_labeled,reject,True,False,True,0.15,1.0,"reject: no strong support evidence; observed risk: large edit, substantial unsupported expansion, retrieval term lacks matching context, inserted tokens are weakly grounded.",,,False,False
+pilot_063,fluent_hallucination,en,EccoGate,needs_review,pilot_auto_labeled,reject,False,False,True,0.6,0.85,"reject: retrieval and context support TagSpeech; observed risk: large edit, substantial unsupported expansion, inserted tokens are weakly grounded.",,,False,False
+pilot_064,no_change_case,en,EccoGate,accept,pilot_auto_labeled,accept,True,False,True,0.9,0.05,accept: the proposal preserves the ASR evidence; observed risk: low edit risk.,,,False,False
+pilot_065,no_change_case,en,EccoGate,reject,pilot_auto_labeled,reject,True,False,True,0.0,0.8,"reject: most inserted tokens are grounded; observed risk: retrieval term lacks matching context, context contradicts the proposed domain edit.",,,False,False
+pilot_066,no_change_case,en,EccoGate,needs_review,pilot_auto_labeled,needs_review,True,False,False,0.65,0.33,needs_review: retrieval and context support RAG; most inserted tokens are grounded; observed risk: context explicitly signals ambiguity.,,,False,False
+pilot_067,no_change_case,en,EccoGate,accept,pilot_auto_labeled,accept,True,False,True,0.9,0.05,accept: the proposal preserves the ASR evidence; observed risk: low edit risk.,,,False,False
+pilot_068,no_change_case,en,EccoGate,reject,pilot_auto_labeled,reject,True,False,True,0.0,0.8,"reject: most inserted tokens are grounded; observed risk: retrieval term lacks matching context, context contradicts the proposed domain edit.",,,False,False
+pilot_069,no_change_case,en,EccoGate,needs_review,pilot_auto_labeled,needs_review,True,False,False,0.65,0.33,needs_review: retrieval and context support WER; most inserted tokens are grounded; observed risk: context explicitly signals ambiguity.,,,False,False
+pilot_070,no_change_case,fr,EccoGate,accept,pilot_auto_labeled,accept,True,False,True,0.9,0.05,accept: the proposal preserves the ASR evidence; observed risk: low edit risk.,,,False,False
+pilot_071,no_change_case,fr,EccoGate,reject,pilot_auto_labeled,needs_review,False,False,False,0.4,0.65,needs_review: retrieval and context support DER; most inserted tokens are grounded; observed risk: context contradicts the proposed domain edit.,,,False,False
+pilot_072,no_change_case,fr,EccoGate,needs_review,pilot_auto_labeled,needs_review,True,False,False,0.65,0.33,needs_review: retrieval and context support DER; most inserted tokens are grounded; observed risk: context explicitly signals ambiguity.,,,False,False

@@ -196,6 +196,27 @@ def _chat_completion(
     return _extract_json_object(str(content))
 
 
+def request_json_completion(
+    config: LLMConfig,
+    messages: list[dict[str, str]],
+) -> dict[str, Any]:
+    """Request one JSON response using validated secure LLM configuration."""
+
+    config.validate(require_api=True)
+    return _chat_completion(
+        LLMProvider(
+            name=config.provider,
+            api_key=config.api_key,
+            base_url=config.base_url,
+            model=config.model,
+            temperature=config.temperature,
+            timeout_seconds=config.timeout_seconds,
+            prompt_version=config.prompt_version,
+        ),
+        messages,
+    )
+
+
 def _tokens(text: str) -> list[str]:
     return [match.group(0).lower() for match in WORD_PATTERN.finditer(text)]
 
