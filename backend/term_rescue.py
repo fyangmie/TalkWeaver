@@ -409,6 +409,9 @@ def matches_to_candidates(
             asr_error_forms=list(match.asr_error_forms),
             retrieved_score=match.score,
             retrieval_method=match.retrieval_method,
+            status="successful_rescue" if match.safe_to_apply else "needs_review",
+            raw_phrase=match.matched_form,
+            corrected_term=match.canonical,
             evidence_anchor_ids=[anchor_id],
         )
         for index, match in enumerate(matches, start=1)
@@ -509,6 +512,12 @@ def retrieve_term_candidates(
                     asr_error_forms=list(entry.asr_error_forms),
                     retrieved_score=score,
                     retrieval_method=method,
+                    status=(
+                        "successful_rescue"
+                        if method == "exact_error_form"
+                        else "needs_review"
+                    ),
+                    corrected_term=entry.canonical,
                     evidence_anchor_ids=[],
                 )
                 aggregated[key] = candidate

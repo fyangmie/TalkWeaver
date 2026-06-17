@@ -13,6 +13,7 @@ import pandas as pd
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
 CONVERSATION_MAP_DIR = ROOT_DIR / "outputs" / "conversation_maps"
+FOCUSED_DEMO_MAP_DIR = ROOT_DIR / "data" / "focused_mvp"
 RESULTS_DIR = ROOT_DIR / "experiments" / "results"
 CHART_DIR = ROOT_DIR / "assets" / "result_charts"
 
@@ -116,16 +117,20 @@ def list_available_conversation_maps(
     """Return valid ConversationMap JSON paths, ordered for UI selection."""
 
     directory = Path(root)
-    if not directory.exists():
-        return []
+    directories = [directory]
+    if directory.resolve() == CONVERSATION_MAP_DIR.resolve():
+        directories.append(FOCUSED_DEMO_MAP_DIR)
     paths: list[Path] = []
-    for path in directory.rglob("*_conversation_map.json"):
-        try:
-            payload = json.loads(path.read_text(encoding="utf-8"))
-        except (OSError, UnicodeError, json.JSONDecodeError):
+    for source_dir in directories:
+        if not source_dir.exists():
             continue
-        if isinstance(payload, dict) and payload.get("clip_id"):
-            paths.append(path.resolve())
+        for path in source_dir.rglob("*_conversation_map.json"):
+            try:
+                payload = json.loads(path.read_text(encoding="utf-8"))
+            except (OSError, UnicodeError, json.JSONDecodeError):
+                continue
+            if isinstance(payload, dict) and payload.get("clip_id"):
+                paths.append(path.resolve())
     return sorted(paths, key=lambda item: str(item).lower())
 
 
@@ -974,6 +979,10 @@ def _demo_score(path: Path, payload: dict[str, Any]) -> tuple[int, int, int]:
     variant = str(metadata.get("variant", "")).lower()
     relative = str(path).lower()
     score = 0
+    if metadata.get("source_type") == "synthetic_demo":
+        score += 180
+    if metadata.get("focused_mvp"):
+        score += 60
     if "ami" in dataset:
         score += 80
     if variant == "full_talkweaver":

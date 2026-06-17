@@ -13,6 +13,7 @@ from typing import Any
 
 SUMMARY_COLUMNS = [
     "model_name",
+    "benchmark_scope",
     "language",
     "dataset_name",
     "metric_name",
@@ -37,6 +38,8 @@ SUMMARY_COLUMNS = [
 def summarize_results(
     input_path: str | Path,
     output_path: str | Path,
+    *,
+    benchmark_scope: str | None = None,
 ) -> list[dict[str, Any]]:
     """Aggregate results by model, language, and dataset."""
 
@@ -46,6 +49,17 @@ def summarize_results(
         rows = list(csv.DictReader(handle))
     if not rows:
         raise ValueError("ASR benchmark CSV contains no rows.")
+    default_scope = benchmark_scope or "; ".join(
+        sorted(
+            {
+                row.get("benchmark_scope", "").strip()
+                for row in rows
+                if row.get("benchmark_scope", "").strip()
+            }
+        )
+    )
+    if not default_scope:
+        default_scope = "small-subset formal evaluation"
 
     grouped: defaultdict[
         tuple[str, str, str, str, str],
@@ -98,9 +112,18 @@ def summarize_results(
                 if row.get("script_normalized", "").strip()
             }
         )
+        scopes = sorted(
+            {
+                row.get("benchmark_scope", "").strip()
+                for row in group
+                if row.get("benchmark_scope", "").strip()
+            }
+        )
+        scope = benchmark_scope or "; ".join(scopes) or default_scope
         summaries.append(
             {
                 "model_name": model_name,
+                "benchmark_scope": scope,
                 "language": language,
                 "dataset_name": dataset_name,
                 "metric_name": metric_name,
@@ -144,7 +167,7 @@ def summarize_results(
                 "script_normalized": "; ".join(script_states),
                 "normalization_notes": "; ".join(normalization_notes),
                 "notes": (
-                    "Small-subset formal evaluation aggregate; not full "
+                    f"{scope} aggregate; not full "
                     "dataset performance. RTF excludes model loading."
                 ),
             }
@@ -166,13 +189,21 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--input", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument(
+        "--benchmark-scope",
+        help="Override the benchmark scope label in summary rows.",
+    )
     return parser
 
 
 def main() -> int:
     args = build_parser().parse_args()
     try:
-        rows = summarize_results(args.input, args.output)
+        rows = summarize_results(
+            args.input,
+            args.output,
+            benchmark_scope=args.benchmark_scope,
+        )
     except (FileNotFoundError, KeyError, ValueError) as exc:
         print(f"ASR summary failed: {exc}")
         return 2

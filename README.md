@@ -35,6 +35,51 @@ and pyannote.audio when their dependencies and credentials are available. The
 deterministic mock pipeline requires no GPU, model download, vector database,
 or external API key.
 
+## Focused MVP Quickstart
+
+The default Streamlit entrypoint is now the PRD-focused evidence board:
+
+```bash
+streamlit run webapp/app.py
+```
+
+It opens four MVP views:
+
+- `Evidence Timeline`
+- `Term Rescue`
+- `Correction Audit`
+- `Evidence Dashboard`
+
+The app ships with a committed synthetic artifact at
+`data/focused_mvp/focused_chaotic_demo_conversation_map.json`. This artifact
+is deliberately labeled `synthetic_demo`: it demonstrates overlap, speaker
+uncertainty, domain-term rescue, negative-control preservation, and unsupported
+LLM edits, but it is not a real-audio evaluation result.
+
+The committed real public subset remains useful for sanity checks, but it is
+mostly clean: 15 FLEURS single-speaker clips and two short AMI meeting
+excerpts. The AMI excerpts contain brief overlap/backchannel events, not a
+large chaotic technical meeting. Controlled term-rescue and overlap-safety
+CSV results remain separate fixture evidence and must not be reported as
+real-audio generalization.
+
+## Medium Real ASR Evaluation
+
+The next real-evidence track is a GPU-oriented medium ASR benchmark. It keeps
+raw audio and per-clip prediction JSONs local while committing only scripts,
+manifests, aggregate CSVs, charts, and documentation.
+
+Use the runbook:
+
+```text
+docs/medium_real_asr_eval.md
+```
+
+The intended full run uses approximately 100 public-data clips and
+`faster-whisper` `tiny`, `base`, and `small` on CUDA. A CPU `tiny` smoke run is
+documented separately so the pipeline can be checked before moving to the GPU
+machine.
+
 ## Research Motivation
 
 A meeting transcript is useful only when the system can answer who spoke,

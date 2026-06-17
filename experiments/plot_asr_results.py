@@ -24,6 +24,8 @@ def _mean(values: list[float]) -> float:
 def plot_results(
     input_path: str | Path,
     output_dir: str | Path,
+    *,
+    title_scope: str = "Small Formal Subset",
 ) -> list[Path]:
     """Generate language, dataset, and runtime comparison charts."""
 
@@ -95,7 +97,7 @@ def plot_results(
     ]
     axis.set_xticks(positions, labels=labels)
     axis.set_ylabel("Mean error rate")
-    axis.set_title("Real ASR Error by Language - Small Formal Subset")
+    axis.set_title(f"Real ASR Error by Language - {title_scope}")
     axis.grid(axis="y", alpha=0.2)
     axis.legend(title="faster-whisper model")
     figure.tight_layout()
@@ -138,7 +140,7 @@ def plot_results(
     ]
     axis.set_xticks(positions, labels=dataset_labels)
     axis.set_ylabel("Mean error rate")
-    axis.set_title("Real ASR Error by Dataset - Small Formal Subset")
+    axis.set_title(f"Real ASR Error by Dataset - {title_scope}")
     axis.grid(axis="y", alpha=0.2)
     axis.legend(title="faster-whisper model")
     figure.tight_layout()
@@ -154,7 +156,7 @@ def plot_results(
         color=[colors[index % len(colors)] for index in range(len(models))],
     )
     axis.set_ylabel("Mean real-time factor")
-    axis.set_title("Real ASR Runtime by Model - Small Formal Subset")
+    axis.set_title(f"Real ASR Runtime by Model - {title_scope}")
     axis.grid(axis="y", alpha=0.2)
     axis.set_ylim(0, max(rtf_values) * 1.35)
     axis.text(
@@ -186,13 +188,22 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--input", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
+    parser.add_argument(
+        "--title-scope",
+        default="Small Formal Subset",
+        help="Scope label appended to chart titles.",
+    )
     return parser
 
 
 def main() -> int:
     args = build_parser().parse_args()
     try:
-        outputs = plot_results(args.input, args.output_dir)
+        outputs = plot_results(
+            args.input,
+            args.output_dir,
+            title_scope=args.title_scope,
+        )
     except (FileNotFoundError, ImportError, KeyError, ValueError) as exc:
         print(f"ASR plotting failed: {exc}")
         return 2

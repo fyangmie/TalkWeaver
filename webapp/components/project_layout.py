@@ -153,9 +153,10 @@ def render_evidence_disclaimer() -> None:
         """
         <div class="tw-warning-band">
         <strong>Evidence boundary.</strong> This app uses a small formal public
-        subset and controlled safety fixtures. Reference speaker-time evidence
-        is oracle-assisted, not automatic diarization. Controlled term and
-        overlap fixtures are not real-audio generalization claims.
+        subset, a focused synthetic demo, and controlled safety fixtures.
+        Reference speaker-time evidence is oracle-assisted, not automatic
+        diarization. Synthetic and controlled examples are not real-audio
+        generalization claims.
         </div>
         """,
         unsafe_allow_html=True,

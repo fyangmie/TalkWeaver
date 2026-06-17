@@ -12,6 +12,7 @@ from unittest.mock import MagicMock, patch
 import pandas as pd
 
 from webapp.data_loader import (
+    FOCUSED_DEMO_MAP_DIR,
     audio_available,
     build_speaker_evidence_cards,
     discover_charts,
@@ -137,6 +138,18 @@ class FrontendDataLoaderTests(unittest.TestCase):
         self.assertEqual(selected, best.resolve())
         self.assertEqual(loaded["clip_id"], "ami_case")
         self.assertTrue(loaded["_source_path"].endswith(best.name))
+
+    def test_committed_focused_demo_is_discoverable(self) -> None:
+        paths = list_available_conversation_maps(FOCUSED_DEMO_MAP_DIR)
+        selected = get_best_available_demo_clip(FOCUSED_DEMO_MAP_DIR)
+        loaded = load_conversation_map(selected)
+
+        self.assertTrue(paths)
+        self.assertEqual(loaded["clip_id"], "focused_chaotic_demo_001")
+        self.assertEqual(loaded["metadata"]["source_type"], "synthetic_demo")
+        self.assertTrue(loaded["metadata"]["focused_mvp"])
+        self.assertTrue(loaded["term_rescues"])
+        self.assertTrue(loaded["correction_audits"])
 
     def test_chart_discovery_only_returns_existing_images(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

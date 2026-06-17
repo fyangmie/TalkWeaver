@@ -30,6 +30,7 @@ from experiments.metrics.text_normalization import (  # noqa: E402
 
 OUTPUT_COLUMNS = [
     "clip_id",
+    "benchmark_scope",
     "dataset_name",
     "language",
     "model_name",
@@ -203,6 +204,7 @@ def _safe_stem(value: str) -> str:
 def _write_prediction(
     prediction_dir: Path,
     *,
+    benchmark_scope: str,
     model_name: str,
     row: dict[str, str],
     reference_text: str,
@@ -220,7 +222,7 @@ def _write_prediction(
     json_path = prediction_dir / f"{stem}.json"
     txt_path = prediction_dir / f"{stem}.txt"
     payload = {
-        "benchmark_scope": "small-subset formal evaluation",
+        "benchmark_scope": benchmark_scope,
         "is_mock": False,
         "clip_id": row["clip_id"],
         "dataset_name": row["dataset_name"],
@@ -260,6 +262,31 @@ def load_manifest_rows(manifest: Path) -> list[dict[str, str]]:
         return list(csv.DictReader(handle))
 
 
+def limit_rows_per_dataset_language(
+    rows: list[dict[str, str]],
+    limit: int | None,
+) -> list[dict[str, str]]:
+    """Keep the first N rows for each dataset/language pair."""
+
+    if limit is None:
+        return rows
+    if limit < 1:
+        raise ValueError("--max-rows-per-dataset-language must be positive.")
+    counts: dict[tuple[str, str], int] = {}
+    selected: list[dict[str, str]] = []
+    for row in rows:
+        key = (
+            row.get("dataset_name", "").strip(),
+            row.get("language", "").strip(),
+        )
+        current = counts.get(key, 0)
+        if current >= limit:
+            continue
+        counts[key] = current + 1
+        selected.append(row)
+    return selected
+
+
 def run_benchmark(
     *,
     manifest: str | Path,
@@ -268,8 +295,10 @@ def run_benchmark(
     compute_type: str,
     output: str | Path,
     predictions_dir: str | Path,
+    benchmark_scope: str = "small-subset formal evaluation",
     vad_filter: bool = True,
     only_dataset: str | None = None,
+    max_rows_per_dataset_language: int | None = None,
 ) -> list[dict[str, Any]]:
     """Run real ASR for each valid manifest row and write audit artifacts."""
 
@@ -277,13 +306,17 @@ def run_benchmark(
     output_path = project_path(output)
     prediction_root = project_path(predictions_dir)
     rows = load_manifest_rows(manifest_path)
+    if only_dataset:
+        rows = [
+            row
+            for row in rows
+            if row.get("dataset_name", "").strip().casefold()
+            == only_dataset.strip().casefold()
+        ]
     valid_rows: list[tuple[dict[str, str], Path, Path]] = []
     for row in rows:
-        if only_dataset and (
-            row.get("dataset_name", "").strip().casefold()
-            != only_dataset.strip().casefold()
-        ):
-            continue
+        row = dict(row)
+        row["benchmark_scope"] = benchmark_scope
         audio_path = project_path(row.get("audio_path", ""))
         transcript_path = project_path(row.get("transcript_path", ""))
         if not audio_path.is_file() or not transcript_path.is_file():
@@ -294,6 +327,17 @@ def run_benchmark(
             )
             continue
         valid_rows.append((row, audio_path, transcript_path))
+    if max_rows_per_dataset_language is not None:
+        selected_rows = limit_rows_per_dataset_language(
+            [row for row, _audio_path, _transcript_path in valid_rows],
+            max_rows_per_dataset_language,
+        )
+        selected_clip_ids = {row["clip_id"] for row in selected_rows}
+        valid_rows = [
+            (row, audio_path, transcript_path)
+            for row, audio_path, transcript_path in valid_rows
+            if row["clip_id"] in selected_clip_ids
+        ]
     if not valid_rows:
         raise RuntimeError("No manifest rows have real audio and transcripts.")
 
@@ -352,6 +396,7 @@ def run_benchmark(
             )
             json_path, txt_path = _write_prediction(
                 prediction_root,
+                benchmark_scope=benchmark_scope,
                 model_name=model_name,
                 row=row,
                 reference_text=reference_text,
@@ -366,6 +411,7 @@ def run_benchmark(
             )
             result = {
                 "clip_id": row["clip_id"],
+                "benchmark_scope": benchmark_scope,
                 "dataset_name": row["dataset_name"],
                 "language": row["language"],
                 "model_name": model_name,
@@ -400,8 +446,8 @@ def run_benchmark(
                 "prediction_json_path": display_path(json_path),
                 "prediction_txt_path": display_path(txt_path),
                 "notes": (
-                    "Real faster-whisper inference on the small-subset "
-                    "formal evaluation manifest; model initialization "
+                    f"Real faster-whisper inference on the {benchmark_scope} "
+                    "manifest; model initialization "
                     f"({model_load_seconds:.3f}s) excluded from per-clip "
                     f"runtime and warm RTF; vad_filter={vad_filter}."
                 ),
@@ -446,6 +492,16 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--predictions-dir", type=Path, required=True)
+    parser.add_argument(
+        "--benchmark-scope",
+        default="small-subset formal evaluation",
+        help="Human-readable scope label written to CSV and prediction JSON.",
+    )
+    parser.add_argument(
+        "--max-rows-per-dataset-language",
+        type=int,
+        help="Limit smoke runs to N rows for each dataset_name/language pair.",
+    )
     return parser
 
 
@@ -459,8 +515,12 @@ def main() -> int:
             compute_type=args.compute_type,
             output=args.output,
             predictions_dir=args.predictions_dir,
+            benchmark_scope=args.benchmark_scope,
             vad_filter=args.vad_filter,
             only_dataset=args.only_dataset,
+            max_rows_per_dataset_language=(
+                args.max_rows_per_dataset_language
+            ),
         )
     except (FileNotFoundError, RuntimeError, ValueError) as exc:
         print(f"ASR benchmark failed: {exc}", file=sys.stderr)

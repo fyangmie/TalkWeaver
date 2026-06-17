@@ -1,0 +1,404 @@
+{
+  "clip_id": "focused_chaotic_demo_001",
+  "metadata": {
+    "schema_version": "talkweaver.conversation_map.v1",
+    "workflow": "focused_mvp_synthetic_demo",
+    "source_type": "synthetic_demo",
+    "dataset_name": "Focused MVP synthetic chaotic technical meeting",
+    "language": "en",
+    "duration_seconds": 29.5,
+    "speaker_count": 3,
+    "asr_mode": "mock",
+    "diarization_mode": "mock",
+    "llm_mode": "rule_fallback_with_unsupported_proposal",
+    "is_mock": true,
+    "focused_mvp": true,
+    "claim_scope": "Synthetic demo artifact for UI and presentation. Not a real-audio evaluation result.",
+    "data_boundary": "Use this clip to demonstrate the evidence board. Use committed public-data and controlled-fixture results only with their own labels."
+  },
+  "anchors": [
+    {
+      "anchor_id": "focused_chaotic_demo_001_anchor_001",
+      "clip_id": "focused_chaotic_demo_001",
+      "start": 0.8,
+      "end": 4.9,
+      "speaker": "SPEAKER_00",
+      "speakers": ["SPEAKER_00"],
+      "raw_text": "We should start with piano note for speaker diary station.",
+      "corrected_text": "We should start with pyannote for speaker diarization.",
+      "language": "en",
+      "overlap": false,
+      "interruption": false,
+      "confidence": 0.86,
+      "asr_confidence": 0.82,
+      "diarization_confidence": 0.9,
+      "retrieved_terms": ["pyannote", "speaker diarization"],
+      "correction_status": "supported",
+      "correction_evidence": [
+        {
+          "type": "term_retrieval",
+          "source": "docs/knowledge_base/domain_terms.md",
+          "text": "pyannote; speaker diarization",
+          "score": 0.96
+        }
+      ],
+      "unsupported_changes": [],
+      "needs_review": false,
+      "notes": ["Clear single-speaker technical context supports glossary substitutions."]
+    },
+    {
+      "anchor_id": "focused_chaotic_demo_001_anchor_002",
+      "clip_id": "focused_chaotic_demo_001",
+      "start": 4.7,
+      "end": 8.2,
+      "speaker": "OVERLAP",
+      "speakers": ["SPEAKER_00", "SPEAKER_01"],
+      "raw_text": "The rack system improves where on the benchmark.",
+      "corrected_text": "The RAG system improves WER on the benchmark.",
+      "language": "en",
+      "overlap": true,
+      "interruption": true,
+      "confidence": 0.61,
+      "asr_confidence": 0.58,
+      "diarization_confidence": 0.64,
+      "retrieved_terms": ["RAG", "WER"],
+      "correction_status": "weakly_supported",
+      "correction_evidence": [
+        {
+          "type": "term_retrieval",
+          "source": "docs/knowledge_base/domain_terms.md",
+          "text": "RAG; WER",
+          "score": 0.88
+        },
+        {
+          "type": "overlap_event",
+          "source": "focused synthetic speaker turns",
+          "text": "Two speakers active from 4.7s to 5.8s.",
+          "score": 1.0
+        }
+      ],
+      "unsupported_changes": [],
+      "needs_review": true,
+      "notes": ["Glossary evidence supports the terms, but overlap keeps the segment in review."]
+    },
+    {
+      "anchor_id": "focused_chaotic_demo_001_anchor_003",
+      "clip_id": "focused_chaotic_demo_001",
+      "start": 8.05,
+      "end": 11.0,
+      "speaker": "SPEAKER_02",
+      "speakers": ["SPEAKER_02"],
+      "raw_text": "I heard the ear is worse when speakers talk together.",
+      "corrected_text": "I heard DER is worse when speakers talk together.",
+      "language": "en",
+      "overlap": true,
+      "interruption": false,
+      "confidence": 0.68,
+      "asr_confidence": 0.7,
+      "diarization_confidence": 0.66,
+      "retrieved_terms": ["DER"],
+      "correction_status": "weakly_supported",
+      "correction_evidence": [
+        {
+          "type": "term_retrieval",
+          "source": "docs/knowledge_base/domain_terms.md",
+          "text": "DER",
+          "score": 0.83
+        }
+      ],
+      "unsupported_changes": [],
+      "needs_review": true,
+      "notes": ["Acronym recovery is supported, but the segment intersects an overlap region."]
+    },
+    {
+      "anchor_id": "focused_chaotic_demo_001_anchor_004",
+      "clip_id": "focused_chaotic_demo_001",
+      "start": 11.3,
+      "end": 15.2,
+      "speaker": "SPEAKER_01",
+      "speakers": ["SPEAKER_01"],
+      "raw_text": "No, the rack on the table is blocking the mic.",
+      "corrected_text": "No, the rack on the table is blocking the mic.",
+      "language": "en",
+      "overlap": false,
+      "interruption": false,
+      "confidence": 0.9,
+      "asr_confidence": 0.91,
+      "diarization_confidence": 0.89,
+      "retrieved_terms": [],
+      "correction_status": "supported",
+      "correction_evidence": [
+        {
+          "type": "negative_context",
+          "source": "local transcript context",
+          "text": "Physical table and mic context blocks RAG substitution.",
+          "score": 1.0
+        }
+      ],
+      "unsupported_changes": [],
+      "needs_review": false,
+      "notes": ["Negative control: ordinary rack must not become RAG."]
+    },
+    {
+      "anchor_id": "focused_chaotic_demo_001_anchor_005",
+      "clip_id": "focused_chaotic_demo_001",
+      "start": 15.6,
+      "end": 20.8,
+      "speaker": "SPEAKER_00",
+      "speakers": ["SPEAKER_00", "SPEAKER_02"],
+      "raw_text": "Maybe it improves, but I cannot read the number.",
+      "corrected_text": "Maybe it improves by ten percent, but I cannot read the number.",
+      "language": "en",
+      "overlap": true,
+      "interruption": true,
+      "confidence": 0.48,
+      "asr_confidence": 0.5,
+      "diarization_confidence": 0.45,
+      "retrieved_terms": [],
+      "correction_status": "unsupported",
+      "correction_evidence": [
+        {
+          "type": "raw_text",
+          "source": "raw ASR segment",
+          "text": "No numeric evidence appears in the raw ASR segment.",
+          "score": 1.0
+        }
+      ],
+      "unsupported_changes": ["ten", "percent"],
+      "needs_review": true,
+      "notes": ["Unsupported fluent completion is shown for audit and must not be applied without evidence."]
+    },
+    {
+      "anchor_id": "focused_chaotic_demo_001_anchor_006",
+      "clip_id": "focused_chaotic_demo_001",
+      "start": 22.0,
+      "end": 27.4,
+      "speaker": "SPEAKER_02",
+      "speakers": ["SPEAKER_02"],
+      "raw_text": "Let's mark that overlap area for human review.",
+      "corrected_text": "Let's mark that overlap area for human review.",
+      "language": "en",
+      "overlap": false,
+      "interruption": false,
+      "confidence": 0.83,
+      "asr_confidence": 0.84,
+      "diarization_confidence": 0.82,
+      "retrieved_terms": [],
+      "correction_status": "needs_review",
+      "correction_evidence": [
+        {
+          "type": "review_policy",
+          "source": "focused MVP policy",
+          "text": "Low-confidence overlap segments remain visible for review.",
+          "score": 1.0
+        }
+      ],
+      "unsupported_changes": [],
+      "needs_review": true,
+      "notes": ["Review policy anchor for the preceding overlap region."]
+    }
+  ],
+  "events": [
+    {
+      "event_id": "focused_chaotic_demo_001_overlap_001",
+      "clip_id": "focused_chaotic_demo_001",
+      "type": "overlap",
+      "start": 4.7,
+      "end": 5.8,
+      "speakers": ["SPEAKER_00", "SPEAKER_01"],
+      "description": "SPEAKER_01 starts before SPEAKER_00 finishes the benchmark claim.",
+      "evidence_anchor_ids": ["focused_chaotic_demo_001_anchor_002"],
+      "severity": "medium",
+      "notes": ["Synthetic overlap used to demonstrate conservative correction."]
+    },
+    {
+      "event_id": "focused_chaotic_demo_001_overlap_002",
+      "clip_id": "focused_chaotic_demo_001",
+      "type": "overlap",
+      "start": 8.05,
+      "end": 9.0,
+      "speakers": ["SPEAKER_01", "SPEAKER_02"],
+      "description": "Metric discussion starts while another speaker is still reacting.",
+      "evidence_anchor_ids": ["focused_chaotic_demo_001_anchor_003"],
+      "severity": "medium",
+      "notes": ["Synthetic overlap used to keep DER correction in review."]
+    },
+    {
+      "event_id": "focused_chaotic_demo_001_interruption_001",
+      "clip_id": "focused_chaotic_demo_001",
+      "type": "interruption",
+      "start": 15.6,
+      "end": 17.2,
+      "speakers": ["SPEAKER_00", "SPEAKER_02"],
+      "description": "Two speakers talk over an incomplete numeric claim.",
+      "evidence_anchor_ids": ["focused_chaotic_demo_001_anchor_005"],
+      "severity": "high",
+      "notes": ["Unsupported numeric completion must be audited."]
+    }
+  ],
+  "term_rescues": [
+    {
+      "term_id": "focused_term_001",
+      "canonical": "pyannote",
+      "raw_phrase": "piano note",
+      "corrected_term": "pyannote",
+      "spoken_forms": ["pyannote"],
+      "asr_error_forms": ["piano note"],
+      "retrieved_score": 0.96,
+      "retrieval_method": "tfidf_exact_error_form",
+      "source": "docs/knowledge_base/domain_terms.md",
+      "status": "successful_rescue",
+      "evidence_anchor_ids": ["focused_chaotic_demo_001_anchor_001"]
+    },
+    {
+      "term_id": "focused_term_002",
+      "canonical": "speaker diarization",
+      "raw_phrase": "diary station",
+      "corrected_term": "speaker diarization",
+      "spoken_forms": ["diarization"],
+      "asr_error_forms": ["diary station"],
+      "retrieved_score": 0.94,
+      "retrieval_method": "tfidf_exact_error_form",
+      "source": "docs/knowledge_base/domain_terms.md",
+      "status": "successful_rescue",
+      "evidence_anchor_ids": ["focused_chaotic_demo_001_anchor_001"]
+    },
+    {
+      "term_id": "focused_term_003",
+      "canonical": "RAG",
+      "raw_phrase": "rack",
+      "corrected_term": "RAG",
+      "spoken_forms": ["RAG"],
+      "asr_error_forms": ["rack"],
+      "retrieved_score": 0.88,
+      "retrieval_method": "tfidf_contextual",
+      "source": "docs/knowledge_base/domain_terms.md",
+      "status": "successful_rescue",
+      "evidence_anchor_ids": ["focused_chaotic_demo_001_anchor_002"]
+    },
+    {
+      "term_id": "focused_term_004",
+      "canonical": "WER",
+      "raw_phrase": "where",
+      "corrected_term": "WER",
+      "spoken_forms": ["WER"],
+      "asr_error_forms": ["where"],
+      "retrieved_score": 0.87,
+      "retrieval_method": "tfidf_contextual",
+      "source": "docs/knowledge_base/domain_terms.md",
+      "status": "successful_rescue",
+      "evidence_anchor_ids": ["focused_chaotic_demo_001_anchor_002"]
+    },
+    {
+      "term_id": "focused_term_005",
+      "canonical": "DER",
+      "raw_phrase": "the ear",
+      "corrected_term": "DER",
+      "spoken_forms": ["DER"],
+      "asr_error_forms": ["the ear"],
+      "retrieved_score": 0.83,
+      "retrieval_method": "tfidf_contextual",
+      "source": "docs/knowledge_base/domain_terms.md",
+      "status": "successful_rescue",
+      "evidence_anchor_ids": ["focused_chaotic_demo_001_anchor_003"]
+    },
+    {
+      "term_id": "focused_term_006",
+      "canonical": "RAG",
+      "raw_phrase": "rack",
+      "corrected_term": "",
+      "spoken_forms": ["RAG"],
+      "asr_error_forms": ["rack"],
+      "retrieved_score": 0.41,
+      "retrieval_method": "negative_context_gate",
+      "source": "local transcript context",
+      "status": "false_rescue",
+      "evidence_anchor_ids": ["focused_chaotic_demo_001_anchor_004"]
+    }
+  ],
+  "correction_audits": [
+    {
+      "anchor_id": "focused_chaotic_demo_001_anchor_001",
+      "raw_text": "We should start with piano note for speaker diary station.",
+      "corrected_text": "We should start with pyannote for speaker diarization.",
+      "changed_tokens": ["replace: piano note -> pyannote", "replace: diary station -> diarization"],
+      "supported_changes": ["pyannote", "diarization"],
+      "unsupported_changes": [],
+      "correction_status": "supported",
+      "hallucination_risk": "low",
+      "needs_review": false,
+      "evidence": [{"type": "term_candidate", "source": "docs/knowledge_base/domain_terms.md", "canonical": "pyannote; speaker diarization", "score": 0.96}],
+      "correction_mode": "rule_fallback"
+    },
+    {
+      "anchor_id": "focused_chaotic_demo_001_anchor_002",
+      "raw_text": "The rack system improves where on the benchmark.",
+      "corrected_text": "The RAG system improves WER on the benchmark.",
+      "changed_tokens": ["replace: rack -> RAG", "replace: where -> WER"],
+      "supported_changes": ["RAG", "WER"],
+      "unsupported_changes": [],
+      "correction_status": "weakly_supported",
+      "hallucination_risk": "medium",
+      "needs_review": true,
+      "evidence": [{"type": "term_candidate", "source": "docs/knowledge_base/domain_terms.md", "canonical": "RAG; WER", "score": 0.88}],
+      "correction_mode": "rule_fallback"
+    },
+    {
+      "anchor_id": "focused_chaotic_demo_001_anchor_003",
+      "raw_text": "I heard the ear is worse when speakers talk together.",
+      "corrected_text": "I heard DER is worse when speakers talk together.",
+      "changed_tokens": ["replace: the ear -> DER"],
+      "supported_changes": ["DER"],
+      "unsupported_changes": [],
+      "correction_status": "weakly_supported",
+      "hallucination_risk": "medium",
+      "needs_review": true,
+      "evidence": [{"type": "term_candidate", "source": "docs/knowledge_base/domain_terms.md", "canonical": "DER", "score": 0.83}],
+      "correction_mode": "rule_fallback"
+    },
+    {
+      "anchor_id": "focused_chaotic_demo_001_anchor_004",
+      "raw_text": "No, the rack on the table is blocking the mic.",
+      "corrected_text": "No, the rack on the table is blocking the mic.",
+      "changed_tokens": [],
+      "supported_changes": [],
+      "unsupported_changes": [],
+      "correction_status": "supported",
+      "hallucination_risk": "low",
+      "needs_review": false,
+      "evidence": [{"type": "negative_context", "source": "local transcript context", "text": "Physical rack context blocks RAG."}],
+      "correction_mode": "rule_fallback"
+    },
+    {
+      "anchor_id": "focused_chaotic_demo_001_anchor_005",
+      "raw_text": "Maybe it improves, but I cannot read the number.",
+      "corrected_text": "Maybe it improves by ten percent, but I cannot read the number.",
+      "changed_tokens": ["insert: empty -> by ten percent"],
+      "supported_changes": [],
+      "unsupported_changes": ["ten", "percent"],
+      "correction_status": "unsupported",
+      "hallucination_risk": "high",
+      "needs_review": true,
+      "evidence": [{"type": "raw_text", "source": "raw ASR segment", "text": "No numeric evidence supports the inserted value."}],
+      "correction_mode": "llm_candidate_rejected"
+    },
+    {
+      "anchor_id": "focused_chaotic_demo_001_anchor_006",
+      "raw_text": "Let's mark that overlap area for human review.",
+      "corrected_text": "Let's mark that overlap area for human review.",
+      "changed_tokens": [],
+      "supported_changes": [],
+      "unsupported_changes": [],
+      "correction_status": "needs_review",
+      "hallucination_risk": "low",
+      "needs_review": true,
+      "evidence": [{"type": "review_policy", "source": "focused MVP policy", "text": "Human review marker retained."}],
+      "correction_mode": "rule_fallback"
+    }
+  ],
+  "speaker_cards": [],
+  "summary": {
+    "summary": "Synthetic three-speaker technical meeting showing overlap, term rescue, negative-control preservation, and unsupported correction audit.",
+    "mode": "synthetic_demo"
+  }
+}

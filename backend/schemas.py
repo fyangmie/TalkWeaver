@@ -56,6 +56,7 @@ class TemporalAnchor(JsonSerializable):
     asr_confidence: float = 0.0
     diarization_confidence: float = 0.0
     retrieved_terms: list[str] = field(default_factory=list)
+    correction_status: str = "supported"
     correction_evidence: list[dict[str, Any]] = field(default_factory=list)
     unsupported_changes: list[str] = field(default_factory=list)
     needs_review: bool = False
@@ -84,6 +85,10 @@ class TermRescueCandidate(JsonSerializable):
     asr_error_forms: list[str]
     retrieved_score: float
     retrieval_method: str
+    source: str = "docs/knowledge_base/domain_terms.md"
+    status: str = "needs_review"
+    raw_phrase: str = ""
+    corrected_term: str = ""
     evidence_anchor_ids: list[str] = field(default_factory=list)
 
 
@@ -96,6 +101,7 @@ class CorrectionAudit(JsonSerializable):
     supported_changes: list[str] = field(default_factory=list)
     unsupported_changes: list[str] = field(default_factory=list)
     hallucination_risk: str = "low"
+    correction_status: str = "supported"
     needs_review: bool = False
     evidence: list[dict[str, Any]] = field(default_factory=list)
     correction_mode: str = "rule_fallback"

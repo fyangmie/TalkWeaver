@@ -130,6 +130,12 @@ def page_header(title: str, description: str) -> None:
 
 def source_boundary(metadata: dict[str, Any]) -> None:
     is_mock = truthy(metadata.get("is_mock"))
+    if metadata.get("source_type") == "synthetic_demo":
+        st.warning(
+            "Selected map is a synthetic focused-MVP demo, not a real-audio "
+            "evaluation result."
+        )
+        return
     reference = metadata.get("diarization_mode") == "reference" or truthy(
         metadata.get("reference_assisted")
     )

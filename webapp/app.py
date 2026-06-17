@@ -1,4 +1,4 @@
-"""TalkWeaver AI Meeting Detective Streamlit entrypoint."""
+"""TalkWeaver Focused MVP Streamlit entrypoint."""
 
 from __future__ import annotations
 
@@ -23,30 +23,19 @@ from webapp.data_loader import (
     list_available_conversation_maps,
     load_conversation_map,
 )
-from webapp.views.dashboard import render_dashboard
-from webapp.views.evidence_gate import render_evidence_gate
-from webapp.views.home import render_crime_scene, render_home
-from webapp.views.report import render_export
-from webapp.views.safety import (
-    render_overlap,
-    render_term_rescue,
-    render_watchdog,
+from webapp.views.focused import (
+    render_correction_audit,
+    render_evidence_dashboard_focused,
+    render_evidence_timeline,
+    render_term_rescue_focused,
 )
-from webapp.views.speakers import render_speaker_cards
-from webapp.views.timeline import render_timeline
 
 
 PAGES = (
-    "Home / Project Story",
-    "Conversation Crime Scene",
-    "Speaker Timeline Detective",
-    "Speaker Evidence Cards",
-    "Cross-talk and Overlap Warning",
-    "Misheard Word Rescue",
-    "Hallucination Watchdog",
-    "EvidenceGate Model",
+    "Evidence Timeline",
+    "Term Rescue",
+    "Correction Audit",
     "Evidence Dashboard",
-    "Export / Report Preview",
 )
 
 
@@ -68,13 +57,14 @@ def _select_conversation_map() -> dict[str, Any]:
 
 def _render_sidebar() -> tuple[str, dict[str, Any]]:
     st.sidebar.markdown("## TalkWeaver")
-    st.sidebar.caption("AI Meeting Detective")
-    page = st.sidebar.radio("Investigation view", PAGES)
+    st.sidebar.caption("Focused MVP evidence board")
+    page = st.sidebar.radio("MVP view", PAGES)
     st.sidebar.divider()
     conversation_map = _select_conversation_map()
     st.sidebar.divider()
     st.sidebar.markdown("**Evidence types**")
     st.sidebar.markdown(
+        '<span class="tw-source-controlled">Synthetic focused demo</span><br>'
         '<span class="tw-source-real">Real public data</span><br>'
         '<span class="tw-source-oracle">Oracle/reference-assisted</span><br>'
         '<span class="tw-source-controlled">Controlled safety fixture</span>',
@@ -99,16 +89,10 @@ def main() -> None:
     render_evidence_disclaimer()
 
     renderers: dict[str, Callable[[dict[str, Any]], None]] = {
-        "Home / Project Story": render_home,
-        "Conversation Crime Scene": render_crime_scene,
-        "Speaker Timeline Detective": render_timeline,
-        "Speaker Evidence Cards": render_speaker_cards,
-        "Cross-talk and Overlap Warning": render_overlap,
-        "Misheard Word Rescue": render_term_rescue,
-        "Hallucination Watchdog": render_watchdog,
-        "EvidenceGate Model": render_evidence_gate,
-        "Evidence Dashboard": render_dashboard,
-        "Export / Report Preview": render_export,
+        "Evidence Timeline": render_evidence_timeline,
+        "Term Rescue": render_term_rescue_focused,
+        "Correction Audit": render_correction_audit,
+        "Evidence Dashboard": render_evidence_dashboard_focused,
     }
     renderers[page](conversation_map)
 

@@ -23,7 +23,10 @@ from experiments.metrics.text_normalization import (
     normalize_for_wer,
 )
 from experiments.plot_asr_results import plot_results
-from experiments.run_asr_benchmark import run_benchmark
+from experiments.run_asr_benchmark import (
+    limit_rows_per_dataset_language,
+    run_benchmark,
+)
 from experiments.summarize_asr_results import summarize_results
 
 
@@ -151,6 +154,10 @@ class SummaryTests(unittest.TestCase):
 
             self.assertTrue(output.is_file())
             self.assertEqual(len(summaries), 1)
+            self.assertEqual(
+                summaries[0]["benchmark_scope"],
+                "small-subset formal evaluation",
+            )
             self.assertEqual(summaries[0]["num_clips"], 2)
             self.assertEqual(summaries[0]["total_duration_seconds"], 12.0)
             self.assertEqual(summaries[0]["mean_error_rate"], 0.2)
@@ -200,6 +207,24 @@ class SummaryTests(unittest.TestCase):
             )
 
 
+class BenchmarkSelectionTests(unittest.TestCase):
+    def test_limit_rows_per_dataset_language_keeps_each_group(self) -> None:
+        rows = [
+            {"clip_id": "en1", "dataset_name": "FLEURS", "language": "en"},
+            {"clip_id": "en2", "dataset_name": "FLEURS", "language": "en"},
+            {"clip_id": "fr1", "dataset_name": "FLEURS", "language": "fr"},
+            {"clip_id": "ami1", "dataset_name": "AMI", "language": "en"},
+            {"clip_id": "ami2", "dataset_name": "AMI", "language": "en"},
+        ]
+
+        selected = limit_rows_per_dataset_language(rows, 1)
+
+        self.assertEqual(
+            [row["clip_id"] for row in selected],
+            ["en1", "fr1", "ami1"],
+        )
+
+
 class BenchmarkCliTests(unittest.TestCase):
     def test_benchmark_help_requires_no_model(self) -> None:
         result = subprocess.run(
@@ -216,6 +241,8 @@ class BenchmarkCliTests(unittest.TestCase):
         self.assertIn("--models", result.stdout)
         self.assertIn("--vad-filter", result.stdout)
         self.assertIn("--only-dataset", result.stdout)
+        self.assertIn("--benchmark-scope", result.stdout)
+        self.assertIn("--max-rows-per-dataset-language", result.stdout)
 
     def test_plot_help_requires_no_results(self) -> None:
         result = subprocess.run(
@@ -273,6 +300,8 @@ class BenchmarkCliTests(unittest.TestCase):
                         compute_type="int8",
                         output=output,
                         predictions_dir=predictions,
+                        benchmark_scope="medium formal evaluation smoke",
+                        max_rows_per_dataset_language=1,
                     )
 
             self.assertFalse(output.exists())

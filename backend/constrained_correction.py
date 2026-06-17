@@ -137,6 +137,14 @@ def audit_correction(
         risk = "medium"
     else:
         risk = "low"
+    if unsupported:
+        correction_status = "unsupported"
+    elif large_overlap_change or (anchor.overlap and supported):
+        correction_status = "weakly_supported"
+    elif needs_review:
+        correction_status = "needs_review"
+    else:
+        correction_status = "supported"
     return CorrectionAudit(
         anchor_id=anchor.anchor_id,
         raw_text=anchor.raw_text,
@@ -145,6 +153,7 @@ def audit_correction(
         supported_changes=supported,
         unsupported_changes=unsupported,
         hallucination_risk=risk,
+        correction_status=correction_status,
         needs_review=needs_review,
         evidence=evidence,
     )
@@ -273,6 +282,7 @@ def apply_constrained_correction(
                 "Unsupported correction was rejected; raw text retained."
             )
         anchor.correction_evidence = audit.evidence
+        anchor.correction_status = audit.correction_status
         anchor.unsupported_changes = audit.unsupported_changes
         anchor.needs_review = anchor.needs_review or audit.needs_review
         audits.append(audit)
