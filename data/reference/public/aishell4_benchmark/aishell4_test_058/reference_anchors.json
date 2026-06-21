@@ -1,0 +1,58 @@
+[
+  {
+    "start": 0.0,
+    "end": 2.255,
+    "speaker": "001-M",
+    "text": "零零一班主任",
+    "utterance_id": "S_R004S04C01_00001"
+  },
+  {
+    "start": 3.129,
+    "end": 4.549,
+    "speaker": "002-F",
+    "text": "零零六A",
+    "utterance_id": "S_R004S04C01_00151"
+  },
+  {
+    "start": 5.001,
+    "end": 6.481,
+    "speaker": "003-F",
+    "text": "零零七B",
+    "utterance_id": "S_R004S04C01_00206"
+  },
+  {
+    "start": 6.57,
+    "end": 7.79,
+    "speaker": "004-F",
+    "text": "零零八C",
+    "utterance_id": "S_R004S04C01_00296"
+  },
+  {
+    "start": 7.805,
+    "end": 8.825,
+    "speaker": "005-F",
+    "text": "零零九D",
+    "utterance_id": "S_R004S04C01_00372"
+  },
+  {
+    "start": 12.049,
+    "end": 12.974,
+    "speaker": "001-M",
+    "text": "哦",
+    "utterance_id": "S_R004S04C01_00002"
+  },
+  {
+    "start": 13.407,
+    "end": 19.352,
+    "speaker": "001-M",
+    "text": "呃这次啊咱们把各位家长叫过来呢咱简单的开个家长的一个交流会",
+    "utterance_id": "S_R004S04C01_00003"
+  },
+  {
+    "start": 19.365,
+    "end": 20.0,
+    "speaker": "001-M",
+    "text": "嗯，咱说一下说一下各个孩子的在家的一些情况。包括在学校的一些情况",
+    "utterance_id": "S_R004S04C01_00004"
+  }
+]

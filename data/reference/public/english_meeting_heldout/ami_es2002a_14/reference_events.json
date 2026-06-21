@@ -1,0 +1,24 @@
+[
+  {
+    "start": 0.0,
+    "end": 0.26,
+    "duration": 0.26,
+    "speakers": [
+      "SPEAKER_B",
+      "SPEAKER_D"
+    ],
+    "type": "overlap",
+    "annotation_source": "derived_from_AMI_manual_word_intervals"
+  },
+  {
+    "start": 19.88,
+    "end": 20.0,
+    "duration": 0.12,
+    "speakers": [
+      "SPEAKER_B",
+      "SPEAKER_D"
+    ],
+    "type": "overlap",
+    "annotation_source": "derived_from_AMI_manual_word_intervals"
+  }
+]

@@ -1,0 +1,13 @@
+[
+  {
+    "start": 0.0,
+    "end": 9.32,
+    "speaker": "SPEAKER_00",
+    "speakers": [
+      "SPEAKER_00"
+    ],
+    "text": "Pronunciation is relatively easy in Italian since most words are pronounced exactly how they are written",
+    "overlap": false,
+    "annotation_source": "generated_single_speaker_anchor"
+  }
+]

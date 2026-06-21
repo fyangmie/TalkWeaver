@@ -1,0 +1,13 @@
+[
+  {
+    "start": 0.0,
+    "end": 12.22,
+    "speaker": "SPEAKER_00",
+    "speakers": [
+      "SPEAKER_00"
+    ],
+    "text": "游猎活动也许是非洲最吸引人的旅游活动，也是许多游客行程中的亮点。",
+    "overlap": false,
+    "annotation_source": "generated_single_speaker_anchor"
+  }
+]

@@ -1,0 +1,13 @@
+[
+  {
+    "start": 0.0,
+    "end": 8.4,
+    "speaker": "SPEAKER_00",
+    "speakers": [
+      "SPEAKER_00"
+    ],
+    "text": "Avant qu'une organisation ne soit innovante, sa direction doit créer une culture de l'innovation, des connaissances partagées et sa propre culture de l'apprentissage.",
+    "overlap": false,
+    "annotation_source": "generated_single_speaker_anchor"
+  }
+]

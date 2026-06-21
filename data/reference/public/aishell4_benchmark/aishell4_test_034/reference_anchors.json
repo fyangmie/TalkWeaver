@@ -1,0 +1,58 @@
+[
+  {
+    "start": 0.0,
+    "end": 1.13,
+    "speaker": "001-M",
+    "text": "零幺五",
+    "utterance_id": "M_R003S05C01_00001"
+  },
+  {
+    "start": 1.55,
+    "end": 2.704,
+    "speaker": "002-M",
+    "text": "零幺零",
+    "utterance_id": "M_R003S05C01_00145"
+  },
+  {
+    "start": 2.721,
+    "end": 3.67,
+    "speaker": "003-F",
+    "text": "零幺幺",
+    "utterance_id": "M_R003S05C01_00199"
+  },
+  {
+    "start": 3.645,
+    "end": 4.56,
+    "speaker": "004-F",
+    "text": "零幺二",
+    "utterance_id": "M_R003S05C01_00219"
+  },
+  {
+    "start": 4.58,
+    "end": 5.443,
+    "speaker": "005-F",
+    "text": "零幺三",
+    "utterance_id": "M_R003S05C01_00378"
+  },
+  {
+    "start": 5.24,
+    "end": 6.462,
+    "speaker": "006-F",
+    "text": "零幺四",
+    "utterance_id": "M_R003S05C01_00444"
+  },
+  {
+    "start": 8.415,
+    "end": 15.97,
+    "speaker": "001-M",
+    "text": "行，咱们嗯公司新分开了一个这个美美容院",
+    "utterance_id": "M_R003S05C01_00002"
+  },
+  {
+    "start": 15.985,
+    "end": 20.0,
+    "speaker": "001-M",
+    "text": "然后就是一块儿咱们之前没有开发过的区域这个区域呢，根据我们的这个销售主管，评测我们咱们这片区域的这个前景非常好，所以咱们，咱们开始就准备开到这里",
+    "utterance_id": "M_R003S05C01_00003"
+  }
+]

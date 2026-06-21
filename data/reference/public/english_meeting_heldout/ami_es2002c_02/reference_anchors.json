@@ -1,0 +1,57 @@
+[
+  {
+    "start": 0.0,
+    "end": 2.53,
+    "speaker": "SPEAKER_B",
+    "speakers": [
+      "SPEAKER_B"
+    ],
+    "text": "in this meeting then if we um",
+    "overlap": false,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 3.92,
+    "end": 10.83,
+    "speaker": "SPEAKER_B",
+    "speakers": [
+      "SPEAKER_B"
+    ],
+    "text": "I'll just just recap on the minutes from the last meeting . And we uh decided on",
+    "overlap": false,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 11.31,
+    "end": 12.08,
+    "speaker": "SPEAKER_A",
+    "speakers": [
+      "SPEAKER_A"
+    ],
+    "text": "Yep .",
+    "overlap": false,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 12.21,
+    "end": 20.0,
+    "speaker": "SPEAKER_B",
+    "speakers": [
+      "SPEAKER_B"
+    ],
+    "text": "decided on our our target group being fifteen to thirty five , and we decided that it was gonna be non-rechargeable battery-powered",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 16.01,
+    "end": 16.41,
+    "speaker": "SPEAKER_D",
+    "speakers": [
+      "SPEAKER_D"
+    ],
+    "text": "Mm-hmm .",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  }
+]

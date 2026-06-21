@@ -1,0 +1,79 @@
+[
+  {
+    "start": 0.0,
+    "end": 2.92,
+    "speaker": "SPEAKER_B",
+    "speakers": [
+      "SPEAKER_B"
+    ],
+    "text": "so that was the last meeting . Is there anything have I forgotten anything ?",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 1.68,
+    "end": 2.09,
+    "speaker": "SPEAKER_A",
+    "speakers": [
+      "SPEAKER_A"
+    ],
+    "text": "Mm-hmm .",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 3.6,
+    "end": 3.8,
+    "speaker": "SPEAKER_A",
+    "speakers": [
+      "SPEAKER_A"
+    ],
+    "text": "No .",
+    "overlap": false,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 4.27,
+    "end": 5.77,
+    "speaker": "SPEAKER_D",
+    "speakers": [
+      "SPEAKER_D"
+    ],
+    "text": "Uh that sounds .",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 4.55,
+    "end": 20.0,
+    "speaker": "SPEAKER_B",
+    "speakers": [
+      "SPEAKER_B"
+    ],
+    "text": "Is that everything ? Okay . Um so if we have the three presentations , and then if you have anything to kind of that you know you're gonna want to discuss , maybe just make a note of it , and we'll have all the discussion at the end . That might be a better idea this time . And so if we start off uh",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 15.87,
+    "end": 16.38,
+    "speaker": "SPEAKER_D",
+    "speakers": [
+      "SPEAKER_D"
+    ],
+    "text": "Sure .",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 17.74,
+    "end": 18.08,
+    "speaker": "SPEAKER_D",
+    "speakers": [
+      "SPEAKER_D"
+    ],
+    "text": "Okay .",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  }
+]

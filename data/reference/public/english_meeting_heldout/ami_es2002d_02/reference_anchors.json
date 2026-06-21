@@ -1,0 +1,57 @@
+[
+  {
+    "start": 0.0,
+    "end": 10.95,
+    "speaker": "SPEAKER_B",
+    "speakers": [
+      "SPEAKER_B"
+    ],
+    "text": "well . Anything I've missed ? Okay um so uh if you want to present your prototype go ahead .",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 1.87,
+    "end": 2.0,
+    "speaker": "SPEAKER_A",
+    "speakers": [
+      "SPEAKER_A"
+    ],
+    "text": "No .",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 12.72,
+    "end": 20.0,
+    "speaker": "SPEAKER_D",
+    "speakers": [
+      "SPEAKER_D"
+    ],
+    "text": "Uh-oh . This is it ? Um , there are a few changes we've made . Um",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 14.36,
+    "end": 16.52,
+    "speaker": "SPEAKER_A",
+    "speakers": [
+      "SPEAKER_A"
+    ],
+    "text": "Ninja Homer , made in Japan .",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 19.54,
+    "end": 20.0,
+    "speaker": "SPEAKER_B",
+    "speakers": [
+      "SPEAKER_B"
+    ],
+    "text": "Okay",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  }
+]

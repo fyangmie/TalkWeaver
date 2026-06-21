@@ -1,0 +1,245 @@
+[
+  {
+    "canonical": "Aspen",
+    "aliases": ["Aspen's"],
+    "spoken_forms": ["Aspen"],
+    "asr_error_forms": ["aspens"],
+    "language": "en",
+    "category": "company_name",
+    "allowed_contexts": ["results presentation", "financial review", "revenue", "earnings"]
+  },
+  {
+    "canonical": "Regional Brands",
+    "aliases": ["Regional brands"],
+    "spoken_forms": ["Regional Brands"],
+    "asr_error_forms": ["regional brand", "regional brands"],
+    "language": "en",
+    "category": "business_segment",
+    "allowed_contexts": ["segmental revenue", "reported terms", "constant exchange rate"]
+  },
+  {
+    "canonical": "Sterile Focus Brands",
+    "aliases": ["Sterile focus brands"],
+    "spoken_forms": ["Sterile Focus Brands"],
+    "asr_error_forms": ["several focus brands"],
+    "language": "en",
+    "category": "business_segment",
+    "allowed_contexts": ["constant exchange rate", "growth", "regional brands"]
+  },
+  {
+    "canonical": "continuing operations",
+    "aliases": [],
+    "spoken_forms": ["continuing operations"],
+    "asr_error_forms": ["continuing operation", "continued operations"],
+    "language": "en",
+    "category": "financial_term",
+    "allowed_contexts": ["financial highlights", "revenue", "earnings"]
+  },
+  {
+    "canonical": "organic growth",
+    "aliases": [],
+    "spoken_forms": ["organic growth"],
+    "asr_error_forms": ["organ growth"],
+    "language": "en",
+    "category": "financial_term",
+    "allowed_contexts": ["revenue", "double-digit", "portfolio"]
+  },
+  {
+    "canonical": "dividend",
+    "aliases": [],
+    "spoken_forms": ["dividend"],
+    "asr_error_forms": ["divide end"],
+    "language": "en",
+    "category": "financial_term",
+    "allowed_contexts": ["cents a share", "reinstatement"]
+  },
+  {
+    "canonical": "cents a share",
+    "aliases": ["cents per share"],
+    "spoken_forms": ["cents a share"],
+    "asr_error_forms": ["cents to share", "seems to share", "sense a share", "sense to share", "sent to share"],
+    "language": "en",
+    "category": "number_unit",
+    "allowed_contexts": ["dividend", "reinstatement", "share"]
+  },
+  {
+    "canonical": "constant exchange rate",
+    "aliases": ["constant exchange rates"],
+    "spoken_forms": ["constant exchange rate"],
+    "asr_error_forms": [],
+    "language": "en",
+    "category": "financial_term",
+    "allowed_contexts": ["reported terms", "year-on-year"]
+  },
+  {
+    "canonical": "Net1",
+    "aliases": ["Net 1"],
+    "spoken_forms": ["Net one", "Net1"],
+    "asr_error_forms": ["netone"],
+    "language": "en",
+    "category": "company_name",
+    "allowed_contexts": ["UEPS", "South Africa", "fintech", "earnings call"]
+  },
+  {
+    "canonical": "UEPS",
+    "aliases": ["U.E.P.S."],
+    "spoken_forms": ["UEPS", "U E P S"],
+    "asr_error_forms": ["u e p s", "UPS", "U.S."],
+    "language": "en",
+    "category": "company_name",
+    "allowed_contexts": ["Net1", "Technologies", "earnings call"]
+  },
+  {
+    "canonical": "EasyPay",
+    "aliases": [],
+    "spoken_forms": ["EasyPay"],
+    "asr_error_forms": ["Easy Pay", "easy pay"],
+    "language": "en",
+    "category": "product_name",
+    "allowed_contexts": ["Net1", "financial services", "consumer"]
+  },
+  {
+    "canonical": "VodaPay",
+    "aliases": [],
+    "spoken_forms": ["VodaPay"],
+    "asr_error_forms": ["Voda Pay", "voter pay", "vodapay"],
+    "language": "en",
+    "category": "product_name",
+    "allowed_contexts": ["mobile money", "EasyPay", "South Africa"]
+  },
+  {
+    "canonical": "Kazang",
+    "aliases": [],
+    "spoken_forms": ["Kazang"],
+    "asr_error_forms": ["kazam", "ka zang", "Kazan"],
+    "language": "en",
+    "category": "company_name",
+    "allowed_contexts": ["Connect Group", "EasyPay", "payment"]
+  },
+  {
+    "canonical": "ARPU",
+    "aliases": [],
+    "spoken_forms": ["ARPU", "A R P U"],
+    "asr_error_forms": ["RPU", "our poo", "a r p u"],
+    "language": "en",
+    "category": "financial_metric",
+    "allowed_contexts": ["account", "growth", "revenue"]
+  },
+  {
+    "canonical": "non-GAAP",
+    "aliases": ["non GAAP"],
+    "spoken_forms": ["non-GAAP", "non GAAP"],
+    "asr_error_forms": ["non gap", "non-gap", "non-capped"],
+    "language": "en",
+    "category": "financial_metric",
+    "allowed_contexts": ["results", "rand", "financial"]
+  },
+  {
+    "canonical": "GAAP",
+    "aliases": [],
+    "spoken_forms": ["GAAP", "G A A P"],
+    "asr_error_forms": [],
+    "language": "en",
+    "category": "financial_metric",
+    "allowed_contexts": ["non-GAAP", "financial measures", "announcements"]
+  },
+  {
+    "canonical": "IFRS",
+    "aliases": [],
+    "spoken_forms": ["IFRS", "I F R S"],
+    "asr_error_forms": ["IFR"],
+    "language": "en",
+    "category": "financial_metric",
+    "allowed_contexts": ["International Financial Reporting Standards", "GAAP"]
+  },
+  {
+    "canonical": "ZAR",
+    "aliases": [],
+    "spoken_forms": ["ZAR", "Z A R"],
+    "asr_error_forms": ["czar", "Z R", "zar"],
+    "language": "en",
+    "category": "currency",
+    "allowed_contexts": ["South African rand", "million", "billion"]
+  },
+  {
+    "canonical": "Sify",
+    "aliases": [],
+    "spoken_forms": ["Sify"],
+    "asr_error_forms": ["SIFI", "sci fi", "sify"],
+    "language": "en",
+    "category": "company_name",
+    "allowed_contexts": ["Technologies", "digital", "service assurance"]
+  },
+  {
+    "canonical": "Sify Technologies",
+    "aliases": [],
+    "spoken_forms": ["Sify Technologies"],
+    "asr_error_forms": ["CIFI Technologies", "City Technology's"],
+    "language": "en",
+    "category": "company_name",
+    "allowed_contexts": ["Financial Results", "Sify", "corporate website"]
+  },
+  {
+    "canonical": "Sify Technologies Limited",
+    "aliases": [],
+    "spoken_forms": ["Sify Technologies Limited"],
+    "asr_error_forms": ["P. Technology Limited", "Peacock Knowledge Limited"],
+    "language": "en",
+    "category": "company_name",
+    "allowed_contexts": ["participants", "Sify", "Limited"]
+  },
+  {
+    "canonical": "sifytechnologies.com",
+    "aliases": ["www.sifytechnologies.com"],
+    "spoken_forms": ["sifytechnologies.com"],
+    "asr_error_forms": ["sefitechnologies.com", "sifetechnologies.com"],
+    "language": "en",
+    "category": "website",
+    "allowed_contexts": ["corporate website", "investors", "release"]
+  },
+  {
+    "canonical": "Texas Instruments",
+    "aliases": [],
+    "spoken_forms": ["Texas Instruments"],
+    "asr_error_forms": ["Texas instrument"],
+    "language": "en",
+    "category": "company_name",
+    "allowed_contexts": ["earnings", "semiconductors", "analog"]
+  },
+  {
+    "canonical": "TI",
+    "aliases": ["T.I."],
+    "spoken_forms": ["TI", "T I"],
+    "asr_error_forms": ["T I", "tea eye"],
+    "language": "en",
+    "category": "company_name",
+    "allowed_contexts": ["Texas Instruments", "semiconductors", "analog"]
+  },
+  {
+    "canonical": "gross margin",
+    "aliases": [],
+    "spoken_forms": ["gross margin"],
+    "asr_error_forms": ["gross margins"],
+    "language": "en",
+    "category": "financial_metric",
+    "allowed_contexts": ["revenue", "operating profit", "quarter"]
+  },
+  {
+    "canonical": "free cash flow",
+    "aliases": [],
+    "spoken_forms": ["free cash flow"],
+    "asr_error_forms": ["free cashflow", "free-cash-flow"],
+    "language": "en",
+    "category": "financial_metric",
+    "allowed_contexts": ["cash", "quarter", "shareholder"]
+  },
+  {
+    "canonical": "embedded processing",
+    "aliases": [],
+    "spoken_forms": ["embedded processing"],
+    "asr_error_forms": ["embeded processing", "embedded processor"],
+    "language": "en",
+    "category": "business_segment",
+    "allowed_contexts": ["analog", "Texas Instruments", "semiconductor"]
+  }
+]

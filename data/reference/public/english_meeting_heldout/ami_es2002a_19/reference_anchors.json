@@ -1,0 +1,79 @@
+[
+  {
+    "start": 0.0,
+    "end": 6.53,
+    "speaker": "SPEAKER_B",
+    "speakers": [
+      "SPEAKER_B"
+    ],
+    "text": "don't want it to cost any more than uh twelve fifty Euros , so fifty percent of the selling price .",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 0.09,
+    "end": 0.44,
+    "speaker": "SPEAKER_D",
+    "speakers": [
+      "SPEAKER_D"
+    ],
+    "text": "'Kay .",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 7.55,
+    "end": 9.13,
+    "speaker": "SPEAKER_D",
+    "speakers": [
+      "SPEAKER_D"
+    ],
+    "text": "Um , can we just go over that again ?",
+    "overlap": false,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 9.52,
+    "end": 9.99,
+    "speaker": "SPEAKER_B",
+    "speakers": [
+      "SPEAKER_B"
+    ],
+    "text": "Sure .",
+    "overlap": false,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 10.69,
+    "end": 15.63,
+    "speaker": "SPEAKER_D",
+    "speakers": [
+      "SPEAKER_D"
+    ],
+    "text": "Uh , so bas at twel Alright , yeah . Okay .",
+    "overlap": false,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 16.81,
+    "end": 20.0,
+    "speaker": "SPEAKER_D",
+    "speakers": [
+      "SPEAKER_D"
+    ],
+    "text": "So cost like production cost is",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 19.7,
+    "end": 20.0,
+    "speaker": "SPEAKER_B",
+    "speakers": [
+      "SPEAKER_B"
+    ],
+    "text": "All together",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  }
+]

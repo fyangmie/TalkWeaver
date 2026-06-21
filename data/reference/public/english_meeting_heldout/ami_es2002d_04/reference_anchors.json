@@ -1,0 +1,68 @@
+[
+  {
+    "start": 0.0,
+    "end": 0.78,
+    "speaker": "SPEAKER_D",
+    "speakers": [
+      "SPEAKER_D"
+    ],
+    "text": "uh confirm",
+    "overlap": false,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 2.0,
+    "end": 7.07,
+    "speaker": "SPEAKER_D",
+    "speakers": [
+      "SPEAKER_D"
+    ],
+    "text": "um button . Uh , apart from that , it's just pretty much the same as we discussed last time .",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 3.82,
+    "end": 4.11,
+    "speaker": "SPEAKER_C",
+    "speakers": [
+      "SPEAKER_C"
+    ],
+    "text": "Mm 'kay .",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 7.28,
+    "end": 16.7,
+    "speaker": "SPEAKER_A",
+    "speakers": [
+      "SPEAKER_A"
+    ],
+    "text": "And there isn't uh d it doesn't open up to the advanced functions ? So the advanced functions are still hidden from you , but they're hidden in the sense that um they're not in use .",
+    "overlap": false,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 17.16,
+    "end": 17.61,
+    "speaker": "SPEAKER_C",
+    "speakers": [
+      "SPEAKER_C"
+    ],
+    "text": "Where are they ?",
+    "overlap": false,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 18.12,
+    "end": 20.0,
+    "speaker": "SPEAKER_A",
+    "speakers": [
+      "SPEAKER_A"
+    ],
+    "text": "Um they're in the L_C_D_ panel and the jog-dial",
+    "overlap": false,
+    "annotation_source": "AMI manual word annotations"
+  }
+]

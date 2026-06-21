@@ -1,0 +1,24 @@
+[
+  {
+    "start": 0.0,
+    "end": 20.0,
+    "speaker": "SPEAKER_B",
+    "speakers": [
+      "SPEAKER_B"
+    ],
+    "text": "other functions into into those categories , um . And I told you guys about the three new requirements about ignoring teletext , ignoring everything except the T_V_ , and trying to incorporate the the uh corporate colour and slogan . Um so that was the last meeting . Is there anything",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 19.87,
+    "end": 20.0,
+    "speaker": "SPEAKER_A",
+    "speakers": [
+      "SPEAKER_A"
+    ],
+    "text": "Mm-hmm",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  }
+]

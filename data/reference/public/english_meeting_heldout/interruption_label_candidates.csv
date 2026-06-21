@@ -1,0 +1,11 @@
+clip_id,dataset_name,language,start,end,interrupter,interrupted,label,annotator,candidate_source,notes
+ami_es2002a_05,AMI Meeting Corpus,en,5.930,7.810,SPEAKER_B,SPEAKER_A,interruption,human_1,rule_floor_takeover,"Human confirms interruption event; speaker pair inherited from AMI timing and not independently voice-verified."
+ami_es2002a_05,AMI Meeting Corpus,en,5.930,6.390,SPEAKER_B,SPEAKER_D,interruption,human_1,rule_floor_takeover,"Human confirms interruption event; speaker pair inherited from AMI timing and not independently voice-verified."
+ami_es2002c_01,AMI Meeting Corpus,en,5.030,8.770,SPEAKER_D,SPEAKER_A,interruption,human_1,rule_floor_takeover,"Human confirms interruption event; speaker pair inherited from AMI timing and not independently voice-verified."
+ami_es2002c_04,AMI Meeting Corpus,en,4.550,5.770,SPEAKER_B,SPEAKER_D,interruption,human_1,rule_floor_takeover,"Human confirms interruption event; speaker pair inherited from AMI timing and not independently voice-verified."
+ami_es2002d_05,AMI Meeting Corpus,en,3.230,3.540,SPEAKER_B,SPEAKER_A,interruption,human_1,rule_floor_takeover,"Human confirms interruption event; speaker pair inherited from AMI timing and not independently voice-verified."
+ami_es2002d_06,AMI Meeting Corpus,en,5.790,7.250,SPEAKER_C,SPEAKER_B,interruption,human_1,rule_floor_takeover,"Human confirms interruption event; speaker pair inherited from AMI timing and not independently voice-verified."
+ami_es2002d_06,AMI Meeting Corpus,en,6.950,7.250,SPEAKER_A,SPEAKER_B,interruption,human_1,rule_floor_takeover,"Human confirms interruption event; speaker pair inherited from AMI timing and not independently voice-verified."
+ami_es2002d_06,AMI Meeting Corpus,en,6.950,7.630,SPEAKER_A,SPEAKER_C,interruption,human_1,rule_floor_takeover,"Human confirms interruption event; speaker pair inherited from AMI timing and not independently voice-verified."
+ami_es2002d_06,AMI Meeting Corpus,en,14.800,15.680,SPEAKER_C,SPEAKER_A,interruption,human_1,rule_floor_takeover,"Human confirms interruption event; speaker pair inherited from AMI timing and not independently voice-verified."
+ami_es2002d_06,AMI Meeting Corpus,en,15.140,15.680,SPEAKER_B,SPEAKER_A,interruption,human_1,rule_floor_takeover,"Human confirms interruption event; speaker pair inherited from AMI timing and not independently voice-verified."

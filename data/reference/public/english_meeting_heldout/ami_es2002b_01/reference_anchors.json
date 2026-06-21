@@ -1,0 +1,68 @@
+[
+  {
+    "start": 2.0,
+    "end": 2.83,
+    "speaker": "SPEAKER_B",
+    "speakers": [
+      "SPEAKER_B"
+    ],
+    "text": "Is that alright now ?",
+    "overlap": false,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 4.83,
+    "end": 5.32,
+    "speaker": "SPEAKER_B",
+    "speakers": [
+      "SPEAKER_B"
+    ],
+    "text": "Okay .",
+    "overlap": false,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 7.07,
+    "end": 7.8,
+    "speaker": "SPEAKER_B",
+    "speakers": [
+      "SPEAKER_B"
+    ],
+    "text": "Sorry ?",
+    "overlap": false,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 10.69,
+    "end": 20.0,
+    "speaker": "SPEAKER_B",
+    "speakers": [
+      "SPEAKER_B"
+    ],
+    "text": "Okay , everybody all set to start the meeting ? Okay , we've got half an hour for this one um to uh discuss the um functional design",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 14.79,
+    "end": 15.94,
+    "speaker": "SPEAKER_D",
+    "speakers": [
+      "SPEAKER_D"
+    ],
+    "text": "Could you plug me in ?",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 19.45,
+    "end": 20.0,
+    "speaker": "SPEAKER_D",
+    "speakers": [
+      "SPEAKER_D"
+    ],
+    "text": "Okay",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  }
+]
