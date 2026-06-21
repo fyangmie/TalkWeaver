@@ -63,6 +63,25 @@ def _turns_from_annotation(annotation: Any) -> list[dict[str, Any]]:
     return sorted(turns, key=lambda turn: (turn["start"], turn["end"]))
 
 
+def _load_waveform_for_pyannote(source: Path) -> dict[str, Any]:
+    """Load audio explicitly to avoid pyannote's optional torchcodec decoder."""
+
+    import soundfile as sf
+    import torch
+
+    samples, sample_rate = sf.read(
+        str(source),
+        always_2d=True,
+        dtype="float32",
+    )
+    waveform = torch.from_numpy(samples.T.copy())
+    return {
+        "uri": source.stem,
+        "waveform": waveform,
+        "sample_rate": int(sample_rate),
+    }
+
+
 def _mock_result(
     *,
     audio_path: str | Path | None,
@@ -149,7 +168,7 @@ def diarize_with_metadata(
                 model_name,
                 use_auth_token=hf_token,
             )
-        output = pipeline(str(source))
+        output = pipeline(_load_waveform_for_pyannote(source))
         annotation = getattr(output, "speaker_diarization", output)
         turns = _turns_from_annotation(annotation)
     except Exception as exc:

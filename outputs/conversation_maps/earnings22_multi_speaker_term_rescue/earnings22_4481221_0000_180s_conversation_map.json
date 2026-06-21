@@ -1,0 +1,379 @@
+{
+  "clip_id": "earnings22_4481221_0000_180s",
+  "metadata": {
+    "clip_id": "earnings22_4481221_0000_180s",
+    "dataset_name": "Earnings-22",
+    "dataset_version": "local public subset",
+    "source_type": "public_dataset",
+    "language": "en",
+    "duration_seconds": "180.000",
+    "speaker_count": "2",
+    "audio_path": "data/raw/public/earnings22/earnings22_4481221_0000_180s.wav",
+    "transcript_path": "data/reference/public/earnings22/earnings22_4481221_0000_180s/reference_transcript.txt",
+    "anchors_path": "data/reference/public/earnings22/earnings22_4481221_0000_180s/reference_anchors.json",
+    "events_path": "data/reference/public/earnings22/earnings22_4481221_0000_180s/reference_events.json",
+    "terms_path": "data/reference/public/earnings22/earnings22_4481221_0000_180s/reference_terms.json",
+    "result_csv": "experiments/results/earnings22_multi_context_rag_llm.csv",
+    "workflow": "real_multi_speaker_term_rescue_display",
+    "variant": "real_multi_speaker_term_rescue",
+    "asr_mode": "real_prediction_csv",
+    "diarization_mode": "reference_speaker_tokens",
+    "llm_mode": "deepseek_chat_existing_result",
+    "api_used": true,
+    "llm_provider": "deepseek",
+    "llm_model": "deepseek-chat",
+    "uses_real_asr_prediction": true,
+    "uses_reference_speaker_time": true,
+    "uses_term_rescue": true,
+    "uses_correction": true,
+    "has_domain_terms": "true",
+    "has_overlap": "false",
+    "has_interruptions": "false",
+    "is_mock": false,
+    "reference_assisted": true,
+    "license_or_access": "Earnings-22 public-data subset; use local redistribution policy already documented in repo.",
+    "claim_scope": "Display ConversationMap derived from existing CSV result and reference anchors; not a new experiment and not an automatic diarization benchmark.",
+    "wer_before": 0.202326,
+    "wer_after": 0.193023,
+    "term_recall_before": 0.0,
+    "term_recall_after": 1.0
+  },
+  "anchors": [
+    {
+      "anchor_id": "earnings22_4481221_0000_180s_anchor_001",
+      "clip_id": "earnings22_4481221_0000_180s",
+      "start": 4.21,
+      "end": 10.37,
+      "speaker": "SPEAKER_00",
+      "speakers": [
+        "SPEAKER_00"
+      ],
+      "raw_text": "Good day, ladies and gentlemen, and welcome to the CIFI Technologies Financial Results for Third Quarter and Fiscal Year 2021-2022.",
+      "corrected_text": "Good day, ladies and gentlemen, and welcome to the Sify Technologies Financial Results for Third Quarter and Fiscal Year 2021-2022.",
+      "overlap": false,
+      "confidence": 0.78,
+      "needs_review": false,
+      "retrieved_terms": [
+        "Sify Technologies"
+      ],
+      "evidence_notes": [
+        "Accepted RAG/LLM correction from earnings22_multi_context_rag_llm.csv."
+      ]
+    },
+    {
+      "anchor_id": "earnings22_4481221_0000_180s_anchor_002",
+      "clip_id": "earnings22_4481221_0000_180s",
+      "start": 29.68,
+      "end": 36.56,
+      "speaker": "SPEAKER_01",
+      "speakers": [
+        "SPEAKER_01"
+      ],
+      "raw_text": "Good morning. I would like to extend a warm welcome to all our participants on behalf of the P. Technology Limited.",
+      "corrected_text": "Good morning. I would like to extend a warm welcome to all our participants on behalf of the Sify Technologies Limited.",
+      "overlap": false,
+      "confidence": 0.78,
+      "needs_review": false,
+      "retrieved_terms": [
+        "Sify Technologies Limited"
+      ],
+      "evidence_notes": [
+        "Accepted RAG/LLM correction from earnings22_multi_context_rag_llm.csv."
+      ]
+    },
+    {
+      "anchor_id": "earnings22_4481221_0000_180s_anchor_003",
+      "clip_id": "earnings22_4481221_0000_180s",
+      "start": 70.98,
+      "end": 78.8,
+      "speaker": "SPEAKER_01",
+      "speakers": [
+        "SPEAKER_01"
+      ],
+      "raw_text": "You may obtain a copy of the release at the Investor Information section on the company's corporate website at www.sefitechnologies.com slash investors.",
+      "corrected_text": "You may obtain a copy of the release at the Investor Information section on the company's corporate website at www.sifytechnologies.com slash investors.",
+      "overlap": false,
+      "confidence": 0.76,
+      "needs_review": false,
+      "retrieved_terms": [
+        "sifytechnologies.com"
+      ],
+      "evidence_notes": [
+        "Accepted RAG/LLM correction from earnings22_multi_context_rag_llm.csv."
+      ]
+    },
+    {
+      "anchor_id": "earnings22_4481221_0000_180s_anchor_004",
+      "clip_id": "earnings22_4481221_0000_180s",
+      "start": 87.73,
+      "end": 100.21,
+      "speaker": "SPEAKER_01",
+      "speakers": [
+        "SPEAKER_01"
+      ],
+      "raw_text": "The webcast may be accessed in the Investor Information section of SIFI Corporate Website. Some of the financial measures may include non-gap measures.",
+      "corrected_text": "The webcast may be accessed in the Investor Information section of Sify Corporate Website. Some of the financial measures may include non-GAAP measures.",
+      "overlap": false,
+      "confidence": 0.74,
+      "needs_review": false,
+      "retrieved_terms": [
+        "Sify",
+        "non-GAAP"
+      ],
+      "evidence_notes": [
+        "Accepted RAG/LLM corrections from earnings22_multi_context_rag_llm.csv."
+      ]
+    },
+    {
+      "anchor_id": "earnings22_4481221_0000_180s_anchor_005",
+      "clip_id": "earnings22_4481221_0000_180s",
+      "start": 100.86,
+      "end": 109.87,
+      "speaker": "SPEAKER_01",
+      "speakers": [
+        "SPEAKER_01"
+      ],
+      "raw_text": "SIFI's results for the year are according to the International Financial Reporting Standard or IFR and will differ somewhat from the GAP announcement made in previous years.",
+      "corrected_text": "Sify's results for the year are according to the International Financial Reporting Standard or IFRS and will differ somewhat from the GAP announcement made in previous years.",
+      "overlap": false,
+      "confidence": 0.74,
+      "needs_review": false,
+      "retrieved_terms": [
+        "Sify",
+        "IFRS"
+      ],
+      "evidence_notes": [
+        "Accepted RAG/LLM corrections from earnings22_multi_context_rag_llm.csv."
+      ]
+    }
+  ],
+  "events": [
+    {
+      "event_id": "earnings22_4481221_speaker_change_001",
+      "clip_id": "earnings22_4481221_0000_180s",
+      "type": "speaker_turn",
+      "start": 29.68,
+      "end": 29.87,
+      "speakers": [
+        "SPEAKER_00",
+        "SPEAKER_01"
+      ],
+      "severity": "low",
+      "description": "Floor changes from the operator to the company speaker.",
+      "evidence_anchor_ids": [
+        "earnings22_4481221_0000_180s_anchor_001",
+        "earnings22_4481221_0000_180s_anchor_002"
+      ]
+    }
+  ],
+  "term_rescues": [
+    {
+      "term_id": "earnings22_4481221_term_001",
+      "canonical": "non-GAAP",
+      "asr_error_forms": [
+        "non-gap"
+      ],
+      "spoken_forms": [
+        "non-GAAP"
+      ],
+      "retrieved_score": 1.0,
+      "retrieval_method": "rag_llm_accepted_existing_result",
+      "evidence_anchor_ids": [
+        "earnings22_4481221_0000_180s_anchor_004"
+      ],
+      "validation": "accepted",
+      "reason": "predefined glossary error form"
+    },
+    {
+      "term_id": "earnings22_4481221_term_002",
+      "canonical": "IFRS",
+      "asr_error_forms": [
+        "IFR"
+      ],
+      "spoken_forms": [
+        "IFRS"
+      ],
+      "retrieved_score": 1.0,
+      "retrieval_method": "rag_llm_accepted_existing_result",
+      "evidence_anchor_ids": [
+        "earnings22_4481221_0000_180s_anchor_005"
+      ],
+      "validation": "accepted",
+      "reason": "predefined glossary error form"
+    },
+    {
+      "term_id": "earnings22_4481221_term_003",
+      "canonical": "Sify",
+      "asr_error_forms": [
+        "SIFI"
+      ],
+      "spoken_forms": [
+        "Sify"
+      ],
+      "retrieved_score": 1.0,
+      "retrieval_method": "rag_llm_accepted_existing_result",
+      "evidence_anchor_ids": [
+        "earnings22_4481221_0000_180s_anchor_004",
+        "earnings22_4481221_0000_180s_anchor_005"
+      ],
+      "validation": "accepted",
+      "reason": "predefined glossary error form"
+    },
+    {
+      "term_id": "earnings22_4481221_term_004",
+      "canonical": "Sify Technologies",
+      "asr_error_forms": [
+        "CIFI Technologies"
+      ],
+      "spoken_forms": [
+        "Sify Technologies"
+      ],
+      "retrieved_score": 1.0,
+      "retrieval_method": "rag_llm_accepted_existing_result",
+      "evidence_anchor_ids": [
+        "earnings22_4481221_0000_180s_anchor_001"
+      ],
+      "validation": "accepted",
+      "reason": "predefined glossary error form"
+    },
+    {
+      "term_id": "earnings22_4481221_term_005",
+      "canonical": "Sify Technologies Limited",
+      "asr_error_forms": [
+        "P. Technology Limited"
+      ],
+      "spoken_forms": [
+        "Sify Technologies Limited"
+      ],
+      "retrieved_score": 1.0,
+      "retrieval_method": "rag_llm_accepted_existing_result",
+      "evidence_anchor_ids": [
+        "earnings22_4481221_0000_180s_anchor_002"
+      ],
+      "validation": "accepted",
+      "reason": "predefined glossary error form"
+    },
+    {
+      "term_id": "earnings22_4481221_term_006",
+      "canonical": "sifytechnologies.com",
+      "asr_error_forms": [
+        "sefitechnologies.com"
+      ],
+      "spoken_forms": [
+        "sifytechnologies.com"
+      ],
+      "retrieved_score": 1.0,
+      "retrieval_method": "rag_llm_accepted_existing_result",
+      "evidence_anchor_ids": [
+        "earnings22_4481221_0000_180s_anchor_003"
+      ],
+      "validation": "accepted",
+      "reason": "predefined glossary error form"
+    }
+  ],
+  "correction_audits": [
+    {
+      "audit_id": "earnings22_4481221_audit_001",
+      "anchor_id": "earnings22_4481221_0000_180s_anchor_004",
+      "source_text": "non-gap",
+      "replacement_text": "non-GAAP",
+      "canonical_term": "non-GAAP",
+      "decision": "accepted",
+      "evidence": "predefined glossary error form",
+      "unsupported_changes": [],
+      "correction_rejected": false
+    },
+    {
+      "audit_id": "earnings22_4481221_audit_002",
+      "anchor_id": "earnings22_4481221_0000_180s_anchor_005",
+      "source_text": "IFR",
+      "replacement_text": "IFRS",
+      "canonical_term": "IFRS",
+      "decision": "accepted",
+      "evidence": "predefined glossary error form",
+      "unsupported_changes": [],
+      "correction_rejected": false
+    },
+    {
+      "audit_id": "earnings22_4481221_audit_003",
+      "anchor_id": "earnings22_4481221_0000_180s_anchor_004",
+      "source_text": "SIFI",
+      "replacement_text": "Sify",
+      "canonical_term": "Sify",
+      "decision": "accepted",
+      "evidence": "predefined glossary error form",
+      "unsupported_changes": [],
+      "correction_rejected": false
+    },
+    {
+      "audit_id": "earnings22_4481221_audit_004",
+      "anchor_id": "earnings22_4481221_0000_180s_anchor_001",
+      "source_text": "CIFI Technologies",
+      "replacement_text": "Sify Technologies",
+      "canonical_term": "Sify Technologies",
+      "decision": "accepted",
+      "evidence": "predefined glossary error form",
+      "unsupported_changes": [],
+      "correction_rejected": false
+    },
+    {
+      "audit_id": "earnings22_4481221_audit_005",
+      "anchor_id": "earnings22_4481221_0000_180s_anchor_002",
+      "source_text": "P. Technology Limited",
+      "replacement_text": "Sify Technologies Limited",
+      "canonical_term": "Sify Technologies Limited",
+      "decision": "accepted",
+      "evidence": "predefined glossary error form",
+      "unsupported_changes": [],
+      "correction_rejected": false
+    },
+    {
+      "audit_id": "earnings22_4481221_audit_006",
+      "anchor_id": "earnings22_4481221_0000_180s_anchor_003",
+      "source_text": "sefitechnologies.com",
+      "replacement_text": "sifytechnologies.com",
+      "canonical_term": "sifytechnologies.com",
+      "decision": "accepted",
+      "evidence": "predefined glossary error form",
+      "unsupported_changes": [],
+      "correction_rejected": false
+    }
+  ],
+  "speaker_cards": [
+    {
+      "speaker": "SPEAKER_00",
+      "speaking_time_seconds": 23.59,
+      "top_terms": [
+        "Sify Technologies"
+      ],
+      "stance_summary": "Operator introduces the financial-results call.",
+      "evidence_anchor_ids": [
+        "earnings22_4481221_0000_180s_anchor_001"
+      ],
+      "main_claims": [],
+      "action_items": []
+    },
+    {
+      "speaker": "SPEAKER_01",
+      "speaking_time_seconds": 150.32,
+      "top_terms": [
+        "Sify Technologies Limited",
+        "non-GAAP",
+        "IFRS"
+      ],
+      "stance_summary": "Company speaker introduces participants, website access, and financial-reporting terms.",
+      "evidence_anchor_ids": [
+        "earnings22_4481221_0000_180s_anchor_002",
+        "earnings22_4481221_0000_180s_anchor_003",
+        "earnings22_4481221_0000_180s_anchor_004",
+        "earnings22_4481221_0000_180s_anchor_005"
+      ],
+      "main_claims": [],
+      "action_items": []
+    }
+  ],
+  "summary": {
+    "summary": "A real Earnings-22 financial-results call where TalkWeaver links two speakers, playable audio, and evidence-backed recovery of company and finance terms such as Sify Technologies, non-GAAP, and IFRS.",
+    "mode": "derived_from_existing_results"
+  }
+}

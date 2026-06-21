@@ -10,6 +10,17 @@ from pathlib import Path
 ROOT_DIR = Path(__file__).resolve().parents[1]
 
 
+def _load_dotenv_if_available() -> None:
+    env_path = ROOT_DIR / ".env"
+    if not env_path.is_file():
+        return
+    try:
+        from dotenv import load_dotenv
+    except ImportError:
+        return
+    load_dotenv(env_path, override=False)
+
+
 def _env_bool(name: str, default: bool) -> bool:
     value = os.getenv(name)
     if value is None:
@@ -52,6 +63,7 @@ class Settings:
 def get_settings() -> Settings:
     """Build settings from the current process environment."""
 
+    _load_dotenv_if_available()
     return Settings(
         asr_model_size=os.getenv("ASR_MODEL_SIZE", "medium"),
         hf_token=os.getenv("HF_TOKEN", ""),
