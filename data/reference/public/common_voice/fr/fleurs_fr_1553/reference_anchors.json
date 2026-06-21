@@ -1,0 +1,13 @@
+[
+  {
+    "start": 0.0,
+    "end": 6.9,
+    "speaker": "SPEAKER_00",
+    "speakers": [
+      "SPEAKER_00"
+    ],
+    "text": "Noël est l'une des fêtes les plus importantes de la chrétienté, elle célèbre la naissance de Jésus.",
+    "overlap": false,
+    "annotation_source": "generated_single_speaker_anchor"
+  }
+]

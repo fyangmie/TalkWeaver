@@ -1,0 +1,24 @@
+[
+  {
+    "start": 2.0,
+    "end": 20.0,
+    "speaker": "SPEAKER_B",
+    "speakers": [
+      "SPEAKER_B"
+    ],
+    "text": "Um just want to tell you that you have three new requirements , um which is the The first one is that um uh the company's decided that teletext is outdated uh because of how popular the internet is . Nobody uses teletext very much anymore , so we don't really need to consider that in the functionality",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 17.83,
+    "end": 18.07,
+    "speaker": "SPEAKER_D",
+    "speakers": [
+      "SPEAKER_D"
+    ],
+    "text": "'Kay .",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  }
+]

@@ -1,0 +1,79 @@
+[
+  {
+    "start": 0.0,
+    "end": 7.81,
+    "speaker": "SPEAKER_A",
+    "speakers": [
+      "SPEAKER_A"
+    ],
+    "text": "project announcement about what the project is . Designing a remote control . That's about it , didn't get anything else . Did you get the same thing ?",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 0.91,
+    "end": 1.27,
+    "speaker": "SPEAKER_B",
+    "speakers": [
+      "SPEAKER_B"
+    ],
+    "text": "Mm-hmm .",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 2.95,
+    "end": 3.22,
+    "speaker": "SPEAKER_D",
+    "speakers": [
+      "SPEAKER_D"
+    ],
+    "text": "Mm-hmm .",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 4.79,
+    "end": 6.39,
+    "speaker": "SPEAKER_D",
+    "speakers": [
+      "SPEAKER_D"
+    ],
+    "text": "Mm-hmm . Yeah , that's that's it .",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 5.93,
+    "end": 20.0,
+    "speaker": "SPEAKER_B",
+    "speakers": [
+      "SPEAKER_B"
+    ],
+    "text": "Is that what everybody got ? Okay . Um . So we're gonna have like individual work and then a meeting about it . And repeat that process three times . Um",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 6.3,
+    "end": 6.66,
+    "speaker": "SPEAKER_C",
+    "speakers": [
+      "SPEAKER_C"
+    ],
+    "text": "Yeah .",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 7.63,
+    "end": 7.78,
+    "speaker": "SPEAKER_D",
+    "speakers": [
+      "SPEAKER_D"
+    ],
+    "text": "Yeah .",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  }
+]

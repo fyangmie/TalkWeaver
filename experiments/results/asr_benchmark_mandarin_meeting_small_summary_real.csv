@@ -1,0 +1,2 @@
+model_name,language,dataset_name,metric_name,vad_filter,num_clips,total_duration_seconds,mean_error_rate,median_error_rate,cleaned_metric_name,mean_cleaned_error_rate,median_cleaned_error_rate,mean_rtf,median_rtf,mean_runtime_seconds,cold_model_load_seconds,script_normalized,normalization_notes,notes
+small,zh-CN,AISHELL-4,CER,true,12,240.0,0.464762,0.470197,,,,0.130237,0.108002,2.604727,2.427565,true,OpenCC t2s normalization applied before Mandarin CER scoring.,Small-subset formal evaluation aggregate; not full dataset performance. RTF excludes model loading.

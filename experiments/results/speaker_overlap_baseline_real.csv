@@ -1,52 +1,151 @@
 clip_id,dataset_name,language,mode,has_reference_anchors,has_reference_events,num_reference_turns,num_predicted_turns,num_reference_overlap_events,num_predicted_overlap_events,speaker_label_error_rate,turn_time_coverage,boundary_mae,overlap_precision,overlap_recall,overlap_f1,interruption_precision,interruption_recall,interruption_f1,notes
 fleurs_en_1548,Google FLEURS,en,no_diarization,true,false,1,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
 fleurs_en_1548,Google FLEURS,en,reference_assisted,true,false,1,1,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
-fleurs_en_1548,Google FLEURS,en,pyannote_optional,true,false,1,0,0,0,,,,,,,,,,Skipped automatic diarization: HF_TOKEN is not configured.
+fleurs_en_1548,Google FLEURS,en,pyannote_optional,true,false,1,1,0,0,0.318807,0.681193,1.0425,,,,,,,Automatic pyannote diarization; no mock fallback.
 fleurs_en_1620,Google FLEURS,en,no_diarization,true,false,1,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
 fleurs_en_1620,Google FLEURS,en,reference_assisted,true,false,1,1,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
-fleurs_en_1620,Google FLEURS,en,pyannote_optional,true,false,1,0,0,0,,,,,,,,,,Skipped automatic diarization: HF_TOKEN is not configured.
+fleurs_en_1620,Google FLEURS,en,pyannote_optional,true,false,1,4,0,0,0.159341,0.840659,5.2535,,,,,,,Automatic pyannote diarization; no mock fallback.
 fleurs_en_1510,Google FLEURS,en,no_diarization,true,false,1,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
 fleurs_en_1510,Google FLEURS,en,reference_assisted,true,false,1,1,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
-fleurs_en_1510,Google FLEURS,en,pyannote_optional,true,false,1,0,0,0,,,,,,,,,,Skipped automatic diarization: HF_TOKEN is not configured.
+fleurs_en_1510,Google FLEURS,en,pyannote_optional,true,false,1,1,0,0,0.190404,0.809596,0.754,,,,,,,Automatic pyannote diarization; no mock fallback.
 fleurs_en_1578,Google FLEURS,en,no_diarization,true,false,1,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
 fleurs_en_1578,Google FLEURS,en,reference_assisted,true,false,1,1,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
-fleurs_en_1578,Google FLEURS,en,pyannote_optional,true,false,1,0,0,0,,,,,,,,,,Skipped automatic diarization: HF_TOKEN is not configured.
+fleurs_en_1578,Google FLEURS,en,pyannote_optional,true,false,1,1,0,0,0.160386,0.839614,0.332,,,,,,,Automatic pyannote diarization; no mock fallback.
 fleurs_en_1652,Google FLEURS,en,no_diarization,true,false,1,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
 fleurs_en_1652,Google FLEURS,en,reference_assisted,true,false,1,1,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
-fleurs_en_1652,Google FLEURS,en,pyannote_optional,true,false,1,0,0,0,,,,,,,,,,Skipped automatic diarization: HF_TOKEN is not configured.
+fleurs_en_1652,Google FLEURS,en,pyannote_optional,true,false,1,1,0,0,0.396341,0.603659,0.975,,,,,,,Automatic pyannote diarization; no mock fallback.
+fleurs_en_1531,Google FLEURS,en,no_diarization,true,false,1,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+fleurs_en_1531,Google FLEURS,en,reference_assisted,true,false,1,1,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+fleurs_en_1531,Google FLEURS,en,pyannote_optional,true,false,1,1,0,0,0.08018,0.91982,0.178,,,,,,,Automatic pyannote diarization; no mock fallback.
+fleurs_en_1528,Google FLEURS,en,no_diarization,true,false,1,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+fleurs_en_1528,Google FLEURS,en,reference_assisted,true,false,1,1,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+fleurs_en_1528,Google FLEURS,en,pyannote_optional,true,false,1,2,0,0,0.341374,0.658626,2.07,,,,,,,Automatic pyannote diarization; no mock fallback.
+fleurs_en_1595,Google FLEURS,en,no_diarization,true,false,1,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+fleurs_en_1595,Google FLEURS,en,reference_assisted,true,false,1,1,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+fleurs_en_1595,Google FLEURS,en,pyannote_optional,true,false,1,3,0,0,0.208583,0.791417,2.7235,,,,,,,Automatic pyannote diarization; no mock fallback.
+fleurs_en_1559,Google FLEURS,en,no_diarization,true,false,1,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+fleurs_en_1559,Google FLEURS,en,reference_assisted,true,false,1,1,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+fleurs_en_1559,Google FLEURS,en,pyannote_optional,true,false,1,3,0,0,0.188841,0.811159,0.9135,,,,,,,Automatic pyannote diarization; no mock fallback.
+fleurs_en_1633,Google FLEURS,en,no_diarization,true,false,1,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+fleurs_en_1633,Google FLEURS,en,reference_assisted,true,false,1,1,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+fleurs_en_1633,Google FLEURS,en,pyannote_optional,true,false,1,2,0,0,0.318249,0.681751,2.926,,,,,,,Automatic pyannote diarization; no mock fallback.
 fleurs_fr_1524,Google FLEURS,fr,no_diarization,true,false,1,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
 fleurs_fr_1524,Google FLEURS,fr,reference_assisted,true,false,1,1,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
-fleurs_fr_1524,Google FLEURS,fr,pyannote_optional,true,false,1,0,0,0,,,,,,,,,,Skipped automatic diarization: HF_TOKEN is not configured.
+fleurs_fr_1524,Google FLEURS,fr,pyannote_optional,true,false,1,5,0,0,0.211134,0.788866,5.0195,,,,,,,Automatic pyannote diarization; no mock fallback.
 fleurs_fr_1570,Google FLEURS,fr,no_diarization,true,false,1,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
 fleurs_fr_1570,Google FLEURS,fr,reference_assisted,true,false,1,1,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
-fleurs_fr_1570,Google FLEURS,fr,pyannote_optional,true,false,1,0,0,0,,,,,,,,,,Skipped automatic diarization: HF_TOKEN is not configured.
+fleurs_fr_1570,Google FLEURS,fr,pyannote_optional,true,false,1,1,0,0,0.2295,0.7705,0.6885,,,,,,,Automatic pyannote diarization; no mock fallback.
 fleurs_fr_1620,Google FLEURS,fr,no_diarization,true,false,1,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
 fleurs_fr_1620,Google FLEURS,fr,reference_assisted,true,false,1,1,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
-fleurs_fr_1620,Google FLEURS,fr,pyannote_optional,true,false,1,0,0,0,,,,,,,,,,Skipped automatic diarization: HF_TOKEN is not configured.
+fleurs_fr_1620,Google FLEURS,fr,pyannote_optional,true,false,1,2,0,0,0.035417,0.964583,1.259,,,,,,,Automatic pyannote diarization; no mock fallback.
 fleurs_fr_1533,Google FLEURS,fr,no_diarization,true,false,1,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
 fleurs_fr_1533,Google FLEURS,fr,reference_assisted,true,false,1,1,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
-fleurs_fr_1533,Google FLEURS,fr,pyannote_optional,true,false,1,0,0,0,,,,,,,,,,Skipped automatic diarization: HF_TOKEN is not configured.
+fleurs_fr_1533,Google FLEURS,fr,pyannote_optional,true,false,1,1,0,0,0.085369,0.914631,0.3355,,,,,,,Automatic pyannote diarization; no mock fallback.
 fleurs_fr_1652,Google FLEURS,fr,no_diarization,true,false,1,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
 fleurs_fr_1652,Google FLEURS,fr,reference_assisted,true,false,1,1,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
-fleurs_fr_1652,Google FLEURS,fr,pyannote_optional,true,false,1,0,0,0,,,,,,,,,,Skipped automatic diarization: HF_TOKEN is not configured.
+fleurs_fr_1652,Google FLEURS,fr,pyannote_optional,true,false,1,1,0,0,0.556338,0.443662,2.37,,,,,,,Automatic pyannote diarization; no mock fallback.
+fleurs_fr_1640,Google FLEURS,fr,no_diarization,true,false,1,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+fleurs_fr_1640,Google FLEURS,fr,reference_assisted,true,false,1,1,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+fleurs_fr_1640,Google FLEURS,fr,pyannote_optional,true,false,1,2,0,0,0.144715,0.855285,0.5425,,,,,,,Automatic pyannote diarization; no mock fallback.
+fleurs_fr_1616,Google FLEURS,fr,no_diarization,true,false,1,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+fleurs_fr_1616,Google FLEURS,fr,reference_assisted,true,false,1,1,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+fleurs_fr_1616,Google FLEURS,fr,pyannote_optional,true,false,1,4,0,0,0.242083,0.757917,4.169,,,,,,,Automatic pyannote diarization; no mock fallback.
+fleurs_fr_1553,Google FLEURS,fr,no_diarization,true,false,1,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+fleurs_fr_1553,Google FLEURS,fr,reference_assisted,true,false,1,1,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+fleurs_fr_1553,Google FLEURS,fr,pyannote_optional,true,false,1,1,0,0,0.21,0.79,0.7245,,,,,,,Automatic pyannote diarization; no mock fallback.
+fleurs_fr_1523,Google FLEURS,fr,no_diarization,true,false,1,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+fleurs_fr_1523,Google FLEURS,fr,reference_assisted,true,false,1,1,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+fleurs_fr_1523,Google FLEURS,fr,pyannote_optional,true,false,1,2,0,0,0.50819,0.49181,3.8915,,,,,,,Automatic pyannote diarization; no mock fallback.
+fleurs_fr_1558,Google FLEURS,fr,no_diarization,true,false,1,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+fleurs_fr_1558,Google FLEURS,fr,reference_assisted,true,false,1,1,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+fleurs_fr_1558,Google FLEURS,fr,pyannote_optional,true,false,1,1,0,0,0.075952,0.924048,0.319,,,,,,,Automatic pyannote diarization; no mock fallback.
 fleurs_zh_cn_1579,Google FLEURS,zh-CN,no_diarization,true,false,1,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
 fleurs_zh_cn_1579,Google FLEURS,zh-CN,reference_assisted,true,false,1,1,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
-fleurs_zh_cn_1579,Google FLEURS,zh-CN,pyannote_optional,true,false,1,0,0,0,,,,,,,,,,Skipped automatic diarization: HF_TOKEN is not configured.
+fleurs_zh_cn_1579,Google FLEURS,zh-CN,pyannote_optional,true,false,1,5,0,0,0.526224,0.473776,7.4435,,,,,,,Automatic pyannote diarization; no mock fallback.
 fleurs_zh_cn_1605,Google FLEURS,zh-CN,no_diarization,true,false,1,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
 fleurs_zh_cn_1605,Google FLEURS,zh-CN,reference_assisted,true,false,1,1,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
-fleurs_zh_cn_1605,Google FLEURS,zh-CN,pyannote_optional,true,false,1,0,0,0,,,,,,,,,,Skipped automatic diarization: HF_TOKEN is not configured.
+fleurs_zh_cn_1605,Google FLEURS,zh-CN,pyannote_optional,true,false,1,1,0,0,0.194758,0.805242,0.7245,,,,,,,Automatic pyannote diarization; no mock fallback.
 fleurs_zh_cn_1581,Google FLEURS,zh-CN,no_diarization,true,false,1,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
 fleurs_zh_cn_1581,Google FLEURS,zh-CN,reference_assisted,true,false,1,1,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
-fleurs_zh_cn_1581,Google FLEURS,zh-CN,pyannote_optional,true,false,1,0,0,0,,,,,,,,,,Skipped automatic diarization: HF_TOKEN is not configured.
+fleurs_zh_cn_1581,Google FLEURS,zh-CN,pyannote_optional,true,false,1,1,0,0,0.363889,0.636111,1.3755,,,,,,,Automatic pyannote diarization; no mock fallback.
 fleurs_zh_cn_1648,Google FLEURS,zh-CN,no_diarization,true,false,1,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
 fleurs_zh_cn_1648,Google FLEURS,zh-CN,reference_assisted,true,false,1,1,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
-fleurs_zh_cn_1648,Google FLEURS,zh-CN,pyannote_optional,true,false,1,0,0,0,,,,,,,,,,Skipped automatic diarization: HF_TOKEN is not configured.
+fleurs_zh_cn_1648,Google FLEURS,zh-CN,pyannote_optional,true,false,1,1,0,0,0.662836,0.337164,3.2015,,,,,,,Automatic pyannote diarization; no mock fallback.
 fleurs_zh_cn_1588,Google FLEURS,zh-CN,no_diarization,true,false,1,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
 fleurs_zh_cn_1588,Google FLEURS,zh-CN,reference_assisted,true,false,1,1,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
-fleurs_zh_cn_1588,Google FLEURS,zh-CN,pyannote_optional,true,false,1,0,0,0,,,,,,,,,,Skipped automatic diarization: HF_TOKEN is not configured.
+fleurs_zh_cn_1588,Google FLEURS,zh-CN,pyannote_optional,true,false,1,4,0,0,0.637581,0.362419,6.481,,,,,,,Automatic pyannote diarization; no mock fallback.
+fleurs_zh_cn_1638,Google FLEURS,zh-CN,no_diarization,true,false,1,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+fleurs_zh_cn_1638,Google FLEURS,zh-CN,reference_assisted,true,false,1,1,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+fleurs_zh_cn_1638,Google FLEURS,zh-CN,pyannote_optional,true,false,1,2,0,0,0.42275,0.57725,3.874,,,,,,,Automatic pyannote diarization; no mock fallback.
+fleurs_zh_cn_1559,Google FLEURS,zh-CN,no_diarization,true,false,1,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+fleurs_zh_cn_1559,Google FLEURS,zh-CN,reference_assisted,true,false,1,1,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+fleurs_zh_cn_1559,Google FLEURS,zh-CN,pyannote_optional,true,false,1,2,0,0,0.612465,0.387535,5.495,,,,,,,Automatic pyannote diarization; no mock fallback.
+fleurs_zh_cn_1519,Google FLEURS,zh-CN,no_diarization,true,false,1,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+fleurs_zh_cn_1519,Google FLEURS,zh-CN,reference_assisted,true,false,1,1,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+fleurs_zh_cn_1519,Google FLEURS,zh-CN,pyannote_optional,true,false,1,3,0,0,0.615995,0.384005,6.2475,,,,,,,Automatic pyannote diarization; no mock fallback.
+fleurs_zh_cn_1523,Google FLEURS,zh-CN,no_diarization,true,false,1,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+fleurs_zh_cn_1523,Google FLEURS,zh-CN,reference_assisted,true,false,1,1,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+fleurs_zh_cn_1523,Google FLEURS,zh-CN,pyannote_optional,true,false,1,1,0,0,0.396248,0.603752,2.2705,,,,,,,Automatic pyannote diarization; no mock fallback.
+fleurs_zh_cn_1593,Google FLEURS,zh-CN,no_diarization,true,false,1,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+fleurs_zh_cn_1593,Google FLEURS,zh-CN,reference_assisted,true,false,1,1,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+fleurs_zh_cn_1593,Google FLEURS,zh-CN,pyannote_optional,true,false,1,1,0,0,0.354167,0.645833,1.615,,,,,,,Automatic pyannote diarization; no mock fallback.
 ami_es2002a_01,AMI Meeting Corpus,en,no_diarization,true,true,4,1,1,0,1.0,1.0,,0.0,0.0,0.0,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
 ami_es2002a_01,AMI Meeting Corpus,en,reference_assisted,true,true,4,4,1,1,0.0,1.0,0.0,1.0,1.0,1.0,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
-ami_es2002a_01,AMI Meeting Corpus,en,pyannote_optional,true,true,4,0,1,0,,,,,,,,,,Skipped automatic diarization: HF_TOKEN is not configured.
+ami_es2002a_01,AMI Meeting Corpus,en,pyannote_optional,true,true,4,6,1,2,0.002784,0.998285,0.039375,0.5,1.0,0.666667,,,,Automatic pyannote diarization; no mock fallback.
 ami_es2002a_02,AMI Meeting Corpus,en,no_diarization,true,true,8,1,4,0,1.0,1.0,,0.0,0.0,0.0,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
 ami_es2002a_02,AMI Meeting Corpus,en,reference_assisted,true,true,8,8,4,4,0.0,1.0,0.0,1.0,1.0,1.0,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
-ami_es2002a_02,AMI Meeting Corpus,en,pyannote_optional,true,true,8,0,4,0,,,,,,,,,,Skipped automatic diarization: HF_TOKEN is not configured.
+ami_es2002a_02,AMI Meeting Corpus,en,pyannote_optional,true,true,8,11,4,3,0.059042,0.989886,0.218429,1.0,0.75,0.857143,,,,Automatic pyannote diarization; no mock fallback.
+ami_es2002a_03,AMI Meeting Corpus,en,no_diarization,true,true,4,1,1,0,1.0,1.0,,0.0,0.0,0.0,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+ami_es2002a_03,AMI Meeting Corpus,en,reference_assisted,true,true,4,4,1,1,0.0,1.0,0.0,1.0,1.0,1.0,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+ami_es2002a_03,AMI Meeting Corpus,en,pyannote_optional,true,true,4,3,1,0,0.203272,0.991591,0.0275,0.0,0.0,0.0,,,,Automatic pyannote diarization; no mock fallback.
+ami_es2002a_04,AMI Meeting Corpus,en,no_diarization,true,true,3,1,1,0,1.0,1.0,,0.0,0.0,0.0,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+ami_es2002a_04,AMI Meeting Corpus,en,reference_assisted,true,true,3,3,1,1,0.0,1.0,0.0,1.0,1.0,1.0,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+ami_es2002a_04,AMI Meeting Corpus,en,pyannote_optional,true,true,3,3,1,1,0.159536,0.997225,1.072167,1.0,1.0,1.0,,,,Automatic pyannote diarization; no mock fallback.
+ami_es2002a_05,AMI Meeting Corpus,en,no_diarization,true,true,7,1,10,0,1.0,1.0,,0.0,0.0,0.0,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+ami_es2002a_05,AMI Meeting Corpus,en,reference_assisted,true,true,7,7,10,9,0.0,1.0,0.0,0.888889,0.8,0.842105,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+ami_es2002a_05,AMI Meeting Corpus,en,pyannote_optional,true,true,7,8,10,3,0.172868,0.9163,0.707,0.666667,0.2,0.307692,,,,Automatic pyannote diarization; no mock fallback.
+ami_es2002a_06,AMI Meeting Corpus,en,no_diarization,true,true,2,1,1,0,1.0,1.0,,0.0,0.0,0.0,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+ami_es2002a_06,AMI Meeting Corpus,en,reference_assisted,true,true,2,2,1,1,0.0,1.0,0.0,1.0,1.0,1.0,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+ami_es2002a_06,AMI Meeting Corpus,en,pyannote_optional,true,true,2,2,1,1,0.116114,0.876406,0.61525,1.0,1.0,1.0,,,,Automatic pyannote diarization; no mock fallback.
+ami_es2002a_07,AMI Meeting Corpus,en,no_diarization,true,true,5,1,1,0,1.0,1.0,,0.0,0.0,0.0,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+ami_es2002a_07,AMI Meeting Corpus,en,reference_assisted,true,true,5,5,1,1,0.0,1.0,0.0,1.0,1.0,1.0,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+ami_es2002a_07,AMI Meeting Corpus,en,pyannote_optional,true,true,5,4,1,0,0.116556,0.97598,0.192625,0.0,0.0,0.0,,,,Automatic pyannote diarization; no mock fallback.
+ami_es2002a_08,AMI Meeting Corpus,en,no_diarization,true,true,3,1,1,0,1.0,1.0,,0.0,0.0,0.0,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+ami_es2002a_08,AMI Meeting Corpus,en,reference_assisted,true,true,3,3,1,1,0.0,1.0,0.0,1.0,1.0,1.0,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+ami_es2002a_08,AMI Meeting Corpus,en,pyannote_optional,true,true,3,3,1,1,0.045176,0.997274,0.127,1.0,1.0,1.0,,,,Automatic pyannote diarization; no mock fallback.
+aishell4_test_001,AISHELL-4,zh-CN,no_diarization,true,false,8,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+aishell4_test_001,AISHELL-4,zh-CN,reference_assisted,true,false,8,8,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+aishell4_test_001,AISHELL-4,zh-CN,pyannote_optional,true,false,8,7,0,0,0.358241,0.917614,1.286333,,,,,,,Automatic pyannote diarization; no mock fallback.
+aishell4_test_002,AISHELL-4,zh-CN,no_diarization,true,false,2,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+aishell4_test_002,AISHELL-4,zh-CN,reference_assisted,true,false,2,2,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+aishell4_test_002,AISHELL-4,zh-CN,pyannote_optional,true,false,2,2,0,0,0.010305,0.989695,4.031,,,,,,,Automatic pyannote diarization; no mock fallback.
+aishell4_test_003,AISHELL-4,zh-CN,no_diarization,true,false,3,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+aishell4_test_003,AISHELL-4,zh-CN,reference_assisted,true,false,3,3,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+aishell4_test_003,AISHELL-4,zh-CN,pyannote_optional,true,false,3,2,0,0,0.006106,0.993894,2.183,,,,,,,Automatic pyannote diarization; no mock fallback.
+aishell4_test_004,AISHELL-4,zh-CN,no_diarization,true,false,3,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+aishell4_test_004,AISHELL-4,zh-CN,reference_assisted,true,false,3,3,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+aishell4_test_004,AISHELL-4,zh-CN,pyannote_optional,true,false,3,1,0,0,0.002708,0.997292,6.2955,,,,,,,Automatic pyannote diarization; no mock fallback.
+aishell4_test_005,AISHELL-4,zh-CN,no_diarization,true,false,3,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+aishell4_test_005,AISHELL-4,zh-CN,reference_assisted,true,false,3,3,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+aishell4_test_005,AISHELL-4,zh-CN,pyannote_optional,true,false,3,1,0,0,0.002709,0.997291,6.604,,,,,,,Automatic pyannote diarization; no mock fallback.
+aishell4_test_006,AISHELL-4,zh-CN,no_diarization,true,false,3,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+aishell4_test_006,AISHELL-4,zh-CN,reference_assisted,true,false,3,3,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+aishell4_test_006,AISHELL-4,zh-CN,pyannote_optional,true,false,3,1,0,0,0.00271,0.99729,4.985,,,,,,,Automatic pyannote diarization; no mock fallback.
+aishell4_test_007,AISHELL-4,zh-CN,no_diarization,true,false,4,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+aishell4_test_007,AISHELL-4,zh-CN,reference_assisted,true,false,4,4,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+aishell4_test_007,AISHELL-4,zh-CN,pyannote_optional,true,false,4,3,0,0,0.169606,0.989564,0.794,,,,,,,Automatic pyannote diarization; no mock fallback.
+aishell4_test_008,AISHELL-4,zh-CN,no_diarization,true,false,3,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+aishell4_test_008,AISHELL-4,zh-CN,reference_assisted,true,false,3,3,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+aishell4_test_008,AISHELL-4,zh-CN,pyannote_optional,true,false,3,3,0,1,0.008225,0.991775,1.175,,,,,,,Automatic pyannote diarization; no mock fallback.
+aishell4_test_009,AISHELL-4,zh-CN,no_diarization,true,false,3,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+aishell4_test_009,AISHELL-4,zh-CN,reference_assisted,true,false,3,3,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+aishell4_test_009,AISHELL-4,zh-CN,pyannote_optional,true,false,3,2,0,0,0.017407,0.982593,0.86175,,,,,,,Automatic pyannote diarization; no mock fallback.
+aishell4_test_010,AISHELL-4,zh-CN,no_diarization,true,false,3,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+aishell4_test_010,AISHELL-4,zh-CN,reference_assisted,true,false,3,3,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+aishell4_test_010,AISHELL-4,zh-CN,pyannote_optional,true,false,3,2,0,0,0.016368,0.983632,0.97175,,,,,,,Automatic pyannote diarization; no mock fallback.
+aishell4_test_011,AISHELL-4,zh-CN,no_diarization,true,false,2,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+aishell4_test_011,AISHELL-4,zh-CN,reference_assisted,true,false,2,2,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+aishell4_test_011,AISHELL-4,zh-CN,pyannote_optional,true,false,2,2,0,0,0.034148,0.965852,0.90125,,,,,,,Automatic pyannote diarization; no mock fallback.
+aishell4_test_012,AISHELL-4,zh-CN,no_diarization,true,false,3,1,0,0,1.0,1.0,,,,,,,,Naive baseline: one UNKNOWN turn across the clip and no predicted conversation events.
+aishell4_test_012,AISHELL-4,zh-CN,reference_assisted,true,false,3,3,0,0,0.0,1.0,0.0,,,,,,,Oracle/reference speaker turns; TalkWeaver rule-based event detection. Not automatic diarization performance.
+aishell4_test_012,AISHELL-4,zh-CN,pyannote_optional,true,false,3,2,0,0,0.005235,0.994765,2.93225,,,,,,,Automatic pyannote diarization; no mock fallback.

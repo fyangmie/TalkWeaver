@@ -1,0 +1,174 @@
+[
+  {
+    "canonical": "Aspen",
+    "aliases": ["Aspen's"],
+    "spoken_forms": ["Aspen"],
+    "asr_error_forms": ["aspens"],
+    "language": "en",
+    "category": "company_name",
+    "allowed_contexts": [
+      "results presentation",
+      "financial review",
+      "revenue",
+      "earnings"
+    ]
+  },
+  {
+    "canonical": "Regional Brands",
+    "aliases": ["Regional brands"],
+    "spoken_forms": ["Regional Brands"],
+    "asr_error_forms": ["regional brand", "regional brands"],
+    "language": "en",
+    "category": "business_segment",
+    "allowed_contexts": [
+      "segmental revenue",
+      "reported terms",
+      "constant exchange rate"
+    ]
+  },
+  {
+    "canonical": "Sterile Focus Brands",
+    "aliases": ["Sterile focus brands"],
+    "spoken_forms": ["Sterile Focus Brands"],
+    "asr_error_forms": ["several focus brands"],
+    "language": "en",
+    "category": "business_segment",
+    "allowed_contexts": [
+      "constant exchange rate",
+      "growth",
+      "regional brands"
+    ]
+  },
+  {
+    "canonical": "continuing operations",
+    "aliases": [],
+    "spoken_forms": ["continuing operations"],
+    "asr_error_forms": ["continuing operation", "continued operations"],
+    "language": "en",
+    "category": "financial_term",
+    "allowed_contexts": [
+      "financial highlights",
+      "revenue",
+      "earnings"
+    ]
+  },
+  {
+    "canonical": "organic growth",
+    "aliases": [],
+    "spoken_forms": ["organic growth"],
+    "asr_error_forms": ["organ growth"],
+    "language": "en",
+    "category": "financial_term",
+    "allowed_contexts": [
+      "revenue",
+      "double-digit",
+      "portfolio"
+    ]
+  },
+  {
+    "canonical": "double-digit",
+    "aliases": ["double digit"],
+    "spoken_forms": ["double digit"],
+    "asr_error_forms": ["double dig it"],
+    "language": "en",
+    "category": "style_only_finance_term",
+    "allowed_contexts": [
+      "growth",
+      "revenue"
+    ]
+  },
+  {
+    "canonical": "debt",
+    "aliases": [],
+    "spoken_forms": ["debt"],
+    "asr_error_forms": ["dead"],
+    "language": "en",
+    "category": "financial_term",
+    "allowed_contexts": [
+      "leverage",
+      "cash",
+      "financial"
+    ]
+  },
+  {
+    "canonical": "leverage",
+    "aliases": [],
+    "spoken_forms": ["leverage"],
+    "asr_error_forms": ["lever edge"],
+    "language": "en",
+    "category": "financial_term",
+    "allowed_contexts": [
+      "debt",
+      "levels"
+    ]
+  },
+  {
+    "canonical": "dividend",
+    "aliases": [],
+    "spoken_forms": ["dividend"],
+    "asr_error_forms": ["divide end"],
+    "language": "en",
+    "category": "financial_term",
+    "allowed_contexts": [
+      "cents a share",
+      "reinstatement"
+    ]
+  },
+  {
+    "canonical": "cents a share",
+    "aliases": ["cents per share"],
+    "spoken_forms": ["cents a share"],
+    "asr_error_forms": [
+      "cents to share",
+      "seems to share",
+      "sense a share",
+      "sense to share",
+      "sent to share"
+    ],
+    "language": "en",
+    "category": "number_unit",
+    "allowed_contexts": [
+      "dividend",
+      "reinstatement",
+      "share"
+    ]
+  },
+  {
+    "canonical": "constant exchange rate",
+    "aliases": ["constant exchange rates"],
+    "spoken_forms": ["constant exchange rate"],
+    "asr_error_forms": [],
+    "language": "en",
+    "category": "financial_term",
+    "allowed_contexts": [
+      "reported terms",
+      "year-on-year"
+    ]
+  },
+  {
+    "canonical": "oncology",
+    "aliases": [],
+    "spoken_forms": ["oncology"],
+    "asr_error_forms": ["on college"],
+    "language": "en",
+    "category": "domain_term",
+    "allowed_contexts": [
+      "prices",
+      "products",
+      "market"
+    ]
+  },
+  {
+    "canonical": "COVID",
+    "aliases": ["Covid"],
+    "spoken_forms": ["COVID"],
+    "asr_error_forms": ["covered"],
+    "language": "en",
+    "category": "domain_term",
+    "allowed_contexts": [
+      "circumstances",
+      "market",
+      "products"
+    ]
+  }
+]

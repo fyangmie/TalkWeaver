@@ -1,0 +1,54 @@
+clip_id,model_name,source_text,replacement_text,canonical_term,category,decision,wer_delta,term_recall_delta,reason
+earnings22_4474955_0000_180s,tiny,U.S.,UEPS,UEPS,company_name,applied,0.000000,0.000000,"Glossary lists 'U.S.' as an ASR error form for UEPS, and context mentions 'Security and Exchange Commission' which is unrelated to the United States, making UEPS the correct term."
+earnings22_4474955_0000_180s,tiny,Chidian,,Sify Technologies,needs_review,needs_review,0.000000,0.000000,"The raw text repeatedly uses 'Chidian' which may be an ASR error for 'Sify Technologies', but the glossary does not list 'Chidian' as an error form for any canonical term, and the context does not clearly match Sify's domain (digital/service assurance)."
+earnings22_4474955_0000_180s,tiny,Purigen,,Sify Technologies,needs_review,needs_review,0.000000,0.000000,"The raw text switches from 'Purigen' to 'Chidian', suggesting a possible company name error, but the glossary does not include 'Purigen' as an error form for any canonical term, and the context is ambiguous."
+earnings22_4474955_0000_180s,tiny,Minlow,,Min-Luo,needs_review,needs_review,0.000000,0.000000,"The raw text says 'Minlow' but the glossary does not list this as an error form for 'Min-Luo', and the context mentions 'CEO' which aligns, but without glossary support, it is not safe to correct."
+earnings22_4474955_0000_180s,tiny,Chidiu,,Sify Technologies,needs_review,needs_review,0.000000,0.000000,"The raw text says 'Mrs. Chidiu' as VP of Human Rights Commission, which does not match any glossary term or context for Sify Technologies."
+earnings22_4483046_0000_180s,tiny,,,,no_action,unchanged,0.000000,0.000000,"No safe glossary-grounded candidate was applied, or baseline already covered the glossary terms."
+earnings22_4468919_0000_180s,tiny,non-gap,non-GAAP,non-GAAP,financial_metric,applied,0.000000,1.000000,Glossary lists 'non-gap' as an ASR error form for 'non-GAAP'.
+earnings22_4468919_0000_180s,tiny,Wilma Negra,,Monegras,needs_review,needs_review,0.000000,1.000000,"Likely ASR error for 'Monegras' (company name), but 'Monegras' is not in glossary; context suggests it may be the company name."
+earnings22_4468919_0000_180s,tiny,Monegras,,Monegras,needs_review,needs_review,0.000000,1.000000,Appears as company name in text but not in glossary; may be correct or need verification.
+earnings22_4468919_0000_180s,tiny,Diego Hello,,Diego Hello,needs_review,needs_review,0.000000,1.000000,"Likely ASR error for 'Diego Hello' (head of IR), but not in glossary; context suggests it may be a name."
+earnings22_4468919_0000_180s,tiny,Marko Heradine,,Marko Heradine,needs_review,needs_review,0.000000,1.000000,"Likely ASR error for CFO name, but not in glossary; context suggests it may be correct."
+earnings22_4468919_0000_180s,tiny,solely the man in high historic figures,,solid demand in high historic figures,needs_review,needs_review,0.000000,1.000000,"Likely ASR error, but no glossary term matches; context suggests 'solid demand' but not safe to correct without glossary support."
+earnings22_4468919_0000_180s,tiny,superset,,supply set,needs_review,needs_review,0.000000,1.000000,"Likely ASR error, but no glossary term matches; context suggests 'supply set' but not safe to correct."
+earnings22_4475604_0000_180s,tiny,,,,no_action,unchanged,0.000000,0.000000,"No safe glossary-grounded candidate was applied, or baseline already covered the glossary terms."
+earnings22_4471586_0000_180s,tiny,,,,no_action,unchanged,0.000000,0.000000,"No safe glossary-grounded candidate was applied, or baseline already covered the glossary terms."
+earnings22_4482110_0000_180s,tiny,non-gap,non-GAAP,non-GAAP,financial_metric,applied,0.000000,1.000000,Glossary lists 'non-gap' as an ASR error form for 'non-GAAP'.
+earnings22_4446796_0000_180s,tiny,U.S.,UEPS,UEPS,company_name,applied,0.000000,0.000000,"Glossary lists 'U.S.' as an ASR error form for UEPS, and context is financial/earnings call."
+earnings22_4483623_0000_180s,tiny,42 cents per share,42 cents a share,cents a share,number_unit,applied,0.002198,0.000000,Glossary term 'cents a share' matches numeric-unit pattern in dividend context.
+earnings22_4470290_0000_180s,tiny,U.S.,UEPS,UEPS,company_name,applied,0.000000,0.000000,"Glossary lists 'U.S.' as an ASR error form for UEPS, and context discusses financial measures."
+earnings22_4469528_0000_180s,tiny,,,,no_action,unchanged,0.000000,0.000000,"No safe glossary-grounded candidate was applied, or baseline already covered the glossary terms."
+earnings22_4470570_0000_180s,tiny,U.S.,UEPS,UEPS,company_name,applied,0.000000,0.000000,retrieved candidate correction matches glossary alias for UEPS
+earnings22_4329526_0000_180s,tiny,,,,no_action,unchanged,0.000000,0.000000,"No safe glossary-grounded candidate was applied, or baseline already covered the glossary terms."
+earnings22_4474955_0000_180s,base,non-gap,non-GAAP,non-GAAP,financial_metric,applied,0.000000,1.000000,predefined glossary error form
+earnings22_4474955_0000_180s,base,U.S.,,UEPS,needs_review,needs_review,0.000000,1.000000,U.S. is a common abbreviation for United States; no clear glossary context for UEPS in this earnings call.
+earnings22_4483046_0000_180s,base,,,,no_action,unchanged,0.000000,0.000000,"No safe glossary-grounded candidate was applied, or baseline already covered the glossary terms."
+earnings22_4468919_0000_180s,base,non-gap,non-GAAP,non-GAAP,financial_metric,applied,0.000000,1.000000,glossary entry for non-GAAP lists 'non-gap' as an ASR error form
+earnings22_4475604_0000_180s,base,,,,no_action,unchanged,0.000000,0.000000,"No safe glossary-grounded candidate was applied, or baseline already covered the glossary terms."
+earnings22_4471586_0000_180s,base,,,,no_action,unchanged,0.000000,0.000000,"No safe glossary-grounded candidate was applied, or baseline already covered the glossary terms."
+earnings22_4482110_0000_180s,base,,,,no_action,unchanged,0.000000,0.000000,"No safe glossary-grounded candidate was applied, or baseline already covered the glossary terms."
+earnings22_4446796_0000_180s,base,U.S.,UEPS,UEPS,company_name,applied,0.000000,0.000000,"Glossary lists 'U.S.' as an ASR error form for UEPS, and context mentions 'Security and Exchange Commission' which is a typical disclaimer, but the glossary entry for UEPS allows 'earnings call' context."
+earnings22_4446796_0000_180s,base,EBDA,,EBITDA,needs_review,needs_review,0.000000,0.000000,"Likely ASR error for EBITDA, but not in glossary; context is financial results."
+earnings22_4446796_0000_180s,base,MFDNA,,SG&A,needs_review,needs_review,0.000000,0.000000,Unclear acronym; possibly 'SG&A' but not in glossary; context is expenses.
+earnings22_4446796_0000_180s,base,mixed effects,,mix effects,needs_review,needs_review,0.000000,0.000000,"Possible ASR error for 'mix effects' (product mix), but not in glossary."
+earnings22_4483623_0000_180s,base,42 cents per share,42 cents a share,cents a share,number_unit,applied,0.002198,0.000000,Glossary term 'cents a share' with aliases 'cents per share'; dividend context present.
+earnings22_4470290_0000_180s,base,U.S.,UEPS,UEPS,company_name,applied,0.000000,0.000000,"Glossary lists 'U.S.' as an ASR error form for UEPS, and the context is Net1/Technologies earnings call."
+earnings22_4470290_0000_180s,base,Desfigures,,Aspen,needs_review,needs_review,0.000000,0.000000,Plausible company name error but not in glossary; no direct evidence.
+earnings22_4470290_0000_180s,base,Tadya Mirenberg,,Natalia,needs_review,needs_review,0.000000,0.000000,"Name mismatch; later speaker is 'Natalia', but no glossary entry."
+earnings22_4470290_0000_180s,base,regard,,results,needs_review,needs_review,0.000000,0.000000,Likely ASR error for 'results' but not in glossary.
+earnings22_4470290_0000_180s,base,non-gov,,non-GAAP,needs_review,needs_review,0.000000,0.000000,Glossary has 'non-GAAP' but 'non-gov' is not listed as an error form.
+earnings22_4470290_0000_180s,base,the course of the statement,,forward-looking statements,needs_review,needs_review,0.000000,0.000000,Common phrase but not in glossary.
+earnings22_4470290_0000_180s,base,offshore results,,actual results,needs_review,needs_review,0.000000,0.000000,Likely ASR error but not in glossary.
+earnings22_4470290_0000_180s,base,the relationship we apply,,the acquisitions we completed,needs_review,needs_review,0.000000,0.000000,Plausible but not glossary-supported.
+earnings22_4470290_0000_180s,base,the same goal,,the same class,needs_review,needs_review,0.000000,0.000000,Uncertain; no glossary entry.
+earnings22_4470290_0000_180s,base,our breaching,,our filings,needs_review,needs_review,0.000000,0.000000,Likely error but not in glossary.
+earnings22_4470290_0000_180s,base,Damien Scotti,,Damien Scotti,needs_review,needs_review,0.000000,0.000000,Name not in glossary; cannot verify.
+earnings22_4470290_0000_180s,base,CS4,,CFO,needs_review,needs_review,0.000000,0.000000,Likely ASR error but not in glossary.
+earnings22_4470290_0000_180s,base,the stake in since the start,,the steps taken since the start,needs_review,needs_review,0.000000,0.000000,Plausible but not glossary-supported.
+earnings22_4470290_0000_180s,base,pre-demand,,pent-up demand,needs_review,needs_review,0.000000,0.000000,Common phrase but not in glossary.
+earnings22_4470290_0000_180s,base,domestic problems,,domestic travel,needs_review,needs_review,0.000000,0.000000,Likely error but not in glossary.
+earnings22_4470290_0000_180s,base,International treatment,,International travel,needs_review,needs_review,0.000000,0.000000,Likely error but not in glossary.
+earnings22_4469528_0000_180s,base,,,,no_action,unchanged,0.000000,0.000000,"No safe glossary-grounded candidate was applied, or baseline already covered the glossary terms."
+earnings22_4470570_0000_180s,base,U.S.,UEPS,UEPS,company_name,applied,0.000000,0.000000,Glossary maps 'U.S.' as an ASR error form of UEPS in earnings call context.
+earnings22_4329526_0000_180s,base,,,,no_action,unchanged,0.000000,0.000000,"No safe glossary-grounded candidate was applied, or baseline already covered the glossary terms."

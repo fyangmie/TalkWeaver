@@ -1,0 +1,20 @@
+[
+  {
+    "canonical": "double-digit",
+    "aliases": [
+      "double digit"
+    ],
+    "spoken_forms": [
+      "double digit"
+    ],
+    "asr_error_forms": [
+      "double dig it"
+    ],
+    "language": "en",
+    "category": "financial_term",
+    "allowed_contexts": [
+      "growth",
+      "revenue"
+    ]
+  }
+]

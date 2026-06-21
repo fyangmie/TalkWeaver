@@ -1,0 +1,90 @@
+[
+  {
+    "start": 0.0,
+    "end": 10.73,
+    "speaker": "SPEAKER_B",
+    "speakers": [
+      "SPEAKER_B"
+    ],
+    "text": "minutes . Um so first of all , just to kind of make sure that we all know each other , I'm Laura and I'm the project manager . Do you want to introduce yourself again ?",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 0.65,
+    "end": 0.89,
+    "speaker": "SPEAKER_D",
+    "speakers": [
+      "SPEAKER_D"
+    ],
+    "text": "Mm-hmm .",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 8.33,
+    "end": 8.68,
+    "speaker": "SPEAKER_D",
+    "speakers": [
+      "SPEAKER_D"
+    ],
+    "text": "Great .",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 10.88,
+    "end": 14.31,
+    "speaker": "SPEAKER_A",
+    "speakers": [
+      "SPEAKER_A"
+    ],
+    "text": "Hi , I'm David and I'm supposed to be an industrial designer .",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 14.25,
+    "end": 14.7,
+    "speaker": "SPEAKER_B",
+    "speakers": [
+      "SPEAKER_B"
+    ],
+    "text": "Okay .",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 15.52,
+    "end": 17.9,
+    "speaker": "SPEAKER_D",
+    "speakers": [
+      "SPEAKER_D"
+    ],
+    "text": "And I'm Andrew and I'm uh our marketing",
+    "overlap": false,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 19.43,
+    "end": 20.0,
+    "speaker": "SPEAKER_C",
+    "speakers": [
+      "SPEAKER_C"
+    ],
+    "text": "Um",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 19.51,
+    "end": 19.94,
+    "speaker": "SPEAKER_D",
+    "speakers": [
+      "SPEAKER_D"
+    ],
+    "text": "expert .",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  }
+]

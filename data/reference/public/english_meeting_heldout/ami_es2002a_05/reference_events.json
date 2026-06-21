@@ -1,0 +1,112 @@
+[
+  {
+    "start": 0.91,
+    "end": 1.27,
+    "duration": 0.36,
+    "speakers": [
+      "SPEAKER_A",
+      "SPEAKER_B"
+    ],
+    "type": "overlap",
+    "annotation_source": "derived_from_AMI_manual_word_intervals"
+  },
+  {
+    "start": 2.95,
+    "end": 3.22,
+    "duration": 0.27,
+    "speakers": [
+      "SPEAKER_A",
+      "SPEAKER_D"
+    ],
+    "type": "overlap",
+    "annotation_source": "derived_from_AMI_manual_word_intervals"
+  },
+  {
+    "start": 4.79,
+    "end": 6.39,
+    "duration": 1.6,
+    "speakers": [
+      "SPEAKER_A",
+      "SPEAKER_D"
+    ],
+    "type": "overlap",
+    "annotation_source": "derived_from_AMI_manual_word_intervals"
+  },
+  {
+    "start": 5.93,
+    "end": 7.81,
+    "duration": 1.88,
+    "speakers": [
+      "SPEAKER_A",
+      "SPEAKER_B"
+    ],
+    "type": "overlap",
+    "annotation_source": "derived_from_AMI_manual_word_intervals"
+  },
+  {
+    "start": 6.3,
+    "end": 6.66,
+    "duration": 0.36,
+    "speakers": [
+      "SPEAKER_A",
+      "SPEAKER_C"
+    ],
+    "type": "overlap",
+    "annotation_source": "derived_from_AMI_manual_word_intervals"
+  },
+  {
+    "start": 7.63,
+    "end": 7.78,
+    "duration": 0.15,
+    "speakers": [
+      "SPEAKER_A",
+      "SPEAKER_D"
+    ],
+    "type": "overlap",
+    "annotation_source": "derived_from_AMI_manual_word_intervals"
+  },
+  {
+    "start": 5.93,
+    "end": 6.39,
+    "duration": 0.46,
+    "speakers": [
+      "SPEAKER_B",
+      "SPEAKER_D"
+    ],
+    "type": "overlap",
+    "annotation_source": "derived_from_AMI_manual_word_intervals"
+  },
+  {
+    "start": 6.3,
+    "end": 6.39,
+    "duration": 0.09,
+    "speakers": [
+      "SPEAKER_C",
+      "SPEAKER_D"
+    ],
+    "type": "overlap",
+    "annotation_source": "derived_from_AMI_manual_word_intervals"
+  },
+  {
+    "start": 6.3,
+    "end": 6.66,
+    "duration": 0.36,
+    "speakers": [
+      "SPEAKER_B",
+      "SPEAKER_C"
+    ],
+    "type": "overlap",
+    "annotation_source": "derived_from_AMI_manual_word_intervals"
+  },
+  {
+    "start": 7.63,
+    "end": 7.78,
+    "duration": 0.15,
+    "speakers": [
+      "SPEAKER_B",
+      "SPEAKER_D"
+    ],
+    "type": "overlap",
+    "annotation_source": "derived_from_AMI_manual_word_intervals"
+  }
+]

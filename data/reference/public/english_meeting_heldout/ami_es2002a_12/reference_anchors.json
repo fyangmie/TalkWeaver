@@ -1,0 +1,57 @@
+[
+  {
+    "start": 0.0,
+    "end": 18.09,
+    "speaker": "SPEAKER_A",
+    "speakers": [
+      "SPEAKER_A"
+    ],
+    "text": "top of my head . Um . Yes . Big reason is 'cause I'm allergic to most animals . Allergic to animal fur , so um fish was a natural choice . Um , yeah , and I kind of like whales . They come in and go eat everything in sight . And they're quite harmless and mild and interesting .",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 4.48,
+    "end": 5.1,
+    "speaker": "SPEAKER_B",
+    "speakers": [
+      "SPEAKER_B"
+    ],
+    "text": "Ah .",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 15.05,
+    "end": 15.62,
+    "speaker": "SPEAKER_D",
+    "speakers": [
+      "SPEAKER_D"
+    ],
+    "text": "Alright .",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 18.42,
+    "end": 18.77,
+    "speaker": "SPEAKER_D",
+    "speakers": [
+      "SPEAKER_D"
+    ],
+    "text": "Mm .",
+    "overlap": false,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 18.99,
+    "end": 20.0,
+    "speaker": "SPEAKER_B",
+    "speakers": [
+      "SPEAKER_B"
+    ],
+    "text": "Okay",
+    "overlap": false,
+    "annotation_source": "AMI manual word annotations"
+  }
+]
