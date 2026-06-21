@@ -1,0 +1,2 @@
+total_candidates,reviewed_candidates,interruption_labels,backchannel_labels,overlap_only_labels,uncertain_labels,candidate_precision,recall,f1,notes
+10,10,10,0,0,0,1.0,,,Recall/F1 are unavailable until an exhaustive annotated timeline or sampled non-candidate negatives are added. This summary does not treat uncertain rows as gold labels.

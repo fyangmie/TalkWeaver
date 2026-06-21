@@ -1,0 +1,13 @@
+[
+  {
+    "start": 0.0,
+    "end": 12.0,
+    "speaker": "SPEAKER_00",
+    "speakers": [
+      "SPEAKER_00"
+    ],
+    "text": "La science montre désormais que cette économie massivement basée sur le carbone a délogé la biosphère de son état de stabilité qui a soutenu l'évolution humaine pendant deux millions d'années.",
+    "overlap": false,
+    "annotation_source": "generated_single_speaker_anchor"
+  }
+]

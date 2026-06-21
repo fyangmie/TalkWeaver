@@ -1,0 +1,2 @@
+dataset_name,language,model_name,metric_status,num_clips,mean_der,mean_jer,mean_der_skip_overlap,mean_jer_skip_overlap,mean_project_speaker_label_error,mean_overlap_f1,mean_rtf,notes
+AMI Meeting Corpus,en,pyannote/speaker-diarization-community-1,ok,24,0.106035,0.307202,0.081325,0.209765,0.104085,0.490214,0.692477,Means include only metric_status=ok rows; skipped rows are counted separately.

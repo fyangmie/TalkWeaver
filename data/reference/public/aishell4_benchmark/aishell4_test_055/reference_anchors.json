@@ -1,0 +1,44 @@
+[
+  {
+    "start": 0.0,
+    "end": 2.005,
+    "speaker": "001-M",
+    "text": "零零一超市主管。",
+    "utterance_id": "S_R004S03C01_00001"
+  },
+  {
+    "start": 6.159,
+    "end": 7.618,
+    "speaker": "002-F",
+    "text": "零零六A。",
+    "utterance_id": "S_R004S03C01_00051"
+  },
+  {
+    "start": 8.284,
+    "end": 9.734,
+    "speaker": "003-F",
+    "text": "零零七B。",
+    "utterance_id": "S_R004S03C01_00070"
+  },
+  {
+    "start": 11.178,
+    "end": 12.593,
+    "speaker": "004-F",
+    "text": "零零八C",
+    "utterance_id": "S_R004S03C01_00118"
+  },
+  {
+    "start": 12.652,
+    "end": 13.757,
+    "speaker": "005-F",
+    "text": "零零九D",
+    "utterance_id": "S_R004S03C01_00170"
+  },
+  {
+    "start": 14.896,
+    "end": 20.0,
+    "speaker": "001-M",
+    "text": "嗯把各个区的那个咱那个负责人啊叫过来，咱简单呃做一个交流。",
+    "utterance_id": "S_R004S03C01_00002"
+  }
+]

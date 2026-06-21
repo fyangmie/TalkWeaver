@@ -1,0 +1,35 @@
+[
+  {
+    "start": 0.0,
+    "end": 15.89,
+    "speaker": "SPEAKER_B",
+    "speakers": [
+      "SPEAKER_B"
+    ],
+    "text": "friendly . Um so that's kind of our our brief , as it were . Um and so there are three different stages to the design . Um I'm not really sure what what you guys have already received um in your emails . What did you get ?",
+    "overlap": false,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 16.43,
+    "end": 20.0,
+    "speaker": "SPEAKER_A",
+    "speakers": [
+      "SPEAKER_A"
+    ],
+    "text": "Um , I just got the project announcement about what the project",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 18.94,
+    "end": 19.3,
+    "speaker": "SPEAKER_B",
+    "speakers": [
+      "SPEAKER_B"
+    ],
+    "text": "Mm-hmm .",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  }
+]

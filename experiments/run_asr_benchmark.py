@@ -332,7 +332,7 @@ def run_benchmark(
                 str(inference["hypothesis_text"]),
                 row.get("language"),
             )
-            if row.get("dataset_name") == "AMI Meeting Corpus":
+            if metrics["metric_name"] == "WER":
                 cleaned_metrics = evaluate_cleaned_wer(
                     reference_text,
                     str(inference["hypothesis_text"]),

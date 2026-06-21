@@ -1,0 +1,13 @@
+[
+  {
+    "start": 0.0,
+    "end": 10.02,
+    "speaker": "SPEAKER_00",
+    "speakers": [
+      "SPEAKER_00"
+    ],
+    "text": "The Tibetan Buddhism is based on the teachings of Buddha, but were extended by the mahayana path of love and by a lot of techniques from Indian Yoga.",
+    "overlap": false,
+    "annotation_source": "generated_single_speaker_anchor"
+  }
+]

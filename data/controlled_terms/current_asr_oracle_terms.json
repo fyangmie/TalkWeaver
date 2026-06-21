@@ -1,0 +1,51 @@
+[
+  {
+    "canonical": "Lakkha Singh",
+    "asr_error_forms": ["lock a sink", "lock us in"],
+    "language": "en",
+    "category": "oracle_named_entity"
+  },
+  {
+    "canonical": "bhajans",
+    "asr_error_forms": ["mushrooms", "passions"],
+    "language": "en",
+    "category": "oracle_cultural_term"
+  },
+  {
+    "canonical": "APS",
+    "asr_error_forms": ["à paix", "a paix"],
+    "language": "fr",
+    "category": "oracle_acronym"
+  },
+  {
+    "canonical": "Javanais",
+    "aliases": ["javanaise"],
+    "asr_error_forms": ["j'avenez", "javaneuse"],
+    "language": "fr",
+    "category": "oracle_named_entity"
+  },
+  {
+    "canonical": "迦南",
+    "asr_error_forms": ["加難"],
+    "language": "zh-CN",
+    "category": "oracle_low_frequency_term"
+  },
+  {
+    "canonical": "大森林",
+    "asr_error_forms": ["大聲"],
+    "language": "zh-CN",
+    "category": "oracle_low_frequency_term"
+  },
+  {
+    "canonical": "巨龟",
+    "asr_error_forms": ["聚会"],
+    "language": "zh-CN",
+    "category": "oracle_low_frequency_term"
+  },
+  {
+    "canonical": "科隆群岛",
+    "asr_error_forms": ["克隆群"],
+    "language": "zh-CN",
+    "category": "oracle_low_frequency_term"
+  }
+]

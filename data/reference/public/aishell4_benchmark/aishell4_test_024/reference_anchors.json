@@ -1,0 +1,58 @@
+[
+  {
+    "start": 0.0,
+    "end": 0.491,
+    "speaker": "001-M",
+    "text": "有请说，先谁先说一下安全这块儿，",
+    "utterance_id": "L_R004S06C01_00006"
+  },
+  {
+    "start": 0.0,
+    "end": 4.232,
+    "speaker": "004-M",
+    "text": "我先说一下儿吧，这工厂的安全。&嗯&工厂",
+    "utterance_id": "L_R004S06C01_00079"
+  },
+  {
+    "start": 1.194,
+    "end": 2.265,
+    "speaker": "001-M",
+    "text": "啊行可以",
+    "utterance_id": "L_R004S06C01_00007"
+  },
+  {
+    "start": 4.542,
+    "end": 8.687,
+    "speaker": "004-M",
+    "text": "这个劳动密集密集性，嗯嗯产业。",
+    "utterance_id": "L_R004S06C01_00080"
+  },
+  {
+    "start": 8.856,
+    "end": 11.506,
+    "speaker": "004-M",
+    "text": "经常出现这种安全事故。",
+    "utterance_id": "L_R004S06C01_00081"
+  },
+  {
+    "start": 11.983,
+    "end": 15.358,
+    "speaker": "004-M",
+    "text": "所以要严查一下儿安全帽。",
+    "utterance_id": "L_R004S06C01_00082"
+  },
+  {
+    "start": 15.498,
+    "end": 17.889,
+    "speaker": "004-M",
+    "text": "有没有老化有没有破损，",
+    "utterance_id": "L_R004S06C01_00083"
+  },
+  {
+    "start": 18.248,
+    "end": 20.0,
+    "speaker": "004-M",
+    "text": "有没有人为修改，",
+    "utterance_id": "L_R004S06C01_00084"
+  }
+]

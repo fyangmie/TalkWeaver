@@ -1,0 +1,58 @@
+[
+  {
+    "start": 0.0,
+    "end": 2.08,
+    "speaker": "001-M",
+    "text": "零零一超市主管",
+    "utterance_id": "S_R003S01C01_00001"
+  },
+  {
+    "start": 2.298,
+    "end": 4.343,
+    "speaker": "002-F",
+    "text": "零零二日化主管",
+    "utterance_id": "S_R003S01C01_00283"
+  },
+  {
+    "start": 4.664,
+    "end": 6.789,
+    "speaker": "003-M",
+    "text": "零零三生鲜",
+    "utterance_id": "S_R003S01C01_00368"
+  },
+  {
+    "start": 7.103,
+    "end": 9.133,
+    "speaker": "004-F",
+    "text": "零零四乳制品主管",
+    "utterance_id": "S_R003S01C01_00512"
+  },
+  {
+    "start": 9.33,
+    "end": 11.12,
+    "speaker": "005-M",
+    "text": "零零五家电区主管",
+    "utterance_id": "S_R003S01C01_00588"
+  },
+  {
+    "start": 11.915,
+    "end": 12.595,
+    "speaker": "001-M",
+    "text": "啊",
+    "utterance_id": "S_R003S01C01_00002"
+  },
+  {
+    "start": 13.296,
+    "end": 19.086,
+    "speaker": "001-M",
+    "text": "今天啊，把大各啊各位啊召集过来啊，咱简单开一个咱那个周例会",
+    "utterance_id": "S_R003S01C01_00003"
+  },
+  {
+    "start": 19.1,
+    "end": 20.0,
+    "speaker": "001-M",
+    "text": "把上周的咱那个工作呀",
+    "utterance_id": "S_R003S01C01_00004"
+  }
+]

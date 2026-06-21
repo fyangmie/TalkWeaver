@@ -1,0 +1,13 @@
+[
+  {
+    "start": 0.0,
+    "end": 11.46,
+    "speaker": "SPEAKER_00",
+    "speakers": [
+      "SPEAKER_00"
+    ],
+    "text": "最后结果是一分险胜，比分为 21 比 20，结束了全黑队连胜 15 场的局面。",
+    "overlap": false,
+    "annotation_source": "generated_single_speaker_anchor"
+  }
+]

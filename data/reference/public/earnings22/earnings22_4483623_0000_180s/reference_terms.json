@@ -1,0 +1,17 @@
+[
+  {
+    "canonical": "dividend",
+    "spoken_forms": [
+      "dividend"
+    ],
+    "asr_error_forms": [
+      "divide end"
+    ],
+    "language": "en",
+    "category": "financial_term",
+    "allowed_contexts": [
+      "cents a share",
+      "reinstatement"
+    ]
+  }
+]

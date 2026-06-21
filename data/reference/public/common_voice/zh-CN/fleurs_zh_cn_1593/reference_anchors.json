@@ -1,0 +1,13 @@
+[
+  {
+    "start": 0.0,
+    "end": 9.12,
+    "speaker": "SPEAKER_00",
+    "speakers": [
+      "SPEAKER_00"
+    ],
+    "text": "最终，木轮被铁轮所取代。1767 年，第一条全铁轨道问世。",
+    "overlap": false,
+    "annotation_source": "generated_single_speaker_anchor"
+  }
+]
