@@ -1,0 +1,58 @@
+[
+  {
+    "start": 0.0,
+    "end": 1.22,
+    "speaker": "007-M",
+    "text": "零幺八",
+    "utterance_id": "L_R003S04C02_00001"
+  },
+  {
+    "start": 1.34,
+    "end": 2.824,
+    "speaker": "002-F",
+    "text": "零幺三",
+    "utterance_id": "L_R003S04C02_00025"
+  },
+  {
+    "start": 2.771,
+    "end": 3.333,
+    "speaker": "004-M",
+    "text": "诶",
+    "utterance_id": "L_R003S04C02_00103"
+  },
+  {
+    "start": 3.88,
+    "end": 4.985,
+    "speaker": "003-F",
+    "text": "零幺九",
+    "utterance_id": "L_R003S04C02_00074"
+  },
+  {
+    "start": 4.998,
+    "end": 6.273,
+    "speaker": "004-M",
+    "text": "零幺四",
+    "utterance_id": "L_R003S04C02_00104"
+  },
+  {
+    "start": 6.705,
+    "end": 8.02,
+    "speaker": "005-M",
+    "text": "零幺六",
+    "utterance_id": "L_R003S04C02_00180"
+  },
+  {
+    "start": 9.73,
+    "end": 11.04,
+    "speaker": "006-M",
+    "text": "零零六",
+    "utterance_id": "L_R003S04C02_00253"
+  },
+  {
+    "start": 14.095,
+    "end": 20.0,
+    "speaker": "007-M",
+    "text": "今天给大家叫过来这今天都知道因为啥吧",
+    "utterance_id": "L_R003S04C02_00002"
+  }
+]

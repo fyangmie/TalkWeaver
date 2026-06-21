@@ -13,11 +13,14 @@ does not claim automatic diarization accuracy when reference turns are used.
 
 ## Data Scope
 
-The formal manifest contains 17 real public-data clips:
+The formal manifest contains 50 real public-data clips:
 
-- 15 Google FLEURS clips with generated single-speaker anchors;
-- 2 AMI Meeting Corpus excerpts with multi-speaker temporal anchors;
-- 5 human/reference overlap intervals across the two AMI excerpts.
+- 30 Google FLEURS clips with generated single-speaker anchors;
+- 8 AMI Meeting Corpus excerpts with multi-speaker temporal anchors;
+- 12 AISHELL-4 Mandarin meeting excerpts with TextGrid-derived temporal
+  anchors;
+- derived overlap intervals across the eight AMI excerpts. The selected
+  AISHELL-4 windows currently contain no reference overlap events.
 
 The current manifest has no human-labeled interruption events. Interruption
 precision, recall, and F1 are therefore left blank rather than treating an
@@ -75,17 +78,29 @@ AMI multi-speaker results:
 
 | Mode | Clips | Speaker label error | Time coverage | Boundary MAE | Overlap P/R/F1 |
 | --- | ---: | ---: | ---: | ---: | --- |
-| `no_diarization` | 2 | 1.000 | 1.000 | N/A | 0.000 / 0.000 / 0.000 |
-| `reference_assisted` | 2 | 0.000 | 1.000 | 0.000 s | 1.000 / 1.000 / 1.000 |
-| `pyannote_optional` | 0 run | N/A | N/A | N/A | N/A |
+| `no_diarization` | 8 | 1.000 | 1.000 | N/A | 0.000 / 0.000 / 0.000 |
+| `reference_assisted` | 8 | 0.000 | 1.000 | 0.000 s | 0.986 / 0.975 / 0.980 |
+| `pyannote_optional` | 8 | 0.109 | 0.968 | 0.375 s | 0.646 / 0.619 / 0.604 |
 
 The reference-assisted scores are expected because the same reference turns
 are the input evidence. They validate loading, event generation, metric
 plumbing, and output contracts only. They are an upper-bound workflow sanity
 check, not evidence of an automatic model reaching perfect diarization.
 
-`pyannote_optional` was skipped for all 17 clips because `HF_TOKEN` was not
-configured. The Python package was present, but model access was not assumed.
+`pyannote_optional` now runs because `HF_TOKEN` is configured. It is still a
+small local run, not a full AMI benchmark.
+
+AISHELL-4 Mandarin meeting sanity results:
+
+| Mode | Clips | Speaker label error | Time coverage | Boundary MAE | Notes |
+| --- | ---: | ---: | ---: | ---: | --- |
+| `no_diarization` | 12 | 1.000 | 1.000 | N/A | one `UNKNOWN` speaker |
+| `reference_assisted` | 12 | 0.000 | 1.000 | 0.000 s | oracle reference turns |
+| `pyannote_optional` | 12 | 0.053 | 0.983 | 2.752 s | no reference overlap events in selected windows |
+
+FLEURS is single-speaker read speech and should not be interpreted as a
+meeting diarization result. On FLEURS, pyannote over-segments some clips, so
+the single-speaker speaker-label error is diagnostic only.
 
 Interruption metrics are not reported because the current event references
 contain overlap labels only. Rule-based interruption candidates remain
@@ -106,7 +121,8 @@ The command generated two local ConversationMaps:
 ```text
 outputs/conversation_maps/reference_assisted_real/
 ├── ami_es2002a_01_conversation_map.json
-└── ami_es2002a_02_conversation_map.json
+├── ami_es2002a_02_conversation_map.json
+└── ...
 ```
 
 Both use the existing Phase 2C real `base` ASR prediction JSON and reference
@@ -122,12 +138,13 @@ Generated map files remain ignored by Git by default.
 
 ## Limitations
 
-- Only two AMI excerpts currently have real multi-speaker time labels.
-- No Mandarin meeting sample is locally available yet.
+- Only eight AMI excerpts from one meeting and 12 AISHELL-4 excerpts from one
+  Mandarin meeting recording currently have real multi-speaker time labels.
 - No human interruption reference exists in the current subset.
 - Reference-assisted scores cannot be interpreted as automatic diarization
   accuracy.
-- pyannote requires accepted model access and an `HF_TOKEN`; it was skipped.
+- pyannote requires accepted model access and an `HF_TOKEN`; the current run
+  is a small local diagnostic.
 - The simple label-mapped metric is useful for project diagnostics but is not
   a substitute for standard DER tooling.
 

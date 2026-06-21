@@ -1,0 +1,11 @@
+dataset_name,language,model_name,rows,mean_wer,mean_cleaned_wer,strict_cleaned_gap,top_error_categories
+AMI Meeting Corpus,en,base,4,0.315848,0.221154,0.094694,"[[""disfluency_or_style_error"", 14], [""omission_or_insertion"", 6], [""semantic_word_error"", 4], [""function_word_error"", 4]]"
+AMI Meeting Corpus,en,tiny,4,0.344866,0.250000,0.094866,"[[""disfluency_or_style_error"", 16], [""semantic_word_error"", 10], [""omission_or_insertion"", 6], [""function_word_error"", 4]]"
+Earnings-22,en,base,1,0.227642,0.227642,0.000000,"[[""disfluency_or_style_error"", 28], [""function_word_error"", 13], [""semantic_word_error"", 7], [""domain_term_error"", 2], [""omission_or_insertion"", 2]]"
+Earnings-22,en,tiny,1,0.249322,0.249322,0.000000,"[[""disfluency_or_style_error"", 27], [""semantic_word_error"", 12], [""function_word_error"", 11], [""domain_term_error"", 4], [""number_unit_error"", 2]]"
+Google FLEURS,en,base,5,0.154242,0.154242,0.000000,"[[""semantic_word_error"", 7], [""function_word_error"", 1]]"
+Google FLEURS,en,tiny,5,0.296212,0.296212,0.000000,"[[""semantic_word_error"", 11], [""omission_or_insertion"", 1]]"
+Google FLEURS,fr,base,5,0.273839,0.273839,0.000000,"[[""semantic_word_error"", 18]]"
+Google FLEURS,fr,tiny,5,0.438703,0.438703,0.000000,"[[""semantic_word_error"", 24], [""omission_or_insertion"", 1]]"
+Google FLEURS,zh-CN,base,5,0.089651,0.089651,0.000000,"[[""semantic_word_error"", 5]]"
+Google FLEURS,zh-CN,tiny,5,0.276133,0.276133,0.000000,"[[""semantic_word_error"", 5]]"

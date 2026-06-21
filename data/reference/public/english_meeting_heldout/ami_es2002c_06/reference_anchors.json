@@ -1,0 +1,35 @@
+[
+  {
+    "start": 2.0,
+    "end": 3.26,
+    "speaker": "SPEAKER_B",
+    "speakers": [
+      "SPEAKER_B"
+    ],
+    "text": "Screwed in quite tightly .",
+    "overlap": false,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 9.29,
+    "end": 20.0,
+    "speaker": "SPEAKER_B",
+    "speakers": [
+      "SPEAKER_B"
+    ],
+    "text": "Uh what did uh how did we leave it with speech recognition now ? We did we say we were gonna try maybe incorporate it but we hadn't made a definite decision on that ? Right . Oh I should also point out that um",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 16.03,
+    "end": 16.25,
+    "speaker": "SPEAKER_A",
+    "speakers": [
+      "SPEAKER_A"
+    ],
+    "text": "Mm-hmm .",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  }
+]

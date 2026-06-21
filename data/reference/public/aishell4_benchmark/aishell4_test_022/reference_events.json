@@ -1,0 +1,52 @@
+[
+  {
+    "start": 1.902,
+    "end": 1.972,
+    "type": "overlap",
+    "speakers": [
+      "002-M",
+      "003-M"
+    ],
+    "source": "aishell4_segments_intersection"
+  },
+  {
+    "start": 2.411,
+    "end": 2.647,
+    "type": "overlap",
+    "speakers": [
+      "003-M",
+      "004-M"
+    ],
+    "source": "aishell4_segments_intersection"
+  },
+  {
+    "start": 3.142,
+    "end": 3.307,
+    "type": "overlap",
+    "speakers": [
+      "004-M",
+      "005-F"
+    ],
+    "source": "aishell4_segments_intersection"
+  },
+  {
+    "start": 3.92,
+    "end": 3.967,
+    "type": "overlap",
+    "speakers": [
+      "005-F",
+      "006-F"
+    ],
+    "source": "aishell4_segments_intersection"
+  },
+  {
+    "start": 4.485,
+    "end": 4.65,
+    "type": "overlap",
+    "speakers": [
+      "006-F",
+      "007-M"
+    ],
+    "source": "aishell4_segments_intersection"
+  }
+]

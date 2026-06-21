@@ -1,0 +1,51 @@
+[
+  {
+    "start": 0.0,
+    "end": 1.93,
+    "speaker": "001-M",
+    "text": "零零一招生主任",
+    "utterance_id": "S_R004S02C01_00001"
+  },
+  {
+    "start": 4.427,
+    "end": 6.492,
+    "speaker": "002-F",
+    "text": "零零六A",
+    "utterance_id": "S_R004S02C01_00174"
+  },
+  {
+    "start": 6.736,
+    "end": 8.261,
+    "speaker": "003-F",
+    "text": "零零B不是",
+    "utterance_id": "S_R004S02C01_00095"
+  },
+  {
+    "start": 8.859,
+    "end": 10.489,
+    "speaker": "003-F",
+    "text": "零零七B",
+    "utterance_id": "S_R004S02C01_00096"
+  },
+  {
+    "start": 10.673,
+    "end": 12.328,
+    "speaker": "004-F",
+    "text": "零零八C",
+    "utterance_id": "S_R004S02C01_00195"
+  },
+  {
+    "start": 12.693,
+    "end": 13.888,
+    "speaker": "005-F",
+    "text": "零零九D",
+    "utterance_id": "S_R004S02C01_00321"
+  },
+  {
+    "start": 14.695,
+    "end": 20.0,
+    "speaker": "001-M",
+    "text": "昂这下把大家啊都呃召集过来咱简单开会马上要要进入这个",
+    "utterance_id": "S_R004S02C01_00002"
+  }
+]

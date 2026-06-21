@@ -1,0 +1,46 @@
+[
+  {
+    "start": 2.0,
+    "end": 2.57,
+    "speaker": "SPEAKER_B",
+    "speakers": [
+      "SPEAKER_B"
+    ],
+    "text": "Okay .",
+    "overlap": false,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 5.14,
+    "end": 5.54,
+    "speaker": "SPEAKER_B",
+    "speakers": [
+      "SPEAKER_B"
+    ],
+    "text": "Right .",
+    "overlap": false,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 7.56,
+    "end": 20.0,
+    "speaker": "SPEAKER_B",
+    "speakers": [
+      "SPEAKER_B"
+    ],
+    "text": "Um well this is the kick-off meeting for our our project . Um and um this is just what we're gonna be doing over the next twenty five minutes . Um",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 18.79,
+    "end": 19.03,
+    "speaker": "SPEAKER_D",
+    "speakers": [
+      "SPEAKER_D"
+    ],
+    "text": "Mm-hmm .",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  }
+]

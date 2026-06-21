@@ -1,0 +1,57 @@
+[
+  {
+    "start": 2.0,
+    "end": 7.99,
+    "speaker": "SPEAKER_C",
+    "speakers": [
+      "SPEAKER_C"
+    ],
+    "text": "Then they're small cute and furry , and uh when planet of the apes becomes real , I'm gonna be up there with them .",
+    "overlap": false,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 9.67,
+    "end": 10.02,
+    "speaker": "SPEAKER_B",
+    "speakers": [
+      "SPEAKER_B"
+    ],
+    "text": "Right .",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 9.83,
+    "end": 10.15,
+    "speaker": "SPEAKER_A",
+    "speakers": [
+      "SPEAKER_A"
+    ],
+    "text": "Cool .",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 14.75,
+    "end": 16.65,
+    "speaker": "SPEAKER_A",
+    "speakers": [
+      "SPEAKER_A"
+    ],
+    "text": "There's too much gear .",
+    "overlap": false,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 19.96,
+    "end": 20.0,
+    "speaker": "SPEAKER_B",
+    "speakers": [
+      "SPEAKER_B"
+    ],
+    "text": "You",
+    "overlap": false,
+    "annotation_source": "AMI manual word annotations"
+  }
+]

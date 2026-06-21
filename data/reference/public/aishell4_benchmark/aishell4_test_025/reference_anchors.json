@@ -1,0 +1,58 @@
+[
+  {
+    "start": 0.0,
+    "end": 2.57,
+    "speaker": "001-M",
+    "text": "零零幺幼儿教幼儿校长",
+    "utterance_id": "M_R003S01C01_00001"
+  },
+  {
+    "start": 2.795,
+    "end": 4.496,
+    "speaker": "002-M",
+    "text": "零幺零教师",
+    "utterance_id": "M_R003S01C01_00272"
+  },
+  {
+    "start": 4.541,
+    "end": 5.866,
+    "speaker": "003-F",
+    "text": "零幺幺教师",
+    "utterance_id": "M_R003S01C01_00316"
+  },
+  {
+    "start": 5.966,
+    "end": 7.396,
+    "speaker": "004-F",
+    "text": "零幺二厨师",
+    "utterance_id": "M_R003S01C01_00337"
+  },
+  {
+    "start": 7.433,
+    "end": 8.718,
+    "speaker": "005-F",
+    "text": "零幺三保安",
+    "utterance_id": "M_R003S01C01_00443"
+  },
+  {
+    "start": 8.739,
+    "end": 10.364,
+    "speaker": "006-F",
+    "text": "零幺四招生",
+    "utterance_id": "M_R003S01C01_00518"
+  },
+  {
+    "start": 10.419,
+    "end": 17.979,
+    "speaker": "001-M",
+    "text": "呃这次啊我要把大家伙儿都叫过来了，咱们把咱那个幼儿园啊咱那个重新再",
+    "utterance_id": "M_R003S01C01_00002"
+  },
+  {
+    "start": 18.051,
+    "end": 20.0,
+    "speaker": "001-M",
+    "text": "咱开一次会因为毕竟呃就是。大半年也要呃快过去了，马上这个要呃，接近这个这个咱那个要放假啦",
+    "utterance_id": "M_R003S01C01_00003"
+  }
+]

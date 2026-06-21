@@ -1,0 +1,44 @@
+[
+  {
+    "start": 0.0,
+    "end": 2.26,
+    "speaker": "001-M",
+    "text": "零零一物业经理",
+    "utterance_id": "S_R003S04C01_00001"
+  },
+  {
+    "start": 2.62,
+    "end": 5.71,
+    "speaker": "002-F",
+    "text": "零零二小区业主A",
+    "utterance_id": "S_R003S04C01_00131"
+  },
+  {
+    "start": 6.01,
+    "end": 9.325,
+    "speaker": "003-M",
+    "text": "零零三物业主管",
+    "utterance_id": "S_R003S04C01_00164"
+  },
+  {
+    "start": 10.035,
+    "end": 13.845,
+    "speaker": "004-F",
+    "text": "零零四。小区业主B",
+    "utterance_id": "S_R003S04C01_00395"
+  },
+  {
+    "start": 14.015,
+    "end": 16.59,
+    "speaker": "005-M",
+    "text": "零零五小区业主C",
+    "utterance_id": "S_R003S04C01_00539"
+  },
+  {
+    "start": 17.46,
+    "end": 20.0,
+    "speaker": "001-M",
+    "text": "啊，我们今天呢我们物业啊把这个",
+    "utterance_id": "S_R003S04C01_00002"
+  }
+]

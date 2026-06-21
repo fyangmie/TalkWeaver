@@ -1,0 +1,35 @@
+[
+  {
+    "start": 2.0,
+    "end": 2.79,
+    "speaker": "SPEAKER_D",
+    "speakers": [
+      "SPEAKER_D"
+    ],
+    "text": "A beagle .",
+    "overlap": false,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 10.52,
+    "end": 20.0,
+    "speaker": "SPEAKER_D",
+    "speakers": [
+      "SPEAKER_D"
+    ],
+    "text": "Um charac favourite characteristics of it ? Is that right ? Uh , right , well basically um high priority for any animal for",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 14.5,
+    "end": 15.32,
+    "speaker": "SPEAKER_B",
+    "speakers": [
+      "SPEAKER_B"
+    ],
+    "text": "Yeah . Yeah .",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  }
+]

@@ -53,9 +53,19 @@ Approved manual route:
 4. Extract one to three short meeting segments with matching transcript and
    speaker/time annotations.
 5. Store local audio under `data/raw/public/mandarin_meeting/`.
-6. Store only permitted, small references under
-   `data/reference/public/mandarin_meeting/`.
-7. Add only complete rows to `data/manifests/mandarin_meeting_real.csv`.
+6. Store matching transcript text files under a local transcript directory,
+   for example `data/reference/public/mandarin_meeting_transcripts/`.
+7. Generate the manifest with:
+
+```bash
+python scripts/download_mandarin_meeting_subset.py \
+  --local-audio-root data/raw/public/mandarin_meeting \
+  --local-transcript-root data/reference/public/mandarin_meeting_transcripts \
+  --max-clips 3 \
+  --reference-root data/reference/public/mandarin_meeting \
+  --manifest-out data/manifests/mandarin_meeting_real.csv
+```
+
 8. Rebuild and validate `formal_eval_real.csv`.
 
 ## AliMeeting

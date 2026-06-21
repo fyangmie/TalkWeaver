@@ -1,0 +1,46 @@
+[
+  {
+    "start": 0.82,
+    "end": 3.54,
+    "speaker": "SPEAKER_C",
+    "speakers": [
+      "SPEAKER_C"
+    ],
+    "text": "Um I'm Craig and I'm User Interface .",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 0.9,
+    "end": 1.33,
+    "speaker": "SPEAKER_D",
+    "speakers": [
+      "SPEAKER_D"
+    ],
+    "text": "expert .",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 4.13,
+    "end": 16.59,
+    "speaker": "SPEAKER_B",
+    "speakers": [
+      "SPEAKER_B"
+    ],
+    "text": "Great . Okay . Um so we're designing a new remote control and um Oh I have to record who's here actually . So that's David , Andrew and Craig , isn't it ?",
+    "overlap": false,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 19.72,
+    "end": 20.0,
+    "speaker": "SPEAKER_B",
+    "speakers": [
+      "SPEAKER_B"
+    ],
+    "text": "And you all",
+    "overlap": false,
+    "annotation_source": "AMI manual word annotations"
+  }
+]

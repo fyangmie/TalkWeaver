@@ -1,0 +1,46 @@
+[
+  {
+    "start": 0.3,
+    "end": 0.48,
+    "duration": 0.18,
+    "speakers": [
+      "SPEAKER_B",
+      "SPEAKER_D"
+    ],
+    "type": "overlap",
+    "annotation_source": "derived_from_AMI_manual_word_intervals"
+  },
+  {
+    "start": 14.78,
+    "end": 15.31,
+    "duration": 0.53,
+    "speakers": [
+      "SPEAKER_B",
+      "SPEAKER_D"
+    ],
+    "type": "overlap",
+    "annotation_source": "derived_from_AMI_manual_word_intervals"
+  },
+  {
+    "start": 16.35,
+    "end": 16.43,
+    "duration": 0.08,
+    "speakers": [
+      "SPEAKER_B",
+      "SPEAKER_D"
+    ],
+    "type": "overlap",
+    "annotation_source": "derived_from_AMI_manual_word_intervals"
+  },
+  {
+    "start": 16.64,
+    "end": 16.83,
+    "duration": 0.19,
+    "speakers": [
+      "SPEAKER_A",
+      "SPEAKER_B"
+    ],
+    "type": "overlap",
+    "annotation_source": "derived_from_AMI_manual_word_intervals"
+  }
+]

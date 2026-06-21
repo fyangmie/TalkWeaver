@@ -1,0 +1,13 @@
+[
+  {
+    "start": 0.0,
+    "end": 14.28,
+    "speaker": "SPEAKER_00",
+    "speakers": [
+      "SPEAKER_00"
+    ],
+    "text": "意大利语的发音相对容易，因为大多数单词的发音与拼写完全相同",
+    "overlap": false,
+    "annotation_source": "generated_single_speaker_anchor"
+  }
+]

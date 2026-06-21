@@ -27,15 +27,19 @@ from scripts.dataset_utils import (  # noqa: E402
 )
 
 
-AMI_MEETING_ID = "ES2002a"
-AMI_AUDIO_URL = (
-    "https://groups.inf.ed.ac.uk/ami/AMICorpusMirror/amicorpus/"
-    f"{AMI_MEETING_ID}/audio/{AMI_MEETING_ID}.Mix-Headset.wav"
-)
+DEFAULT_AMI_MEETING_IDS = ("ES2002a",)
+DEFAULT_MAX_AUDIO_BYTES = 100 * 1024 * 1024
 AMI_ANNOTATION_URL = (
     "https://groups.inf.ed.ac.uk/ami/AMICorpusAnnotations/"
     "ami_public_manual_1.6.2.zip"
 )
+
+
+def _ami_audio_url(meeting_id: str) -> str:
+    return (
+        "https://groups.inf.ed.ac.uk/ami/AMICorpusMirror/amicorpus/"
+        f"{meeting_id}/audio/{meeting_id}.Mix-Headset.wav"
+    )
 
 
 def _local_name(tag: str) -> str:
@@ -203,13 +207,13 @@ def prepare_ami_subset(
     output_root: Path,
     reference_root: Path,
     manifest_out: Path,
+    meeting_ids: list[str] | tuple[str, ...] = DEFAULT_AMI_MEETING_IDS,
+    max_clips_per_meeting: int | None = None,
+    max_audio_bytes: int = DEFAULT_MAX_AUDIO_BYTES,
 ) -> list[dict[str, Any]]:
     ensure_directory_markers([output_root, reference_root, manifest_out.parent])
     source_dir = output_root / "_source"
-    source_audio = source_dir / f"{AMI_MEETING_ID}.Mix-Headset.wav"
     annotation_zip = source_dir / "ami_public_manual_1.6.2.zip"
-    if not source_audio.exists():
-        download_file(AMI_AUDIO_URL, source_audio, max_bytes=60 * 1024 * 1024)
     if not annotation_zip.exists():
         download_file(
             AMI_ANNOTATION_URL,
@@ -217,74 +221,108 @@ def prepare_ami_subset(
             max_bytes=40 * 1024 * 1024,
         )
 
-    words = _read_ami_words(annotation_zip, AMI_MEETING_ID)
-    windows = _select_windows(words, max_clips)
     rows: list[dict[str, Any]] = []
     checksum_files: list[Path] = []
+    errors: list[str] = []
 
-    with sf.SoundFile(source_audio) as audio:
-        sample_rate = audio.samplerate
-        for index, (start, end) in enumerate(windows, start=1):
-            audio.seek(int(start * sample_rate))
-            samples = audio.read(int((end - start) * sample_rate), dtype="float32")
-            clip_id = f"ami_{AMI_MEETING_ID.lower()}_{index:02d}"
-            clip_path = output_root / f"{clip_id}.wav"
-            sf.write(clip_path, samples, sample_rate)
+    for meeting_id in meeting_ids:
+        if len(rows) >= max_clips:
+            break
+        source_audio = source_dir / f"{meeting_id}.Mix-Headset.wav"
+        try:
+            if not source_audio.exists():
+                download_file(
+                    _ami_audio_url(meeting_id),
+                    source_audio,
+                    max_bytes=max_audio_bytes,
+                )
+            words = _read_ami_words(annotation_zip, meeting_id)
+            remaining = max_clips - len(rows)
+            meeting_cap = (
+                min(remaining, max_clips_per_meeting)
+                if max_clips_per_meeting is not None
+                else remaining
+            )
+            windows = _select_windows(words, meeting_cap)
+        except Exception as exc:
+            errors.append(f"{meeting_id}: {exc}")
+            continue
 
-            window_words = [
-                item
-                for item in words
-                if item["start"] < end and item["end"] > start
-            ]
-            transcript = " ".join(item["text"] for item in window_words)
-            anchors = _group_anchors(words, start, end)
-            events = _overlap_events(anchors)
-            references = write_reference_bundle(
-                reference_root / clip_id,
-                transcript=transcript,
-                anchors=anchors,
-                events=events,
-            )
-            checksum_files.extend([clip_path, *references.values()])
-            rows.append(
-                {
-                    "clip_id": clip_id,
-                    "audio_path": repo_relative(clip_path),
-                    "source_type": "public_dataset",
-                    "dataset_name": "AMI Meeting Corpus",
-                    "dataset_version": "manual annotations 1.6.2",
-                    "split": "official meeting excerpt",
-                    "language": "en",
-                    "duration_seconds": f"{end - start:.3f}",
-                    "speaker_count": len({item["speaker"] for item in anchors}),
-                    "has_overlap": bool(events),
-                    "has_interruptions": False,
-                    "has_domain_terms": False,
-                    "recording_device": "AMI Mix-Headset",
-                    "noise_condition": "meeting_room",
-                    "consent_status": "dataset_terms",
-                    "redistribution_status": "raw_audio_not_committed",
-                    "license_or_access": (
-                        "AMI Corpus CC BY 4.0; preserve attribution and source IDs."
-                    ),
-                    **{
-                        key: repo_relative(value)
-                        for key, value in references.items()
-                    },
-                    "download_status": "prepared",
-                    "notes": (
-                        f"Source {AMI_MEETING_ID}, {start:.3f}-{end:.3f}s. "
-                        "Overlap events derived from manual word intervals; "
-                        "interruption labels need_annotation."
-                    ),
-                }
-            )
+        with sf.SoundFile(source_audio) as audio:
+            sample_rate = audio.samplerate
+            for index, (start, end) in enumerate(windows, start=1):
+                audio.seek(int(start * sample_rate))
+                samples = audio.read(
+                    int((end - start) * sample_rate),
+                    dtype="float32",
+                )
+                clip_id = f"ami_{meeting_id.lower()}_{index:02d}"
+                clip_path = output_root / f"{clip_id}.wav"
+                sf.write(clip_path, samples, sample_rate)
+
+                window_words = [
+                    item
+                    for item in words
+                    if item["start"] < end and item["end"] > start
+                ]
+                transcript = " ".join(item["text"] for item in window_words)
+                anchors = _group_anchors(words, start, end)
+                events = _overlap_events(anchors)
+                references = write_reference_bundle(
+                    reference_root / clip_id,
+                    transcript=transcript,
+                    anchors=anchors,
+                    events=events,
+                )
+                checksum_files.extend([clip_path, *references.values()])
+                rows.append(
+                    {
+                        "clip_id": clip_id,
+                        "audio_path": repo_relative(clip_path),
+                        "source_type": "public_dataset",
+                        "dataset_name": "AMI Meeting Corpus",
+                        "dataset_version": "manual annotations 1.6.2",
+                        "split": "official meeting excerpt",
+                        "language": "en",
+                        "duration_seconds": f"{end - start:.3f}",
+                        "speaker_count": len({item["speaker"] for item in anchors}),
+                        "has_overlap": bool(events),
+                        "has_interruptions": False,
+                        "has_domain_terms": False,
+                        "recording_device": "AMI Mix-Headset",
+                        "noise_condition": "meeting_room",
+                        "consent_status": "dataset_terms",
+                        "redistribution_status": "raw_audio_not_committed",
+                        "license_or_access": (
+                            "AMI Corpus CC BY 4.0; preserve attribution and source IDs."
+                        ),
+                        **{
+                            key: repo_relative(value)
+                            for key, value in references.items()
+                        },
+                        "download_status": "prepared",
+                        "notes": (
+                            f"Source {meeting_id}, {start:.3f}-{end:.3f}s. "
+                            "Overlap events derived from manual word intervals; "
+                            "interruption labels need_annotation."
+                        ),
+                    }
+                )
+                if len(rows) >= max_clips:
+                    break
+
+    if not rows:
+        detail = "; ".join(errors) if errors else "No AMI windows were found."
+        raise RuntimeError(detail)
 
     write_manifest(manifest_out, rows)
     write_checksums(
         manifest_out.with_name(f"{manifest_out.stem}_checksums.csv"),
         checksum_files,
     )
+    if errors:
+        for error in errors:
+            print(f"Warning: skipped AMI meeting {error}", file=sys.stderr)
     return rows
 
 
@@ -296,6 +334,29 @@ def build_parser() -> argparse.ArgumentParser:
         choices=["auto", "ami", "libricss", "ami_or_librics_or_auto"],
     )
     parser.add_argument("--max-clips", type=int, default=3)
+    parser.add_argument(
+        "--meeting-ids",
+        nargs="+",
+        default=list(DEFAULT_AMI_MEETING_IDS),
+        help=(
+            "AMI meeting IDs to scan in order. max-clips is a total cap across "
+            "all listed meetings."
+        ),
+    )
+    parser.add_argument(
+        "--max-clips-per-meeting",
+        type=int,
+        help="Optional cap per AMI meeting ID to avoid one meeting filling the subset.",
+    )
+    parser.add_argument(
+        "--max-audio-bytes",
+        type=int,
+        default=DEFAULT_MAX_AUDIO_BYTES,
+        help=(
+            "Maximum bytes allowed for each AMI Mix-Headset WAV download. "
+            "Default allows ES2002a-d while still preventing large accidental downloads."
+        ),
+    )
     parser.add_argument(
         "--output-root",
         type=Path,
@@ -331,6 +392,9 @@ def main() -> int:
             output_root=args.output_root,
             reference_root=args.reference_root,
             manifest_out=args.manifest_out,
+            meeting_ids=args.meeting_ids,
+            max_clips_per_meeting=args.max_clips_per_meeting,
+            max_audio_bytes=args.max_audio_bytes,
         )
     except Exception as exc:
         print(f"English meeting subset acquisition failed: {exc}", file=sys.stderr)

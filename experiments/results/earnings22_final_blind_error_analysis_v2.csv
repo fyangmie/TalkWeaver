@@ -1,0 +1,30 @@
+clip_id,model_name,source_text,replacement_text,canonical_term,category,decision,wer_delta,term_recall_delta,reason
+earnings22_4481952_0000_180s,tiny,,,,no_action,unchanged,0.000000,0.000000,"No safe glossary-grounded candidate was applied, or baseline already covered the glossary terms."
+earnings22_4482383_0000_180s,tiny,U.S.,UEPS,UEPS,company_name,rejected,0.000000,0.000000,retrieved candidate correction from glossary; raw ASR context 'Net1' and 'Technologies' supports UEPS
+earnings22_4449269_0000_180s,tiny,,,,no_action,unchanged,0.000000,0.000000,"No safe glossary-grounded candidate was applied, or baseline already covered the glossary terms."
+earnings22_4450779_0000_180s,tiny,,,,no_action,unchanged,0.000000,0.000000,"No safe glossary-grounded candidate was applied, or baseline already covered the glossary terms."
+earnings22_4467079_0000_180s,tiny,,,,no_action,unchanged,0.000000,0.000000,"No safe glossary-grounded candidate was applied, or baseline already covered the glossary terms."
+earnings22_4481601_0000_180s,tiny,,,,no_action,unchanged,0.000000,0.000000,"No safe glossary-grounded candidate was applied, or baseline already covered the glossary terms."
+earnings22_4483296_0000_180s,tiny,non-gap,non-GAAP,non-GAAP,financial_metric,applied,0.000000,1.000000,glossary error form for non-GAAP
+earnings22_4483668_0000_180s,tiny,,,,no_action,unchanged,0.000000,0.000000,"No safe glossary-grounded candidate was applied, or baseline already covered the glossary terms."
+earnings22_4483678_0000_180s,tiny,non-gap,non-GAAP,non-GAAP,financial_metric,applied,0.002083,0.000000,predefined glossary error form
+earnings22_4483680_0000_180s,tiny,,,,no_action,unchanged,0.000000,0.000000,"No safe glossary-grounded candidate was applied, or baseline already covered the glossary terms."
+earnings22_4423872_0000_180s,tiny,,,,no_action,unchanged,0.000000,0.000000,"No safe glossary-grounded candidate was applied, or baseline already covered the glossary terms."
+earnings22_4472895_0000_180s,tiny,U.S.,UEPS,UEPS,company_name,rejected,0.000000,0.000000,predefined glossary error form for UEPS
+earnings22_4481952_0000_180s,base,,,,no_action,unchanged,0.000000,0.000000,"No safe glossary-grounded candidate was applied, or baseline already covered the glossary terms."
+earnings22_4482383_0000_180s,base,,,,no_action,unchanged,0.000000,0.000000,"No safe glossary-grounded candidate was applied, or baseline already covered the glossary terms."
+earnings22_4449269_0000_180s,base,,,,no_action,unchanged,0.000000,0.000000,"No safe glossary-grounded candidate was applied, or baseline already covered the glossary terms."
+earnings22_4450779_0000_180s,base,,,,no_action,unchanged,0.000000,0.000000,"No safe glossary-grounded candidate was applied, or baseline already covered the glossary terms."
+earnings22_4467079_0000_180s,base,,,,no_action,unchanged,0.000000,0.000000,"No safe glossary-grounded candidate was applied, or baseline already covered the glossary terms."
+earnings22_4481601_0000_180s,base,,,,no_action,unchanged,0.000000,0.000000,"No safe glossary-grounded candidate was applied, or baseline already covered the glossary terms."
+earnings22_4483296_0000_180s,base,,,,no_action,unchanged,0.000000,0.000000,"No safe glossary-grounded candidate was applied, or baseline already covered the glossary terms."
+earnings22_4483668_0000_180s,base,,,,no_action,unchanged,0.000000,0.000000,"No safe glossary-grounded candidate was applied, or baseline already covered the glossary terms."
+earnings22_4483678_0000_180s,base,non-gap,non-GAAP,non-GAAP,financial_metric,applied,0.002083,0.000000,predefined glossary error form
+earnings22_4483678_0000_180s,base,cupping notes,,accompanying notes,needs_review,needs_review,0.002083,0.000000,likely ASR error but not in glossary
+earnings22_4483678_0000_180s,base,Cedar and Enter,,SEDAR and SEDAR+,needs_review,needs_review,0.002083,0.000000,likely regulatory filers but not in glossary
+earnings22_4483678_0000_180s,base,hand winds,,headwinds,needs_review,needs_review,0.002083,0.000000,likely ASR error but not in glossary
+earnings22_4483678_0000_180s,base,mark out,,market outlook,needs_review,needs_review,0.002083,0.000000,likely ASR error but not in glossary
+earnings22_4483678_0000_180s,base,cents a share,,cents a share,number_unit,no_op,0.002083,0.000000,already correct canonical form
+earnings22_4483680_0000_180s,base,,,,no_action,unchanged,0.000000,0.000000,"No safe glossary-grounded candidate was applied, or baseline already covered the glossary terms."
+earnings22_4423872_0000_180s,base,,,,no_action,unchanged,0.000000,0.000000,"No safe glossary-grounded candidate was applied, or baseline already covered the glossary terms."
+earnings22_4472895_0000_180s,base,,,,no_action,unchanged,0.000000,0.000000,"No safe glossary-grounded candidate was applied, or baseline already covered the glossary terms."

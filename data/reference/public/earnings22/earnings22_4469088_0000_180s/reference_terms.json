@@ -1,0 +1,36 @@
+[
+  {
+    "canonical": "leverage",
+    "spoken_forms": [
+      "leverage"
+    ],
+    "asr_error_forms": [
+      "lever edge"
+    ],
+    "language": "en",
+    "category": "financial_term",
+    "allowed_contexts": [
+      "debt",
+      "levels"
+    ]
+  },
+  {
+    "canonical": "COVID",
+    "aliases": [
+      "Covid"
+    ],
+    "spoken_forms": [
+      "COVID"
+    ],
+    "asr_error_forms": [
+      "covered"
+    ],
+    "language": "en",
+    "category": "domain_term",
+    "allowed_contexts": [
+      "circumstances",
+      "market",
+      "products"
+    ]
+  }
+]

@@ -1,0 +1,13 @@
+[
+  {
+    "start": 0.0,
+    "end": 10.5,
+    "speaker": "SPEAKER_00",
+    "speakers": [
+      "SPEAKER_00"
+    ],
+    "text": "Le match s'est joué à un point, 21 à 20, mettant fin à la série de 15 victoires des All Blacks.",
+    "overlap": false,
+    "annotation_source": "generated_single_speaker_anchor"
+  }
+]

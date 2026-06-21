@@ -23,6 +23,26 @@ from scripts.dataset_utils import (  # noqa: E402
 JSON_PATH_FIELDS = ("anchors_path", "terms_path", "events_path")
 
 
+def _valid_reference_json(payload: object, field: str) -> bool:
+    if isinstance(payload, list):
+        return True
+    if not isinstance(payload, dict):
+        return False
+    if field == "anchors_path":
+        return any(
+            isinstance(payload.get(key), list)
+            for key in ("anchors", "segments", "tokens")
+        )
+    if field == "events_path":
+        return any(
+            isinstance(payload.get(key), list)
+            for key in ("events", "overlap_events", "interruption_events")
+        )
+    if field == "terms_path":
+        return isinstance(payload.get("terms"), list)
+    return False
+
+
 def validate_manifest(
     manifest: Path,
     *,
@@ -73,8 +93,11 @@ def validate_manifest(
             except (OSError, json.JSONDecodeError) as exc:
                 errors.append(f"{label}: invalid JSON in {field}: {exc}")
                 continue
-            if not isinstance(payload, list):
-                errors.append(f"{label}: {field} must contain a JSON list.")
+            if not _valid_reference_json(payload, field):
+                errors.append(
+                    f"{label}: {field} must contain a JSON list or a "
+                    "supported reference metadata object."
+                )
         if require_real_files:
             planned = "planned" in status or row["source_type"].strip().lower() == "planned"
             if planned:

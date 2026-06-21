@@ -1,0 +1,2 @@
+dataset_name,language,model_name,metric_status,num_clips,mean_der,mean_jer,mean_der_skip_overlap,mean_jer_skip_overlap,mean_project_speaker_label_error,mean_overlap_f1,mean_rtf,notes
+AISHELL-4,zh-CN,pyannote/speaker-diarization-community-1,ok,2,0.237577,0.698066,0.237577,0.698066,0.263923,,0.586153,Means include only metric_status=ok rows; skipped rows are counted separately.

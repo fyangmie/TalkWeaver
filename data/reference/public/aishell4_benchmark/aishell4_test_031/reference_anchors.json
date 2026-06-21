@@ -1,0 +1,65 @@
+[
+  {
+    "start": 0.0,
+    "end": 1.855,
+    "speaker": "001-M",
+    "text": "零零一销售主管",
+    "utterance_id": "M_R003S04C01_00001"
+  },
+  {
+    "start": 2.522,
+    "end": 4.262,
+    "speaker": "002-M",
+    "text": "零幺零销售&&",
+    "utterance_id": "M_R003S04C01_00302"
+  },
+  {
+    "start": 4.329,
+    "end": 5.369,
+    "speaker": "003-F",
+    "text": "零幺幺销售&&",
+    "utterance_id": "M_R003S04C01_00324"
+  },
+  {
+    "start": 5.701,
+    "end": 6.816,
+    "speaker": "004-F",
+    "text": "零幺二销售",
+    "utterance_id": "M_R003S04C01_00362"
+  },
+  {
+    "start": 6.824,
+    "end": 7.669,
+    "speaker": "005-F",
+    "text": "零幺三销售",
+    "utterance_id": "M_R003S04C01_00533"
+  },
+  {
+    "start": 7.684,
+    "end": 9.184,
+    "speaker": "006-F",
+    "text": "零幺四销售",
+    "utterance_id": "M_R003S04C01_00592"
+  },
+  {
+    "start": 10.251,
+    "end": 15.471,
+    "speaker": "001-M",
+    "text": "呃，这次咱们把大家这个销售啊叫过来啊，咱简单做一下交流",
+    "utterance_id": "M_R003S04C01_00002"
+  },
+  {
+    "start": 15.476,
+    "end": 18.151,
+    "speaker": "001-M",
+    "text": "我简单要把上个月这个",
+    "utterance_id": "M_R003S04C01_00003"
+  },
+  {
+    "start": 18.261,
+    "end": 20.0,
+    "speaker": "001-M",
+    "text": "上季度的这个销售的情况也给大家做一下呃说明。",
+    "utterance_id": "M_R003S04C01_00004"
+  }
+]

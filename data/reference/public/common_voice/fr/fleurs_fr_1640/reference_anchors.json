@@ -1,0 +1,13 @@
+[
+  {
+    "start": 0.0,
+    "end": 7.38,
+    "speaker": "SPEAKER_00",
+    "speakers": [
+      "SPEAKER_00"
+    ],
+    "text": "Sur les routes glacées et enneigées, le frottement est faible et vous ne pouvez pas conduire comme si vous étiez sur l'asphalte nu.",
+    "overlap": false,
+    "annotation_source": "generated_single_speaker_anchor"
+  }
+]
