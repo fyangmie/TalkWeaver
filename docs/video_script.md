@@ -1,14 +1,14 @@
 # TalkWeaver 10-12 Minute English Video Script
 
 > Replace member names and insert real experiment footage before recording.
-> Any chart labeled mock/demo must be described as a software demonstration,
-> not a model-performance result.
+> Mock, diagnostic, held-out, and proxy rows must be described with their
+> actual claim level.
 
 ## 0:00-1:10 - Opening Problem Demo
 
-Hello. Our project is TalkWeaver: An Overlap-Aware Multi-Speaker ASR System
-with Diarization-Structured LLM Correction. The subtitle is RAG-Enhanced
-Domain Term Recovery for Noisy Meeting Speech.
+Hello. Our project is TalkWeaver: AI Meeting Detective for Chaotic
+Multi-Speaker Conversations. The subtitle is an evidence-grounded conversation
+map for overlap, interruptions, misheard terms, and speaker stances.
 
 Let us begin with a realistic meeting problem. One speaker says, "We use
 pyannote for diarization." A second speaker interrupts and begins talking
@@ -48,10 +48,14 @@ Fourth, retrieval-augmented ASR correction retrieves rare entities before
 language-model correction. We use a smaller local TF-IDF glossary for project
 terms. RAG is deliberately an auxiliary component.
 
-The course also requires a provided paper named `xutong_paper.pdf`. That file
-was not available in our repository when this documentation was prepared, so
-we do not invent a summary. The final team must add and review it before
-submission.
+The course also provides a local thesis by Xu Tong. Its title is a
+multi-speaker conversation management system based on speech recognition and
+large language models. At the abstract level, it motivates exactly the
+problem we study: long meeting audio, alternating speakers, cross-speech,
+speaker separation, LLM post-processing, and a Streamlit interface. Our
+project narrows this broad system idea into an evidence-grounded research
+pipeline with explicit timestamps, overlap flags, correction provenance, and
+public-data evaluation.
 
 ## 2:40-3:45 - Research Gaps and Questions
 
@@ -168,19 +172,81 @@ Overlap error measures incorrect overlap flags. Hallucinated correction count
 records corrections rejected by lexical grounding or manual review. Latency
 measures eight pipeline stages independently.
 
-The included CSV and five charts use the deterministic mock reference. For
-example, the intended transcript exactly contains pyannote, diarization, RAG,
-WER, and DER. Therefore, glossary-supported correction reaches zero demo WER
-and zero demo Term Error Rate. This result is expected by construction. It
-only proves that the scoring and chart pipeline works.
+We report results with four claim levels. Mock rows only prove the pipeline.
+Diagnostic rows help us find errors. Held-out rows support reported claims.
+Proxy rows, such as the current mobile ASR table, show engineering trade-offs
+but are not device measurements.
 
-The mock speaker error also reaches zero after diarization and alignment
-because the reference speaker anchors are the deterministic mock turns. Again,
-this is not evidence of generalization.
+For ASR, we expanded the formal real manifest to 50 public clips: ten English
+FLEURS clips, ten French FLEURS clips, ten Mandarin FLEURS clips, eight AMI
+meeting excerpts, and twelve AISHELL-4 Mandarin meeting excerpts. With
+faster-whisper on CPU int8, `base` is generally more accurate than `tiny`.
+On AMI meeting speech, even `base` has standard WER around 0.398 and cleaned
+WER around 0.331. On AISHELL-4 Mandarin meeting speech, `base` CER is around
+0.610, much worse than FLEURS Mandarin read-speech CER around 0.113. This
+shows why read-speech ASR is not enough for chaotic meetings.
 
-For the real study, we must freeze a held-out manifest, annotate reference
-text, speaker labels, and overlap, run all six groups on identical clips, and
-report model versions, hardware, sample counts, failures, and variability.
+We then add a stronger AISHELL-4 benchmark subset: 60 clips, 20 seconds each,
+from all 20 local test recordings. On this fixed subset, `tiny` CER is about
+0.648, `base` CER is about 0.537, and `small` CER is about 0.482. This is not
+the full AISHELL-4 test set, but it is much stronger than a one-recording
+sanity check.
+
+We also add a 24-clip AMI held-out set from four recordings. On that set,
+`small` improves cleaned WER to about 0.234, compared with about 0.290 for
+`base`, but it is slower. This gives us a clear accuracy-speed trade-off.
+
+For speaker and overlap evidence, the eight AMI excerpts show that a naive
+no-diarization baseline has speaker-label error 1.0 and overlap F1 0. The
+reference-assisted evidence workflow reaches speaker-label error 0 and
+overlap F1 about 0.98. This is not automatic diarization accuracy. It proves
+that our ConversationMap evidence layer, interval logic, and metrics work on
+real meeting annotations.
+
+For automatic diarization, pyannote now runs on the 24-clip AMI held-out set.
+The result is mean DER about 0.106, mean JER about 0.307, and overlap F1 about
+0.490. This is the first fully automatic meeting evidence track in the
+project. On the 60-clip AISHELL-4 subset, 29 multi-speaker clips can be
+scored. Their mean DER is about 0.327, mean JER about 0.713, and overlap F1
+about 0.262. This gives us a real Mandarin meeting diarization result, still
+with the caveat that it is not the full AISHELL-4 test set.
+
+We also run the automatic TalkWeaver evidence-map workflow on those 29
+AISHELL-4 clips. The AISHELL-4 evidence map rows average about 6.76 anchors
+and 2.66 needs-review flags per clip. This shows the main system is not only
+an English AMI demo; it can generate Mandarin meeting evidence maps too.
+
+For RAG term recovery, we use Earnings-22 finance calls. On a final blind
+12-file subset, v2 RAG plus LLM improves `tiny` term F1 from about 0.889 to
+0.931. But for `base`, term F1 drops from about 0.972 to 0.931 because one
+false-positive correction remains. This is an important result: RAG helps
+weak ASR with domain terms, but retrieval can also bias a strong ASR model.
+Therefore safe gating is part of the method, not a detail.
+
+We then freeze RAG v3 and evaluate it on a new six-file blind subset. It does
+not improve WER, but it keeps WER unchanged and improves `base` term recall
+from 0.833 to 1.000. This is a narrower and safer claim: RAG v3 is an
+evidence gate for term recovery, not a general transcript-improvement method.
+The ablation also includes `glossary_candidates_only` and a conservative
+no-RAG LLM baseline, which stay equal to raw ASR because they do not have
+enough grounded evidence to edit the transcript.
+
+For overlap-aware correction, controlled overlap cases show that the
+overlap-aware rule and LLM variants pass the safety checks, while
+overlap-agnostic correction can make forbidden changes in high-overlap
+segments.
+
+For interruption, ten generated candidate windows were manually reviewed.
+All ten contain interruption behavior, so candidate precision is 1.0. But we
+do not report recall or F1 because we have not exhaustively labeled the whole
+timeline or sampled non-candidate negatives.
+
+For mobile, the current artifact has two levels. The first is a 100-row
+mobile-style proxy derived from the same CPU int8 ASR run. It shows local
+model-size trade-offs, but it is not a phone result. The second is a true
+local-machine whisper.cpp Level 1 run on the earlier 38-clip subset. It
+completed 76 tiny/base rows, but it is still not a phone-device measurement
+and has not yet been rerun on AISHELL-4.
 
 ## 9:35-10:40 - Error Analysis and Limitations
 
@@ -193,19 +259,22 @@ validation reduces hallucination risk but cannot prove that a correction is
 supported by the original audio.
 
 The system is also a modular prototype, not a newly trained end-to-end speech
-model. Real execution requires model downloads and credentials. The current
-dataset is a deterministic demo, and the simplified speaker metric lacks
-standard label mapping and collar handling.
+model. Real execution requires model downloads and credentials. Our real
+datasets are still small: FLEURS is read speech, AMI covers selected English
+meeting excerpts, Earnings-22 supports the finance-term RAG line, and
+AISHELL-4 contributes a fixed 60-clip Mandarin meeting subset rather than a
+full-corpus score. The simplified speaker metric is not a full
+industrial DER implementation, interruption recall is not measured, and the
+mobile result is not a phone-device benchmark.
 
 These limitations are part of the research result. They define what the
 project can and cannot claim.
 
 ## 10:40-11:35 - Future Work and Conclusion
 
-The next priorities are a consented annotated meeting set, standard DER and
-JER evaluation, a blinded overlap-aware prompt comparison, phonetic retrieval,
-confidence calibration, multilingual meetings, and comparison of local and
-API correction under one hallucination policy.
+The next priorities are broader interruption labels, a larger or full
+Mandarin/code-switched meeting split, stronger phonetic retrieval for RAG v3, rerunning
+whisper.cpp on the expanded manifest, and a true phone-side ASR benchmark.
 
 In conclusion, TalkWeaver demonstrates a research-driven way to connect ASR,
 speaker diarization, overlap detection, and constrained language-model
@@ -214,5 +283,6 @@ speaker-time conditioned correction, explicit overlap uncertainty, and narrow
 domain-term retrieval.
 
 We do not claim state-of-the-art performance. We demonstrate paper-informed
-engineering, reproducible evaluation code, transparent mock behavior, and a
-clear path to real experiments. Thank you.
+engineering, reproducible evaluation code, transparent mock behavior, small
+but real public-data experiments, and a clear path to a stronger final paper.
+Thank you.

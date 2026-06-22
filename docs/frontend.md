@@ -240,8 +240,9 @@ workflow or reference-map scripts documented in
 
 ## Current Limitations
 
-- The formal evaluation subset contains only 17 clips.
-- Only two AMI excerpts provide multi-speaker reference timing.
+- The formal evaluation subset contains only 50 clips.
+- Only eight AMI excerpts from one meeting and 12 AISHELL-4 excerpts from one
+  Mandarin meeting recording provide multi-speaker reference timing.
 - Reference speaker-time is oracle-assisted, not automatic diarization.
 - Controlled term and overlap fixtures are text safety tests, not acoustic
   generalization evidence.
@@ -254,8 +255,9 @@ workflow or reference-map scripts documented in
 - Speaker cards remain extractive fallback evidence unless an LLM-assisted
   card is explicitly labeled; unsupported personality, emotion, or intent
   inference is prohibited.
-- Multilingual UI comparison and the mandatory whisper.cpp mobile trade-off
-  page remain future phases.
+- Multilingual UI comparison and a true whisper.cpp mobile trade-off page
+  remain future phases; the current mobile artifact is a documented
+  local-CPU proxy.
 
 ## Next Steps
 
