@@ -1,0 +1,46 @@
+[
+  {
+    "start": 0.43,
+    "end": 0.69,
+    "speaker": "SPEAKER_D",
+    "speakers": [
+      "SPEAKER_D"
+    ],
+    "text": "Mm-hmm .",
+    "overlap": false,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 2.0,
+    "end": 2.63,
+    "speaker": "SPEAKER_B",
+    "speakers": [
+      "SPEAKER_B"
+    ],
+    "text": "Hmm .",
+    "overlap": false,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 4.85,
+    "end": 20.0,
+    "speaker": "SPEAKER_D",
+    "speakers": [
+      "SPEAKER_D"
+    ],
+    "text": "Well right away I'm wondering if there's um th th uh , like with D_V_D_ players , if there are zones . Um f frequencies or something um as well as uh characters , um different uh keypad",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 10.35,
+    "end": 14.63,
+    "speaker": "SPEAKER_B",
+    "speakers": [
+      "SPEAKER_B"
+    ],
+    "text": "Oh yeah , regions and stuff , yeah . Yeah . Okay .",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  }
+]

@@ -1,0 +1,172 @@
+[
+  {
+    "canonical": "Aspen",
+    "aliases": [
+      "Aspen's"
+    ],
+    "spoken_forms": [
+      "Aspen"
+    ],
+    "asr_error_forms": [
+      "aspen",
+      "aspens"
+    ],
+    "language": "en",
+    "category": "company_name",
+    "allowed_contexts": [
+      "results presentation",
+      "revenue",
+      "earnings"
+    ]
+  },
+  {
+    "canonical": "Sterile Focus Brands",
+    "aliases": [
+      "Sterile focus brands"
+    ],
+    "spoken_forms": [
+      "Sterile Focus Brands"
+    ],
+    "asr_error_forms": [
+      "several focus brands"
+    ],
+    "language": "en",
+    "category": "business_segment",
+    "allowed_contexts": [
+      "constant exchange rate",
+      "growth"
+    ]
+  },
+  {
+    "canonical": "continuing operations",
+    "spoken_forms": [
+      "continuing operations"
+    ],
+    "asr_error_forms": [
+      "continuing operation",
+      "continued operations"
+    ],
+    "language": "en",
+    "category": "financial_term",
+    "allowed_contexts": [
+      "financial highlights",
+      "revenue",
+      "earnings"
+    ]
+  },
+  {
+    "canonical": "organic growth",
+    "spoken_forms": [
+      "organic growth"
+    ],
+    "asr_error_forms": [
+      "organ growth"
+    ],
+    "language": "en",
+    "category": "financial_term",
+    "allowed_contexts": [
+      "revenue",
+      "double-digit",
+      "portfolio"
+    ]
+  },
+  {
+    "canonical": "double-digit",
+    "aliases": [
+      "double digit"
+    ],
+    "spoken_forms": [
+      "double digit"
+    ],
+    "asr_error_forms": [
+      "double dig it"
+    ],
+    "language": "en",
+    "category": "financial_term",
+    "allowed_contexts": [
+      "growth",
+      "revenue"
+    ]
+  },
+  {
+    "canonical": "leverage",
+    "spoken_forms": [
+      "leverage"
+    ],
+    "asr_error_forms": [
+      "lever edge"
+    ],
+    "language": "en",
+    "category": "financial_term",
+    "allowed_contexts": [
+      "debt",
+      "levels"
+    ]
+  },
+  {
+    "canonical": "dividend",
+    "spoken_forms": [
+      "dividend"
+    ],
+    "asr_error_forms": [
+      "divide end"
+    ],
+    "language": "en",
+    "category": "financial_term",
+    "allowed_contexts": [
+      "cents a share",
+      "reinstatement"
+    ]
+  },
+  {
+    "canonical": "constant exchange rate",
+    "aliases": [
+      "constant exchange rates"
+    ],
+    "spoken_forms": [
+      "constant exchange rate"
+    ],
+    "asr_error_forms": [],
+    "language": "en",
+    "category": "financial_term",
+    "allowed_contexts": [
+      "reported terms",
+      "year-on-year"
+    ]
+  },
+  {
+    "canonical": "oncology",
+    "spoken_forms": [
+      "oncology"
+    ],
+    "asr_error_forms": [
+      "on college"
+    ],
+    "language": "en",
+    "category": "domain_term",
+    "allowed_contexts": [
+      "prices",
+      "products",
+      "market"
+    ]
+  },
+  {
+    "canonical": "COVID",
+    "aliases": [
+      "Covid"
+    ],
+    "spoken_forms": [
+      "COVID"
+    ],
+    "asr_error_forms": [
+      "covered"
+    ],
+    "language": "en",
+    "category": "domain_term",
+    "allowed_contexts": [
+      "circumstances",
+      "market",
+      "products"
+    ]
+  }
+]

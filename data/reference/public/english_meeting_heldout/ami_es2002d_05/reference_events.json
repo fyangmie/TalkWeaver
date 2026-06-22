@@ -1,0 +1,68 @@
+[
+  {
+    "start": 2.0,
+    "end": 3.33,
+    "duration": 1.33,
+    "speakers": [
+      "SPEAKER_A",
+      "SPEAKER_C"
+    ],
+    "type": "overlap",
+    "annotation_source": "derived_from_AMI_manual_word_intervals"
+  },
+  {
+    "start": 3.23,
+    "end": 3.54,
+    "duration": 0.31,
+    "speakers": [
+      "SPEAKER_A",
+      "SPEAKER_B"
+    ],
+    "type": "overlap",
+    "annotation_source": "derived_from_AMI_manual_word_intervals"
+  },
+  {
+    "start": 3.23,
+    "end": 3.33,
+    "duration": 0.1,
+    "speakers": [
+      "SPEAKER_B",
+      "SPEAKER_C"
+    ],
+    "type": "overlap",
+    "annotation_source": "derived_from_AMI_manual_word_intervals"
+  },
+  {
+    "start": 8.69,
+    "end": 8.92,
+    "duration": 0.23,
+    "speakers": [
+      "SPEAKER_A",
+      "SPEAKER_C"
+    ],
+    "type": "overlap",
+    "annotation_source": "derived_from_AMI_manual_word_intervals"
+  },
+  {
+    "start": 13.09,
+    "end": 13.38,
+    "duration": 0.29,
+    "speakers": [
+      "SPEAKER_A",
+      "SPEAKER_C"
+    ],
+    "type": "overlap",
+    "annotation_source": "derived_from_AMI_manual_word_intervals"
+  },
+  {
+    "start": 18.55,
+    "end": 18.82,
+    "duration": 0.27,
+    "speakers": [
+      "SPEAKER_A",
+      "SPEAKER_C"
+    ],
+    "type": "overlap",
+    "annotation_source": "derived_from_AMI_manual_word_intervals"
+  }
+]

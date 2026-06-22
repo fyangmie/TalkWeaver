@@ -1,0 +1,11 @@
+variant,dataset_name,language,model_name,num_rows,mean_wer,mean_term_recall,mean_term_f1,candidate_count,applied_count,rejected_count,needs_review_count,no_op_count,api_used_count
+asr_only,Earnings-22,en,base,6,0.212099,0.833333,0.833333,4,0,0,0,0,0
+asr_only,Earnings-22,en,tiny,6,0.251941,0.833333,0.833333,2,0,0,0,0,0
+glossary_candidates_only,Earnings-22,en,base,6,0.212099,0.833333,0.833333,4,0,0,0,0,0
+glossary_candidates_only,Earnings-22,en,tiny,6,0.251941,0.833333,0.833333,2,0,0,0,0,0
+llm_without_rag_conservative,Earnings-22,en,base,6,0.212099,0.833333,0.833333,0,0,0,0,0,0
+llm_without_rag_conservative,Earnings-22,en,tiny,6,0.251941,0.833333,0.833333,0,0,0,0,0,0
+rag_evidence_gate_v3,Earnings-22,en,base,6,0.212099,1.000000,0.833333,4,2,1,1,0,0
+rag_evidence_gate_v3,Earnings-22,en,tiny,6,0.251941,0.833333,0.833333,2,0,1,1,0,0
+rag_llm_verifier_v3,Earnings-22,en,base,6,0.212099,1.000000,0.833333,4,2,0,2,0,3
+rag_llm_verifier_v3,Earnings-22,en,tiny,6,0.251941,0.833333,0.833333,2,0,1,1,0,2

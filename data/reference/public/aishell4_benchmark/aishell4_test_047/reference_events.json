@@ -1,0 +1,12 @@
+[
+  {
+    "start": 19.03,
+    "end": 19.698,
+    "type": "overlap",
+    "speakers": [
+      "001-M",
+      "003-M"
+    ],
+    "source": "aishell4_segments_intersection"
+  }
+]

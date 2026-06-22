@@ -1,0 +1,24 @@
+[
+  {
+    "start": 0.0,
+    "end": 20.0,
+    "speaker": "SPEAKER_B",
+    "speakers": [
+      "SPEAKER_B"
+    ],
+    "text": "control . Um they've also suggested that we um we only use the remote control to control the television , not the V_C_R_ , D_V_D_ or anything else . I think the worry is that if the project becomes too complex then it'll affect um how long it takes us to get it into into production , the time to market",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 19.9,
+    "end": 20.0,
+    "speaker": "SPEAKER_D",
+    "speakers": [
+      "SPEAKER_D"
+    ],
+    "text": "Okay",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  }
+]

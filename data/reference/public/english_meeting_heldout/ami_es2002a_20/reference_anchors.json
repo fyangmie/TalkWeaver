@@ -1,0 +1,57 @@
+[
+  {
+    "start": 0.0,
+    "end": 7.24,
+    "speaker": "SPEAKER_D",
+    "speakers": [
+      "SPEAKER_D"
+    ],
+    "text": "production cost is twelve fifty , but selling price is is that wholesale or retail ? Like on the shelf .",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 1.41,
+    "end": 2.16,
+    "speaker": "SPEAKER_B",
+    "speakers": [
+      "SPEAKER_B"
+    ],
+    "text": "All together .",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 8.4,
+    "end": 16.15,
+    "speaker": "SPEAKER_B",
+    "speakers": [
+      "SPEAKER_B"
+    ],
+    "text": "Um I dunno . I imagine That's a good question . I imagine it probably is our sale actually because it's probably up to the",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 11.55,
+    "end": 15.81,
+    "speaker": "SPEAKER_D",
+    "speakers": [
+      "SPEAKER_D"
+    ],
+    "text": "Our sale our sale anyway . Yeah , okay okay .",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 17.45,
+    "end": 20.0,
+    "speaker": "SPEAKER_B",
+    "speakers": [
+      "SPEAKER_B"
+    ],
+    "text": "the um the retailer to uh",
+    "overlap": false,
+    "annotation_source": "AMI manual word annotations"
+  }
+]

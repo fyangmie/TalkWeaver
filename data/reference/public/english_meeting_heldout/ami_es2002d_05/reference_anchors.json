@@ -1,0 +1,79 @@
+[
+  {
+    "start": 0.0,
+    "end": 3.54,
+    "speaker": "SPEAKER_A",
+    "speakers": [
+      "SPEAKER_A"
+    ],
+    "text": "Um they're in the L_C_D_ panel and the jog-dial ? Okay 'cause",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 2.0,
+    "end": 3.33,
+    "speaker": "SPEAKER_C",
+    "speakers": [
+      "SPEAKER_C"
+    ],
+    "text": "Ah , right . Great .",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 3.23,
+    "end": 5.28,
+    "speaker": "SPEAKER_B",
+    "speakers": [
+      "SPEAKER_B"
+    ],
+    "text": "So w what kind of thing uh is gonna be",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 5.25,
+    "end": 20.0,
+    "speaker": "SPEAKER_A",
+    "speakers": [
+      "SPEAKER_A"
+    ],
+    "text": "The L_C_D_ panel just displays um functionally what you're doing . If you're using an advanced function right , like um c brightness , contrast , whatever , it will just say You know it's like it only has four columns , it's a very simple L_C_D_ like , whereas many the minimum amount",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 8.69,
+    "end": 8.92,
+    "speaker": "SPEAKER_C",
+    "speakers": [
+      "SPEAKER_C"
+    ],
+    "text": "Right .",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 13.09,
+    "end": 13.38,
+    "speaker": "SPEAKER_C",
+    "speakers": [
+      "SPEAKER_C"
+    ],
+    "text": "Okay .",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 18.55,
+    "end": 18.82,
+    "speaker": "SPEAKER_C",
+    "speakers": [
+      "SPEAKER_C"
+    ],
+    "text": "Right .",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  }
+]

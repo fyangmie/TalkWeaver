@@ -1,0 +1,2415 @@
+{
+  "source_audio": "data/raw/public/earnings22/4446796.mp3",
+  "source_reference": "data/reference/public/earnings22/4446796/reference_aligned.nlp",
+  "start_seconds": 0.0,
+  "end_seconds": 180.0,
+  "timestamp_policy": "Missing Earnings-22 word timestamps are linearly interpolated between neighboring aligned words.",
+  "tokens": [
+    {
+      "token": "inaudible",
+      "speaker": "0",
+      "start": 0.733,
+      "end": 0.733
+    },
+    {
+      "token": "and",
+      "speaker": "0",
+      "start": 1.465,
+      "end": 1.465
+    },
+    {
+      "token": "press",
+      "speaker": "0",
+      "start": 2.198,
+      "end": 2.198
+    },
+    {
+      "token": "the",
+      "speaker": "0",
+      "start": 2.931,
+      "end": 2.931
+    },
+    {
+      "token": "pound",
+      "speaker": "0",
+      "start": 3.663,
+      "end": 3.663
+    },
+    {
+      "token": "or",
+      "speaker": "0",
+      "start": 4.396,
+      "end": 4.396
+    },
+    {
+      "token": "hash",
+      "speaker": "0",
+      "start": 5.129,
+      "end": 5.129
+    },
+    {
+      "token": "key",
+      "speaker": "0",
+      "start": 5.861,
+      "end": 5.861
+    },
+    {
+      "token": "Please",
+      "speaker": "0",
+      "start": 6.594,
+      "end": 6.594
+    },
+    {
+      "token": "wait",
+      "speaker": "0",
+      "start": 7.327,
+      "end": 7.327
+    },
+    {
+      "token": "for",
+      "speaker": "0",
+      "start": 8.059,
+      "end": 8.059
+    },
+    {
+      "token": "the",
+      "speaker": "0",
+      "start": 8.792,
+      "end": 8.792
+    },
+    {
+      "token": "tone",
+      "speaker": "0",
+      "start": 9.525,
+      "end": 9.525
+    },
+    {
+      "token": "then",
+      "speaker": "0",
+      "start": 10.257,
+      "end": 10.257
+    },
+    {
+      "token": "say",
+      "speaker": "0",
+      "start": 10.99,
+      "end": 11.31
+    },
+    {
+      "token": "your",
+      "speaker": "0",
+      "start": 11.31,
+      "end": 11.49
+    },
+    {
+      "token": "company",
+      "speaker": "0",
+      "start": 11.49,
+      "end": 11.95
+    },
+    {
+      "token": "name",
+      "speaker": "0",
+      "start": 11.95,
+      "end": 12.29
+    },
+    {
+      "token": "or",
+      "speaker": "0",
+      "start": 12.56,
+      "end": 12.72
+    },
+    {
+      "token": "affiliation",
+      "speaker": "0",
+      "start": 12.72,
+      "end": 13.61
+    },
+    {
+      "token": "and",
+      "speaker": "0",
+      "start": 13.94,
+      "end": 14.11
+    },
+    {
+      "token": "press",
+      "speaker": "0",
+      "start": 14.11,
+      "end": 14.41
+    },
+    {
+      "token": "the",
+      "speaker": "0",
+      "start": 14.41,
+      "end": 14.5
+    },
+    {
+      "token": "pound",
+      "speaker": "0",
+      "start": 14.5,
+      "end": 14.92
+    },
+    {
+      "token": "or",
+      "speaker": "0",
+      "start": 15.14,
+      "end": 15.29
+    },
+    {
+      "token": "hash",
+      "speaker": "0",
+      "start": 15.29,
+      "end": 15.57
+    },
+    {
+      "token": "key",
+      "speaker": "0",
+      "start": 15.57,
+      "end": 15.93
+    },
+    {
+      "token": "Thank",
+      "speaker": "0",
+      "start": 21.31,
+      "end": 21.6
+    },
+    {
+      "token": "you",
+      "speaker": "0",
+      "start": 21.6,
+      "end": 21.88
+    },
+    {
+      "token": "This",
+      "speaker": "1",
+      "start": 22.18,
+      "end": 22.33
+    },
+    {
+      "token": "statement",
+      "speaker": "1",
+      "start": 22.33,
+      "end": 22.85
+    },
+    {
+      "token": "should",
+      "speaker": "1",
+      "start": 22.85,
+      "end": 23.04
+    },
+    {
+      "token": "be",
+      "speaker": "1",
+      "start": 23.04,
+      "end": 23.11
+    },
+    {
+      "token": "taken",
+      "speaker": "1",
+      "start": 23.11,
+      "end": 23.49
+    },
+    {
+      "token": "in",
+      "speaker": "1",
+      "start": 23.49,
+      "end": 23.61
+    },
+    {
+      "token": "conjunction",
+      "speaker": "1",
+      "start": 23.61,
+      "end": 24.27
+    },
+    {
+      "token": "with",
+      "speaker": "1",
+      "start": 24.27,
+      "end": 24.45
+    },
+    {
+      "token": "the",
+      "speaker": "1",
+      "start": 24.45,
+      "end": 24.53
+    },
+    {
+      "token": "additional",
+      "speaker": "1",
+      "start": 24.53,
+      "end": 25.08
+    },
+    {
+      "token": "information",
+      "speaker": "1",
+      "start": 25.08,
+      "end": 25.61
+    },
+    {
+      "token": "about",
+      "speaker": "1",
+      "start": 25.61,
+      "end": 25.84
+    },
+    {
+      "token": "risk",
+      "speaker": "1",
+      "start": 25.84,
+      "end": 26.18
+    },
+    {
+      "token": "and",
+      "speaker": "1",
+      "start": 26.21,
+      "end": 26.35
+    },
+    {
+      "token": "uncertainty",
+      "speaker": "1",
+      "start": 26.35,
+      "end": 27.0
+    },
+    {
+      "token": "set",
+      "speaker": "1",
+      "start": 27.08,
+      "end": 27.25
+    },
+    {
+      "token": "for",
+      "speaker": "1",
+      "start": 27.25,
+      "end": 27.52
+    },
+    {
+      "token": "in",
+      "speaker": "1",
+      "start": 27.52,
+      "end": 27.77
+    },
+    {
+      "token": "CCU's",
+      "speaker": "1",
+      "start": 27.96,
+      "end": 28.26
+    },
+    {
+      "token": "annual",
+      "speaker": "1",
+      "start": 28.26,
+      "end": 28.48
+    },
+    {
+      "token": "report",
+      "speaker": "1",
+      "start": 28.48,
+      "end": 28.88
+    },
+    {
+      "token": "in",
+      "speaker": "1",
+      "start": 29.3,
+      "end": 29.47
+    },
+    {
+      "token": "form",
+      "speaker": "1",
+      "start": 29.47,
+      "end": 29.73
+    },
+    {
+      "token": "twenty",
+      "speaker": "1",
+      "start": 29.73,
+      "end": 30.13
+    },
+    {
+      "token": "f",
+      "speaker": "1",
+      "start": 30.13,
+      "end": 30.3
+    },
+    {
+      "token": "filed",
+      "speaker": "1",
+      "start": 30.54,
+      "end": 30.88
+    },
+    {
+      "token": "with",
+      "speaker": "1",
+      "start": 30.88,
+      "end": 31.0
+    },
+    {
+      "token": "the",
+      "speaker": "1",
+      "start": 31.0,
+      "end": 31.11
+    },
+    {
+      "token": "US",
+      "speaker": "1",
+      "start": 31.11,
+      "end": 31.43
+    },
+    {
+      "token": "Security",
+      "speaker": "1",
+      "start": 31.43,
+      "end": 31.91
+    },
+    {
+      "token": "and",
+      "speaker": "1",
+      "start": 31.91,
+      "end": 32.06
+    },
+    {
+      "token": "Exchange",
+      "speaker": "1",
+      "start": 32.06,
+      "end": 32.39
+    },
+    {
+      "token": "Commission",
+      "speaker": "1",
+      "start": 32.39,
+      "end": 32.88
+    },
+    {
+      "token": "and",
+      "speaker": "1",
+      "start": 33.28,
+      "end": 33.6
+    },
+    {
+      "token": "in",
+      "speaker": "1",
+      "start": 33.6,
+      "end": 33.7
+    },
+    {
+      "token": "the",
+      "speaker": "1",
+      "start": 33.7,
+      "end": 33.91
+    },
+    {
+      "token": "annual",
+      "speaker": "1",
+      "start": 33.91,
+      "end": 34.1
+    },
+    {
+      "token": "report",
+      "speaker": "1",
+      "start": 34.1,
+      "end": 34.51
+    },
+    {
+      "token": "submitted",
+      "speaker": "1",
+      "start": 34.58,
+      "end": 35.02
+    },
+    {
+      "token": "to",
+      "speaker": "1",
+      "start": 35.02,
+      "end": 35.12
+    },
+    {
+      "token": "the",
+      "speaker": "1",
+      "start": 35.12,
+      "end": 35.27
+    },
+    {
+      "token": "c",
+      "speaker": "1",
+      "start": 35.34,
+      "end": 35.55
+    },
+    {
+      "token": "m",
+      "speaker": "1",
+      "start": 35.58,
+      "end": 35.75
+    },
+    {
+      "token": "f",
+      "speaker": "1",
+      "start": 35.75,
+      "end": 35.94
+    },
+    {
+      "token": "and",
+      "speaker": "1",
+      "start": 36.14,
+      "end": 36.26
+    },
+    {
+      "token": "available",
+      "speaker": "1",
+      "start": 36.26,
+      "end": 36.79
+    },
+    {
+      "token": "on",
+      "speaker": "1",
+      "start": 37.3,
+      "end": 37.48
+    },
+    {
+      "token": "on",
+      "speaker": "1",
+      "start": 37.48,
+      "end": 37.57
+    },
+    {
+      "token": "our",
+      "speaker": "1",
+      "start": 37.57,
+      "end": 37.67
+    },
+    {
+      "token": "website",
+      "speaker": "1",
+      "start": 37.67,
+      "end": 38.1
+    },
+    {
+      "token": "It",
+      "speaker": "1",
+      "start": 38.79,
+      "end": 38.89
+    },
+    {
+      "token": "is",
+      "speaker": "1",
+      "start": 38.89,
+      "end": 38.96
+    },
+    {
+      "token": "now",
+      "speaker": "1",
+      "start": 38.96,
+      "end": 39.09
+    },
+    {
+      "token": "my",
+      "speaker": "1",
+      "start": 39.09,
+      "end": 39.25
+    },
+    {
+      "token": "pleasure",
+      "speaker": "1",
+      "start": 39.25,
+      "end": 39.6
+    },
+    {
+      "token": "to",
+      "speaker": "1",
+      "start": 39.6,
+      "end": 39.71
+    },
+    {
+      "token": "introduce",
+      "speaker": "1",
+      "start": 39.71,
+      "end": 40.29
+    },
+    {
+      "token": "Patricia",
+      "speaker": "1",
+      "start": 40.29,
+      "end": 40.85
+    },
+    {
+      "token": "Jottar",
+      "speaker": "1",
+      "start": 40.85,
+      "end": 40.93
+    },
+    {
+      "token": "Thank",
+      "speaker": "2",
+      "start": 42.1,
+      "end": 42.39
+    },
+    {
+      "token": "you",
+      "speaker": "2",
+      "start": 42.39,
+      "end": 42.51
+    },
+    {
+      "token": "Carl",
+      "speaker": "2",
+      "start": 42.51,
+      "end": 42.87
+    },
+    {
+      "token": "Claudia",
+      "speaker": "2",
+      "start": 43.4,
+      "end": 43.79
+    },
+    {
+      "token": "and",
+      "speaker": "2",
+      "start": 43.79,
+      "end": 43.94
+    },
+    {
+      "token": "thank",
+      "speaker": "2",
+      "start": 43.94,
+      "end": 44.29
+    },
+    {
+      "token": "you",
+      "speaker": "2",
+      "start": 44.29,
+      "end": 44.47
+    },
+    {
+      "token": "all",
+      "speaker": "2",
+      "start": 44.47,
+      "end": 44.72
+    },
+    {
+      "token": "for",
+      "speaker": "2",
+      "start": 45.4,
+      "end": 45.68
+    },
+    {
+      "token": "joining",
+      "speaker": "2",
+      "start": 45.68,
+      "end": 46.11
+    },
+    {
+      "token": "us",
+      "speaker": "2",
+      "start": 46.11,
+      "end": 46.42
+    },
+    {
+      "token": "today",
+      "speaker": "2",
+      "start": 46.42,
+      "end": 46.8
+    },
+    {
+      "token": "In",
+      "speaker": "2",
+      "start": 47.38,
+      "end": 47.49
+    },
+    {
+      "token": "the",
+      "speaker": "2",
+      "start": 47.49,
+      "end": 47.56
+    },
+    {
+      "token": "second",
+      "speaker": "2",
+      "start": 47.56,
+      "end": 47.96
+    },
+    {
+      "token": "quarter",
+      "speaker": "2",
+      "start": 47.96,
+      "end": 48.34
+    },
+    {
+      "token": "of",
+      "speaker": "2",
+      "start": 48.34,
+      "end": 48.45
+    },
+    {
+      "token": "twenty",
+      "speaker": "2",
+      "start": 48.45,
+      "end": 48.76
+    },
+    {
+      "token": "twenty",
+      "speaker": "2",
+      "start": 48.76,
+      "end": 49.05
+    },
+    {
+      "token": "one",
+      "speaker": "2",
+      "start": 49.05,
+      "end": 49.31
+    },
+    {
+      "token": "C",
+      "speaker": "2",
+      "start": 49.73,
+      "end": 49.81
+    },
+    {
+      "token": "C",
+      "speaker": "2",
+      "start": 49.81,
+      "end": 49.9
+    },
+    {
+      "token": "U",
+      "speaker": "2",
+      "start": 49.9,
+      "end": 50.14
+    },
+    {
+      "token": "continued",
+      "speaker": "2",
+      "start": 50.17,
+      "end": 50.88
+    },
+    {
+      "token": "with",
+      "speaker": "2",
+      "start": 50.88,
+      "end": 51.04
+    },
+    {
+      "token": "a",
+      "speaker": "2",
+      "start": 51.04,
+      "end": 51.1
+    },
+    {
+      "token": "positive",
+      "speaker": "2",
+      "start": 51.1,
+      "end": 51.59
+    },
+    {
+      "token": "momentum",
+      "speaker": "2",
+      "start": 51.59,
+      "end": 52.32
+    },
+    {
+      "token": "by",
+      "speaker": "2",
+      "start": 52.91,
+      "end": 53.08
+    },
+    {
+      "token": "posting",
+      "speaker": "2",
+      "start": 53.08,
+      "end": 53.67
+    },
+    {
+      "token": "strong",
+      "speaker": "2",
+      "start": 53.94,
+      "end": 54.46
+    },
+    {
+      "token": "improvement",
+      "speaker": "2",
+      "start": 54.46,
+      "end": 55.07
+    },
+    {
+      "token": "in",
+      "speaker": "2",
+      "start": 55.07,
+      "end": 55.16
+    },
+    {
+      "token": "volumes",
+      "speaker": "2",
+      "start": 55.16,
+      "end": 55.68
+    },
+    {
+      "token": "and",
+      "speaker": "2",
+      "start": 55.73,
+      "end": 55.89
+    },
+    {
+      "token": "financial",
+      "speaker": "2",
+      "start": 55.89,
+      "end": 56.34
+    },
+    {
+      "token": "results",
+      "speaker": "2",
+      "start": 56.34,
+      "end": 56.82
+    },
+    {
+      "token": "not",
+      "speaker": "2",
+      "start": 57.46,
+      "end": 57.71
+    },
+    {
+      "token": "only",
+      "speaker": "2",
+      "start": 57.71,
+      "end": 57.99
+    },
+    {
+      "token": "versus",
+      "speaker": "2",
+      "start": 57.99,
+      "end": 58.5
+    },
+    {
+      "token": "last",
+      "speaker": "2",
+      "start": 58.54,
+      "end": 58.89
+    },
+    {
+      "token": "year",
+      "speaker": "2",
+      "start": 58.89,
+      "end": 59.23
+    },
+    {
+      "token": "but",
+      "speaker": "2",
+      "start": 59.23,
+      "end": 59.45
+    },
+    {
+      "token": "also",
+      "speaker": "2",
+      "start": 59.45,
+      "end": 59.85
+    },
+    {
+      "token": "versus",
+      "speaker": "2",
+      "start": 59.85,
+      "end": 60.25
+    },
+    {
+      "token": "pre-pandemic",
+      "speaker": "2",
+      "start": 60.43,
+      "end": 61.27
+    },
+    {
+      "token": "figures",
+      "speaker": "2",
+      "start": 61.27,
+      "end": 61.69
+    },
+    {
+      "token": "The",
+      "speaker": "2",
+      "start": 62.83,
+      "end": 63.26
+    },
+    {
+      "token": "latter",
+      "speaker": "2",
+      "start": 63.26,
+      "end": 63.59
+    },
+    {
+      "token": "has",
+      "speaker": "2",
+      "start": 63.98,
+      "end": 64.25
+    },
+    {
+      "token": "been",
+      "speaker": "2",
+      "start": 64.25,
+      "end": 64.49
+    },
+    {
+      "token": "the",
+      "speaker": "2",
+      "start": 64.49,
+      "end": 64.6
+    },
+    {
+      "token": "result",
+      "speaker": "2",
+      "start": 64.6,
+      "end": 65.27
+    },
+    {
+      "token": "of",
+      "speaker": "2",
+      "start": 65.27,
+      "end": 65.48
+    },
+    {
+      "token": "our",
+      "speaker": "2",
+      "start": 66.21,
+      "end": 66.43
+    },
+    {
+      "token": "capability",
+      "speaker": "2",
+      "start": 66.43,
+      "end": 67.04
+    },
+    {
+      "token": "to",
+      "speaker": "2",
+      "start": 67.04,
+      "end": 67.19
+    },
+    {
+      "token": "adapt",
+      "speaker": "2",
+      "start": 67.19,
+      "end": 67.6
+    },
+    {
+      "token": "and",
+      "speaker": "2",
+      "start": 67.76,
+      "end": 67.92
+    },
+    {
+      "token": "operate",
+      "speaker": "2",
+      "start": 67.92,
+      "end": 68.38
+    },
+    {
+      "token": "in",
+      "speaker": "2",
+      "start": 68.38,
+      "end": 68.5
+    },
+    {
+      "token": "a",
+      "speaker": "2",
+      "start": 68.5,
+      "end": 68.61
+    },
+    {
+      "token": "challenging",
+      "speaker": "2",
+      "start": 68.61,
+      "end": 69.19
+    },
+    {
+      "token": "scenario",
+      "speaker": "2",
+      "start": 69.28,
+      "end": 69.9
+    },
+    {
+      "token": "with",
+      "speaker": "2",
+      "start": 70.33,
+      "end": 70.9
+    },
+    {
+      "token": "the",
+      "speaker": "2",
+      "start": 70.9,
+      "end": 71.21
+    },
+    {
+      "token": "covid",
+      "speaker": "2",
+      "start": 71.25,
+      "end": 71.72
+    },
+    {
+      "token": "nineteen",
+      "speaker": "2",
+      "start": 71.72,
+      "end": 72.13
+    },
+    {
+      "token": "pandemic",
+      "speaker": "2",
+      "start": 72.13,
+      "end": 72.7
+    },
+    {
+      "token": "pandemic",
+      "speaker": "2",
+      "start": 73.31,
+      "end": 73.88
+    },
+    {
+      "token": "through",
+      "speaker": "2",
+      "start": 74.21,
+      "end": 74.42
+    },
+    {
+      "token": "the",
+      "speaker": "2",
+      "start": 74.42,
+      "end": 74.53
+    },
+    {
+      "token": "execution",
+      "speaker": "2",
+      "start": 74.53,
+      "end": 75.21
+    },
+    {
+      "token": "of",
+      "speaker": "2",
+      "start": 75.21,
+      "end": 75.35
+    },
+    {
+      "token": "a",
+      "speaker": "2",
+      "start": 75.35,
+      "end": 75.44
+    },
+    {
+      "token": "regional",
+      "speaker": "2",
+      "start": 75.44,
+      "end": 75.85
+    },
+    {
+      "token": "plan",
+      "speaker": "2",
+      "start": 75.85,
+      "end": 76.25
+    },
+    {
+      "token": "with",
+      "speaker": "2",
+      "start": 76.28,
+      "end": 76.5
+    },
+    {
+      "token": "three",
+      "speaker": "2",
+      "start": 76.59,
+      "end": 76.82
+    },
+    {
+      "token": "points",
+      "speaker": "2",
+      "start": 76.82,
+      "end": 77.19
+    },
+    {
+      "token": "the",
+      "speaker": "2",
+      "start": 77.93,
+      "end": 77.99
+    },
+    {
+      "token": "safety",
+      "speaker": "2",
+      "start": 78.43,
+      "end": 78.83
+    },
+    {
+      "token": "for",
+      "speaker": "2",
+      "start": 78.83,
+      "end": 79.14
+    },
+    {
+      "token": "people",
+      "speaker": "2",
+      "start": 79.14,
+      "end": 79.59
+    },
+    {
+      "token": "operation",
+      "speaker": "2",
+      "start": 80.37,
+      "end": 81.14
+    },
+    {
+      "token": "continuity",
+      "speaker": "2",
+      "start": 81.17,
+      "end": 81.98
+    },
+    {
+      "token": "and",
+      "speaker": "2",
+      "start": 82.1,
+      "end": 82.27
+    },
+    {
+      "token": "financial",
+      "speaker": "2",
+      "start": 82.27,
+      "end": 82.75
+    },
+    {
+      "token": "health",
+      "speaker": "2",
+      "start": 82.75,
+      "end": 83.03
+    },
+    {
+      "token": "and",
+      "speaker": "2",
+      "start": 83.61,
+      "end": 83.98
+    },
+    {
+      "token": "the",
+      "speaker": "2",
+      "start": 84.3,
+      "end": 84.39
+    },
+    {
+      "token": "successful",
+      "speaker": "2",
+      "start": 84.39,
+      "end": 84.97
+    },
+    {
+      "token": "implementation",
+      "speaker": "2",
+      "start": 84.97,
+      "end": 85.93
+    },
+    {
+      "token": "of",
+      "speaker": "2",
+      "start": 86.22,
+      "end": 86.41
+    },
+    {
+      "token": "our",
+      "speaker": "2",
+      "start": 86.41,
+      "end": 86.63
+    },
+    {
+      "token": "strategy",
+      "speaker": "2",
+      "start": 86.63,
+      "end": 87.19
+    },
+    {
+      "token": "which",
+      "speaker": "2",
+      "start": 87.19,
+      "end": 87.4
+    },
+    {
+      "token": "focus",
+      "speaker": "2",
+      "start": 87.4,
+      "end": 87.83
+    },
+    {
+      "token": "in",
+      "speaker": "2",
+      "start": 87.83,
+      "end": 87.91
+    },
+    {
+      "token": "maintaining",
+      "speaker": "2",
+      "start": 87.91,
+      "end": 88.78
+    },
+    {
+      "token": "and",
+      "speaker": "2",
+      "start": 89.22,
+      "end": 89.42
+    },
+    {
+      "token": "gain",
+      "speaker": "2",
+      "start": 89.42,
+      "end": 89.84
+    },
+    {
+      "token": "business",
+      "speaker": "2",
+      "start": 90.29,
+      "end": 90.69
+    },
+    {
+      "token": "scale",
+      "speaker": "2",
+      "start": 90.85,
+      "end": 91.25
+    },
+    {
+      "token": "and",
+      "speaker": "2",
+      "start": 91.25,
+      "end": 91.34
+    },
+    {
+      "token": "market",
+      "speaker": "2",
+      "start": 91.34,
+      "end": 91.75
+    },
+    {
+      "token": "share",
+      "speaker": "2",
+      "start": 91.75,
+      "end": 92.2
+    },
+    {
+      "token": "along",
+      "speaker": "2",
+      "start": 92.45,
+      "end": 93.01
+    },
+    {
+      "token": "with",
+      "speaker": "2",
+      "start": 93.01,
+      "end": 93.17
+    },
+    {
+      "token": "a",
+      "speaker": "2",
+      "start": 93.17,
+      "end": 93.22
+    },
+    {
+      "token": "gradual",
+      "speaker": "2",
+      "start": 93.22,
+      "end": 93.62
+    },
+    {
+      "token": "recovery",
+      "speaker": "2",
+      "start": 93.62,
+      "end": 94.16
+    },
+    {
+      "token": "in",
+      "speaker": "2",
+      "start": 94.16,
+      "end": 94.27
+    },
+    {
+      "token": "profitability",
+      "speaker": "2",
+      "start": 94.27,
+      "end": 95.07
+    },
+    {
+      "token": "as",
+      "speaker": "2",
+      "start": 95.43,
+      "end": 95.63
+    },
+    {
+      "token": "we",
+      "speaker": "2",
+      "start": 95.63,
+      "end": 95.76
+    },
+    {
+      "token": "have",
+      "speaker": "2",
+      "start": 95.76,
+      "end": 95.93
+    },
+    {
+      "token": "shown",
+      "speaker": "2",
+      "start": 95.93,
+      "end": 96.5
+    },
+    {
+      "token": "since",
+      "speaker": "2",
+      "start": 96.58,
+      "end": 96.82
+    },
+    {
+      "token": "the",
+      "speaker": "2",
+      "start": 96.82,
+      "end": 96.94
+    },
+    {
+      "token": "fourth",
+      "speaker": "2",
+      "start": 96.94,
+      "end": 97.22
+    },
+    {
+      "token": "quarter",
+      "speaker": "2",
+      "start": 97.22,
+      "end": 97.92
+    },
+    {
+      "token": "twenty",
+      "speaker": "2",
+      "start": 97.92,
+      "end": 98.32
+    },
+    {
+      "token": "twenty",
+      "speaker": "2",
+      "start": 98.32,
+      "end": 98.55
+    },
+    {
+      "token": "Regarding",
+      "speaker": "2",
+      "start": 99.78,
+      "end": 100.48
+    },
+    {
+      "token": "our",
+      "speaker": "2",
+      "start": 100.61,
+      "end": 100.89
+    },
+    {
+      "token": "consolidated",
+      "speaker": "2",
+      "start": 100.89,
+      "end": 101.67
+    },
+    {
+      "token": "performance",
+      "speaker": "2",
+      "start": 101.67,
+      "end": 102.4
+    },
+    {
+      "token": "revenues",
+      "speaker": "2",
+      "start": 102.91,
+      "end": 103.44
+    },
+    {
+      "token": "jumped",
+      "speaker": "2",
+      "start": 103.54,
+      "end": 103.93
+    },
+    {
+      "token": "fourteen",
+      "speaker": "2",
+      "start": 104.86,
+      "end": 105.43
+    },
+    {
+      "token": "point",
+      "speaker": "2",
+      "start": 105.43,
+      "end": 105.72
+    },
+    {
+      "token": "six",
+      "speaker": "2",
+      "start": 105.76,
+      "end": 105.93
+    },
+    {
+      "token": "percent",
+      "speaker": "2",
+      "start": 105.93,
+      "end": 106.38
+    },
+    {
+      "token": "during",
+      "speaker": "2",
+      "start": 106.38,
+      "end": 106.63
+    },
+    {
+      "token": "the",
+      "speaker": "2",
+      "start": 106.63,
+      "end": 106.74
+    },
+    {
+      "token": "quarter",
+      "speaker": "2",
+      "start": 106.74,
+      "end": 107.3
+    },
+    {
+      "token": "boosted",
+      "speaker": "2",
+      "start": 107.5,
+      "end": 107.97
+    },
+    {
+      "token": "by",
+      "speaker": "2",
+      "start": 108.03,
+      "end": 108.2
+    },
+    {
+      "token": "a",
+      "speaker": "2",
+      "start": 108.2,
+      "end": 108.3
+    },
+    {
+      "token": "thirty",
+      "speaker": "2",
+      "start": 108.3,
+      "end": 108.81
+    },
+    {
+      "token": "point",
+      "speaker": "2",
+      "start": 108.81,
+      "end": 109.19
+    },
+    {
+      "token": "five",
+      "speaker": "2",
+      "start": 109.19,
+      "end": 109.57
+    },
+    {
+      "token": "percent",
+      "speaker": "2",
+      "start": 109.57,
+      "end": 109.97
+    },
+    {
+      "token": "growth",
+      "speaker": "2",
+      "start": 109.97,
+      "end": 110.28
+    },
+    {
+      "token": "in",
+      "speaker": "2",
+      "start": 110.28,
+      "end": 110.39
+    },
+    {
+      "token": "volumes",
+      "speaker": "2",
+      "start": 110.39,
+      "end": 110.87
+    },
+    {
+      "token": "and",
+      "speaker": "2",
+      "start": 111.4,
+      "end": 111.57
+    },
+    {
+      "token": "thirteen",
+      "speaker": "2",
+      "start": 111.57,
+      "end": 112.08
+    },
+    {
+      "token": "point",
+      "speaker": "2",
+      "start": 112.08,
+      "end": 112.37
+    },
+    {
+      "token": "two",
+      "speaker": "2",
+      "start": 112.37,
+      "end": 112.51
+    },
+    {
+      "token": "percent",
+      "speaker": "2",
+      "start": 112.51,
+      "end": 112.94
+    },
+    {
+      "token": "higher",
+      "speaker": "2",
+      "start": 112.94,
+      "end": 113.33
+    },
+    {
+      "token": "average",
+      "speaker": "2",
+      "start": 113.33,
+      "end": 113.72
+    },
+    {
+      "token": "prices",
+      "speaker": "2",
+      "start": 113.72,
+      "end": 114.34
+    },
+    {
+      "token": "in",
+      "speaker": "2",
+      "start": 114.34,
+      "end": 114.4
+    },
+    {
+      "token": "Chilean",
+      "speaker": "2",
+      "start": 114.4,
+      "end": 114.76
+    },
+    {
+      "token": "pesos",
+      "speaker": "2",
+      "start": 114.76,
+      "end": 115.13
+    },
+    {
+      "token": "The",
+      "speaker": "2",
+      "start": 115.87,
+      "end": 115.98
+    },
+    {
+      "token": "sharp",
+      "speaker": "2",
+      "start": 115.98,
+      "end": 116.5
+    },
+    {
+      "token": "volume",
+      "speaker": "2",
+      "start": 116.5,
+      "end": 116.95
+    },
+    {
+      "token": "expansion",
+      "speaker": "2",
+      "start": 116.95,
+      "end": 117.74
+    },
+    {
+      "token": "was",
+      "speaker": "2",
+      "start": 118.1,
+      "end": 118.34
+    },
+    {
+      "token": "explained",
+      "speaker": "2",
+      "start": 118.34,
+      "end": 118.94
+    },
+    {
+      "token": "by",
+      "speaker": "2",
+      "start": 119.08,
+      "end": 119.24
+    },
+    {
+      "token": "a",
+      "speaker": "2",
+      "start": 119.24,
+      "end": 119.32
+    },
+    {
+      "token": "recovery",
+      "speaker": "2",
+      "start": 119.32,
+      "end": 119.94
+    },
+    {
+      "token": "in",
+      "speaker": "2",
+      "start": 119.94,
+      "end": 120.09
+    },
+    {
+      "token": "consumption",
+      "speaker": "2",
+      "start": 120.09,
+      "end": 120.84
+    },
+    {
+      "token": "A",
+      "speaker": "2",
+      "start": 121.12,
+      "end": 121.22
+    },
+    {
+      "token": "solid",
+      "speaker": "2",
+      "start": 121.22,
+      "end": 121.68
+    },
+    {
+      "token": "sales",
+      "speaker": "2",
+      "start": 121.81,
+      "end": 122.13
+    },
+    {
+      "token": "execution",
+      "speaker": "2",
+      "start": 122.13,
+      "end": 122.91
+    },
+    {
+      "token": "and",
+      "speaker": "2",
+      "start": 123.24,
+      "end": 123.49
+    },
+    {
+      "token": "the",
+      "speaker": "2",
+      "start": 123.49,
+      "end": 123.6
+    },
+    {
+      "token": "strength",
+      "speaker": "2",
+      "start": 123.6,
+      "end": 124.25
+    },
+    {
+      "token": "of",
+      "speaker": "2",
+      "start": 124.25,
+      "end": 124.38
+    },
+    {
+      "token": "our",
+      "speaker": "2",
+      "start": 124.38,
+      "end": 124.59
+    },
+    {
+      "token": "portfolio",
+      "speaker": "2",
+      "start": 124.59,
+      "end": 125.22
+    },
+    {
+      "token": "of",
+      "speaker": "2",
+      "start": 125.22,
+      "end": 125.38
+    },
+    {
+      "token": "brands",
+      "speaker": "2",
+      "start": 125.38,
+      "end": 125.71
+    },
+    {
+      "token": "In",
+      "speaker": "2",
+      "start": 126.26,
+      "end": 126.44
+    },
+    {
+      "token": "terms",
+      "speaker": "2",
+      "start": 126.44,
+      "end": 126.79
+    },
+    {
+      "token": "of",
+      "speaker": "2",
+      "start": 126.79,
+      "end": 126.92
+    },
+    {
+      "token": "a",
+      "speaker": "2",
+      "start": 126.92,
+      "end": 126.97
+    },
+    {
+      "token": "financial",
+      "speaker": "2",
+      "start": 126.97,
+      "end": 127.52
+    },
+    {
+      "token": "results",
+      "speaker": "2",
+      "start": 127.52,
+      "end": 128.04
+    },
+    {
+      "token": "consolidated",
+      "speaker": "2",
+      "start": 128.48,
+      "end": 129.23
+    },
+    {
+      "token": "e",
+      "speaker": "2",
+      "start": 129.23,
+      "end": 129.26
+    },
+    {
+      "token": "b",
+      "speaker": "2",
+      "start": 129.26,
+      "end": 129.32
+    },
+    {
+      "token": "i",
+      "speaker": "2",
+      "start": 129.32,
+      "end": 129.35
+    },
+    {
+      "token": "t",
+      "speaker": "2",
+      "start": 129.35,
+      "end": 129.45
+    },
+    {
+      "token": "d",
+      "speaker": "2",
+      "start": 129.45,
+      "end": 129.68
+    },
+    {
+      "token": "a",
+      "speaker": "2",
+      "start": 129.68,
+      "end": 129.98
+    },
+    {
+      "token": "more",
+      "speaker": "2",
+      "start": 130.28,
+      "end": 130.62
+    },
+    {
+      "token": "than",
+      "speaker": "2",
+      "start": 130.62,
+      "end": 130.8
+    },
+    {
+      "token": "tripled",
+      "speaker": "2",
+      "start": 130.8,
+      "end": 131.24
+    },
+    {
+      "token": "versus",
+      "speaker": "2",
+      "start": 131.24,
+      "end": 131.81
+    },
+    {
+      "token": "last",
+      "speaker": "2",
+      "start": 131.84,
+      "end": 132.24
+    },
+    {
+      "token": "year",
+      "speaker": "2",
+      "start": 132.24,
+      "end": 132.64
+    },
+    {
+      "token": "and",
+      "speaker": "2",
+      "start": 132.95,
+      "end": 133.11
+    },
+    {
+      "token": "e",
+      "speaker": "2",
+      "start": 133.11,
+      "end": 133.16
+    },
+    {
+      "token": "b",
+      "speaker": "2",
+      "start": 133.16,
+      "end": 133.26
+    },
+    {
+      "token": "i",
+      "speaker": "2",
+      "start": 133.26,
+      "end": 133.29
+    },
+    {
+      "token": "t",
+      "speaker": "2",
+      "start": 133.29,
+      "end": 133.38
+    },
+    {
+      "token": "d",
+      "speaker": "2",
+      "start": 133.38,
+      "end": 133.51
+    },
+    {
+      "token": "a",
+      "speaker": "2",
+      "start": 133.51,
+      "end": 133.56
+    },
+    {
+      "token": "margin",
+      "speaker": "2",
+      "start": 133.56,
+      "end": 134.02
+    },
+    {
+      "token": "improved",
+      "speaker": "2",
+      "start": 134.02,
+      "end": 134.43
+    },
+    {
+      "token": "from",
+      "speaker": "2",
+      "start": 134.43,
+      "end": 134.62
+    },
+    {
+      "token": "six",
+      "speaker": "2",
+      "start": 134.69,
+      "end": 134.89
+    },
+    {
+      "token": "point",
+      "speaker": "2",
+      "start": 134.89,
+      "end": 135.09
+    },
+    {
+      "token": "two",
+      "speaker": "2",
+      "start": 135.18,
+      "end": 135.44
+    },
+    {
+      "token": "to",
+      "speaker": "2",
+      "start": 135.5,
+      "end": 135.59
+    },
+    {
+      "token": "thirteen",
+      "speaker": "2",
+      "start": 135.59,
+      "end": 136.2
+    },
+    {
+      "token": "point",
+      "speaker": "2",
+      "start": 136.2,
+      "end": 136.45
+    },
+    {
+      "token": "one",
+      "speaker": "2",
+      "start": 136.45,
+      "end": 136.67
+    },
+    {
+      "token": "percent",
+      "speaker": "2",
+      "start": 136.67,
+      "end": 137.15
+    },
+    {
+      "token": "The",
+      "speaker": "2",
+      "start": 137.72,
+      "end": 137.85
+    },
+    {
+      "token": "better",
+      "speaker": "2",
+      "start": 137.85,
+      "end": 138.16
+    },
+    {
+      "token": "financial",
+      "speaker": "2",
+      "start": 138.16,
+      "end": 138.63
+    },
+    {
+      "token": "result",
+      "speaker": "2",
+      "start": 138.63,
+      "end": 139.16
+    },
+    {
+      "token": "was",
+      "speaker": "2",
+      "start": 139.53,
+      "end": 139.71
+    },
+    {
+      "token": "mainly",
+      "speaker": "2",
+      "start": 139.71,
+      "end": 140.13
+    },
+    {
+      "token": "driven",
+      "speaker": "2",
+      "start": 140.13,
+      "end": 140.54
+    },
+    {
+      "token": "by",
+      "speaker": "2",
+      "start": 140.54,
+      "end": 140.86
+    },
+    {
+      "token": "the",
+      "speaker": "2",
+      "start": 141.45,
+      "end": 141.54
+    },
+    {
+      "token": "increase",
+      "speaker": "2",
+      "start": 141.54,
+      "end": 141.99
+    },
+    {
+      "token": "in",
+      "speaker": "2",
+      "start": 142.18,
+      "end": 142.35
+    },
+    {
+      "token": "consolidated",
+      "speaker": "2",
+      "start": 142.35,
+      "end": 142.92
+    },
+    {
+      "token": "volumes",
+      "speaker": "2",
+      "start": 142.92,
+      "end": 143.49
+    },
+    {
+      "token": "as",
+      "speaker": "2",
+      "start": 143.49,
+      "end": 143.59
+    },
+    {
+      "token": "mention",
+      "speaker": "2",
+      "start": 143.59,
+      "end": 144.0
+    },
+    {
+      "token": "above",
+      "speaker": "2",
+      "start": 144.0,
+      "end": 144.38
+    },
+    {
+      "token": "efficiency",
+      "speaker": "2",
+      "start": 144.85,
+      "end": 145.55
+    },
+    {
+      "token": "gains",
+      "speaker": "2",
+      "start": 145.55,
+      "end": 145.95
+    },
+    {
+      "token": "from",
+      "speaker": "2",
+      "start": 145.95,
+      "end": 146.22
+    },
+    {
+      "token": "the",
+      "speaker": "2",
+      "start": 146.22,
+      "end": 146.32
+    },
+    {
+      "token": "Excellence",
+      "speaker": "2",
+      "start": 146.32,
+      "end": 146.86
+    },
+    {
+      "token": "c",
+      "speaker": "2",
+      "start": 146.89,
+      "end": 146.99
+    },
+    {
+      "token": "c",
+      "speaker": "2",
+      "start": 147.17,
+      "end": 147.3
+    },
+    {
+      "token": "u",
+      "speaker": "2",
+      "start": 147.3,
+      "end": 147.47
+    },
+    {
+      "token": "Program",
+      "speaker": "2",
+      "start": 147.47,
+      "end": 148.01
+    },
+    {
+      "token": "with",
+      "speaker": "2",
+      "start": 148.4,
+      "end": 148.63
+    },
+    {
+      "token": "msd",
+      "speaker": "2",
+      "start": 148.63,
+      "end": 149.41
+    },
+    {
+      "token": "and",
+      "speaker": "2",
+      "start": 149.41,
+      "end": 149.56
+    },
+    {
+      "token": "a",
+      "speaker": "2",
+      "start": 149.56,
+      "end": 149.72
+    },
+    {
+      "token": "expenses",
+      "speaker": "2",
+      "start": 149.72,
+      "end": 150.36
+    },
+    {
+      "token": "sub-percentage",
+      "speaker": "2",
+      "start": 150.51,
+      "end": 151.22
+    },
+    {
+      "token": "of",
+      "speaker": "2",
+      "start": 151.22,
+      "end": 151.4
+    },
+    {
+      "token": "net",
+      "speaker": "2",
+      "start": 151.4,
+      "end": 151.6
+    },
+    {
+      "token": "sales",
+      "speaker": "2",
+      "start": 151.67,
+      "end": 151.98
+    },
+    {
+      "token": "decreasing",
+      "speaker": "2",
+      "start": 152.58,
+      "end": 153.08
+    },
+    {
+      "token": "from",
+      "speaker": "2",
+      "start": 153.08,
+      "end": 153.3
+    },
+    {
+      "token": "forty",
+      "speaker": "2",
+      "start": 153.3,
+      "end": 153.66
+    },
+    {
+      "token": "five",
+      "speaker": "2",
+      "start": 153.66,
+      "end": 154.05
+    },
+    {
+      "token": "point",
+      "speaker": "2",
+      "start": 154.05,
+      "end": 154.33
+    },
+    {
+      "token": "eight",
+      "speaker": "2",
+      "start": 154.33,
+      "end": 154.59
+    },
+    {
+      "token": "to",
+      "speaker": "2",
+      "start": 154.66,
+      "end": 154.74
+    },
+    {
+      "token": "thirty",
+      "speaker": "2",
+      "start": 154.74,
+      "end": 155.1
+    },
+    {
+      "token": "nine",
+      "speaker": "2",
+      "start": 155.1,
+      "end": 155.37
+    },
+    {
+      "token": "point",
+      "speaker": "2",
+      "start": 155.37,
+      "end": 155.59
+    },
+    {
+      "token": "six",
+      "speaker": "2",
+      "start": 155.65,
+      "end": 155.81
+    },
+    {
+      "token": "percent",
+      "speaker": "2",
+      "start": 155.81,
+      "end": 156.44
+    },
+    {
+      "token": "and",
+      "speaker": "2",
+      "start": 156.87,
+      "end": 157.27
+    },
+    {
+      "token": "four",
+      "speaker": "2",
+      "start": 157.48,
+      "end": 157.74
+    },
+    {
+      "token": "hundred",
+      "speaker": "2",
+      "start": 157.74,
+      "end": 158.28
+    },
+    {
+      "token": "sixty",
+      "speaker": "2",
+      "start": 158.38,
+      "end": 158.72
+    },
+    {
+      "token": "three",
+      "speaker": "2",
+      "start": 158.72,
+      "end": 159.0
+    },
+    {
+      "token": "basis",
+      "speaker": "2",
+      "start": 159.0,
+      "end": 159.46
+    },
+    {
+      "token": "points",
+      "speaker": "2",
+      "start": 159.46,
+      "end": 159.85
+    },
+    {
+      "token": "expansion",
+      "speaker": "2",
+      "start": 159.85,
+      "end": 160.45
+    },
+    {
+      "token": "in",
+      "speaker": "2",
+      "start": 160.45,
+      "end": 160.55
+    },
+    {
+      "token": "gross",
+      "speaker": "2",
+      "start": 160.55,
+      "end": 160.81
+    },
+    {
+      "token": "margin",
+      "speaker": "2",
+      "start": 160.81,
+      "end": 161.35
+    },
+    {
+      "token": "mainly",
+      "speaker": "2",
+      "start": 161.92,
+      "end": 162.31
+    },
+    {
+      "token": "due",
+      "speaker": "2",
+      "start": 162.31,
+      "end": 162.58
+    },
+    {
+      "token": "to",
+      "speaker": "2",
+      "start": 162.58,
+      "end": 162.69
+    },
+    {
+      "token": "positive",
+      "speaker": "2",
+      "start": 162.69,
+      "end": 163.3
+    },
+    {
+      "token": "mixed",
+      "speaker": "2",
+      "start": 163.3,
+      "end": 163.6
+    },
+    {
+      "token": "effects",
+      "speaker": "2",
+      "start": 163.6,
+      "end": 164.03
+    },
+    {
+      "token": "and",
+      "speaker": "2",
+      "start": 164.45,
+      "end": 164.66
+    },
+    {
+      "token": "the",
+      "speaker": "2",
+      "start": 164.66,
+      "end": 164.73
+    },
+    {
+      "token": "implementation",
+      "speaker": "2",
+      "start": 164.73,
+      "end": 165.59
+    },
+    {
+      "token": "of",
+      "speaker": "2",
+      "start": 165.59,
+      "end": 165.72
+    },
+    {
+      "token": "revenue",
+      "speaker": "2",
+      "start": 165.72,
+      "end": 166.38
+    },
+    {
+      "token": "management",
+      "speaker": "2",
+      "start": 166.41,
+      "end": 166.96
+    },
+    {
+      "token": "initiatives",
+      "speaker": "2",
+      "start": 166.96,
+      "end": 167.53
+    },
+    {
+      "token": "and",
+      "speaker": "2",
+      "start": 168.01,
+      "end": 168.39
+    },
+    {
+      "token": "positive",
+      "speaker": "2",
+      "start": 168.82,
+      "end": 169.38
+    },
+    {
+      "token": "net",
+      "speaker": "2",
+      "start": 169.38,
+      "end": 169.62
+    },
+    {
+      "token": "external",
+      "speaker": "2",
+      "start": 169.62,
+      "end": 170.19
+    },
+    {
+      "token": "effects",
+      "speaker": "2",
+      "start": 170.19,
+      "end": 170.59
+    },
+    {
+      "token": "from",
+      "speaker": "2",
+      "start": 171.01,
+      "end": 171.23
+    },
+    {
+      "token": "the",
+      "speaker": "2",
+      "start": 171.23,
+      "end": 171.31
+    },
+    {
+      "token": "appreciation",
+      "speaker": "2",
+      "start": 171.31,
+      "end": 172.0
+    },
+    {
+      "token": "of",
+      "speaker": "2",
+      "start": 172.0,
+      "end": 172.08
+    },
+    {
+      "token": "the",
+      "speaker": "2",
+      "start": 172.08,
+      "end": 172.22
+    },
+    {
+      "token": "Chilean",
+      "speaker": "2",
+      "start": 172.22,
+      "end": 172.54
+    },
+    {
+      "token": "peso",
+      "speaker": "2",
+      "start": 172.54,
+      "end": 172.91
+    },
+    {
+      "token": "against",
+      "speaker": "2",
+      "start": 172.91,
+      "end": 173.39
+    },
+    {
+      "token": "the",
+      "speaker": "2",
+      "start": 173.39,
+      "end": 173.48
+    },
+    {
+      "token": "US",
+      "speaker": "2",
+      "start": 173.48,
+      "end": 173.83
+    },
+    {
+      "token": "dollar",
+      "speaker": "2",
+      "start": 173.83,
+      "end": 174.26
+    },
+    {
+      "token": "affecting",
+      "speaker": "2",
+      "start": 174.58,
+      "end": 175.2
+    },
+    {
+      "token": "favorably",
+      "speaker": "2",
+      "start": 175.2,
+      "end": 176.06
+    },
+    {
+      "token": "our",
+      "speaker": "2",
+      "start": 176.23,
+      "end": 176.66
+    },
+    {
+      "token": "US",
+      "speaker": "2",
+      "start": 176.66,
+      "end": 177.17
+    },
+    {
+      "token": "dollar",
+      "speaker": "2",
+      "start": 177.17,
+      "end": 177.46
+    },
+    {
+      "token": "denominated",
+      "speaker": "2",
+      "start": 177.46,
+      "end": 178.21
+    },
+    {
+      "token": "cost",
+      "speaker": "2",
+      "start": 178.21,
+      "end": 178.53
+    },
+    {
+      "token": "partially",
+      "speaker": "2",
+      "start": 179.01,
+      "end": 179.46
+    },
+    {
+      "token": "compensated",
+      "speaker": "2",
+      "start": 179.46,
+      "end": 180.23
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+dataset_name,language,model_name,num_rows,mean_wer_before,mean_wer_after,mean_wer_delta,mean_term_recall_before,mean_term_recall_after,mean_term_f1_before,mean_term_f1_after,applied_correction_count,rejected_correction_count,needs_review_count,no_op_count,api_used,llm_provider,llm_model,claim_scope
+Earnings-22,en,base,12,0.186844,0.187018,0.000174,0.958333,0.958333,0.972222,0.930556,1,0,4,1,true,deepseek,deepseek-chat,External/predefined RAG glossary plus constrained LLM substitution. No reference text is sent to the LLM.
+Earnings-22,en,tiny,12,0.221805,0.221978,0.000174,0.875000,0.958333,0.888889,0.930556,2,2,0,0,true,deepseek,deepseek-chat,External/predefined RAG glossary plus constrained LLM substitution. No reference text is sent to the LLM.

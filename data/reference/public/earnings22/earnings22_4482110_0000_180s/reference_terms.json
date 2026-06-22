@@ -1,0 +1,37 @@
+[
+  {
+    "canonical": "debt",
+    "spoken_forms": [
+      "debt"
+    ],
+    "asr_error_forms": [
+      "dead"
+    ],
+    "language": "en",
+    "category": "financial_term",
+    "allowed_contexts": [
+      "leverage",
+      "cash",
+      "financial"
+    ]
+  },
+  {
+    "canonical": "COVID",
+    "aliases": [
+      "Covid"
+    ],
+    "spoken_forms": [
+      "COVID"
+    ],
+    "asr_error_forms": [
+      "covered"
+    ],
+    "language": "en",
+    "category": "domain_term",
+    "allowed_contexts": [
+      "circumstances",
+      "market",
+      "products"
+    ]
+  }
+]

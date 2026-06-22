@@ -1,0 +1,46 @@
+[
+  {
+    "start": 0.0,
+    "end": 0.77,
+    "speaker": "SPEAKER_B",
+    "speakers": [
+      "SPEAKER_B"
+    ],
+    "text": "um",
+    "overlap": false,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 2.0,
+    "end": 9.22,
+    "speaker": "SPEAKER_B",
+    "speakers": [
+      "SPEAKER_B"
+    ],
+    "text": "uh and he's quite quite wee as well so you know he can doesn't take up too much space . Um",
+    "overlap": false,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 12.56,
+    "end": 18.6,
+    "speaker": "SPEAKER_B",
+    "speakers": [
+      "SPEAKER_B"
+    ],
+    "text": "and uh And he does a funny thing where he chases his tail as well , which is quite amusing , so",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  },
+  {
+    "start": 18.27,
+    "end": 20.0,
+    "speaker": "SPEAKER_D",
+    "speakers": [
+      "SPEAKER_D"
+    ],
+    "text": "Is he aware that th it's his own cha tail he's",
+    "overlap": true,
+    "annotation_source": "AMI manual word annotations"
+  }
+]

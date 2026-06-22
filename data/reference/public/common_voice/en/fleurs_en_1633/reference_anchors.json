@@ -1,0 +1,13 @@
+[
+  {
+    "start": 0.0,
+    "end": 9.48,
+    "speaker": "SPEAKER_00",
+    "speakers": [
+      "SPEAKER_00"
+    ],
+    "text": "In this dynamic transport shuttle everyone is somehow connected with, and supporting, a transport system based on private cars.",
+    "overlap": false,
+    "annotation_source": "generated_single_speaker_anchor"
+  }
+]

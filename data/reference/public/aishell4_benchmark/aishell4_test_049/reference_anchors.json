@@ -1,0 +1,44 @@
+[
+  {
+    "start": 0.0,
+    "end": 1.84,
+    "speaker": "001-M",
+    "text": "零零幺楼层主管。",
+    "utterance_id": "S_R004S01C01_00001"
+  },
+  {
+    "start": 3.632,
+    "end": 5.292,
+    "speaker": "002-F",
+    "text": "零零六女装",
+    "utterance_id": "S_R004S01C01_00109"
+  },
+  {
+    "start": 5.571,
+    "end": 7.321,
+    "speaker": "003-F",
+    "text": "零零七男装",
+    "utterance_id": "S_R004S01C01_00124"
+  },
+  {
+    "start": 7.347,
+    "end": 8.752,
+    "speaker": "004-F",
+    "text": "零零八童装",
+    "utterance_id": "S_R004S01C01_00166"
+  },
+  {
+    "start": 8.766,
+    "end": 10.166,
+    "speaker": "005-F",
+    "text": "零零九鞋帽。",
+    "utterance_id": "S_R004S01C01_00214"
+  },
+  {
+    "start": 11.54,
+    "end": 20.0,
+    "speaker": "001-M",
+    "text": "就是今天咱简单开一个早会呃呃把上个季度的咱这个呃销售的情况呃咱简单大家都说一下。",
+    "utterance_id": "S_R004S01C01_00002"
+  }
+]
