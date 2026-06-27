@@ -9,15 +9,17 @@ secondary outputs.
 
 ## Source Status
 
-The required local course paper, `project/xutong_paper.pdf`, was not available
-on June 10, 2026. It is not summarized or cited. The remaining entries below
-were checked against their primary arXiv records.
+The required local course paper is available at
+`参考文献/xutong_paper.pdf` as of June 20, 2026. The reading note currently
+uses the title page and abstract only; full chapter-level claims still require
+manual review before final submission. The remaining entries below were
+checked against their primary arXiv records.
 
 ## Research Map
 
 | Paper | Status | Key idea | Limitation relevant to TalkWeaver | TalkWeaver adaptation |
 | --- | --- | --- | --- | --- |
-| Course `xutong_paper.pdf` | Local source unavailable | Unknown | No claims can be made without the PDF | Placeholder note only |
+| Course `xutong_paper.pdf` | Local source available; abstract-level note complete | ASR + LLM system for multi-speaker conversation management, including speaker separation, cross-speech handling, and structured summaries | Public held-out evaluation, correction provenance, and standard diarization metrics still need to be checked in the thesis | Project framing, three-level cross-speech motivation, and Streamlit evidence-review direction |
 | DiarizationLM | Interspeech 2024 | Compact text representation of ASR and diarization for LLM post-processing | Post-processing depends on upstream ASR/diarization and an appropriate LLM; overlap remains an upstream evidence problem | Structured speaker-time prompts with overlap, confidence, and audit fields |
 | DM-ASR | arXiv preprint, submitted April 24, 2026 | Speaker- and time-conditioned queries use diarization as an explicit prior | Full method is a trained multi-speaker speech-LLM system and is not reproduced here | Correct one diarized temporal segment at a time |
 | TagSpeech | arXiv preprint, submitted January 11, 2026 | Temporal Anchor Grounding synchronizes semantic and speaker streams | End-to-end training and benchmark-scale evaluation exceed this project scope | Temporal-anchor JSON for who spoke what and when |
