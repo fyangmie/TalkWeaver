@@ -5,14 +5,14 @@ This appendix contains secondary charts and tables referenced by the main paper.
 
 \subsection{Controlled Term Recovery}
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=\columnwidth]{figures/term_rescue_f1_by_variant.png}
 \caption{Controlled term-rescue F1 by variant. These are text-fixture results; they support mechanism testing only. Exact source paths are listed in the manifest and claim audit.}
 \label{fig:app_term_f1}
 \end{figure}
 
-\begin{table}[h]
+\begin{table}[!htbp]
 \centering
 \scriptsize
 \begin{tabular}{llrrrr}
@@ -30,16 +30,18 @@ fused+rule & negative control & 4 & 1.000 & 0.000 & 4 \\
 \label{tab:app_term_rows}
 \end{table}
 
+\FloatBarrier
+
 \subsection{Controlled Overlap Safety}
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=\columnwidth]{figures/overlap_safety_pass_rate.png}
 \caption{Controlled overlap safety pass rate generated from the controlled overlap summary.}
 \label{fig:app_overlap_safety}
 \end{figure}
 
-\begin{table}[h]
+\begin{table}[!htbp]
 \centering
 \scriptsize
 \begin{tabular}{llrrrr}
@@ -56,23 +58,25 @@ no-overlap LLM & true & high & 4 & 0.500 & 0 \\
 \label{tab:app_overlap_rows}
 \end{table}
 
+\FloatBarrier
+
 \subsection{EvidenceGate Leakage and Held-out Failure}
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=\columnwidth]{figures/evidence_gate_feature_leakage_audit.png}
 \caption{EvidenceGate feature leakage audit. The source document reports 41 audited fields: 19 allowed pre-decision, 4 risky reference-derived, 14 direct label proxy, and 4 final audit outcome fields.}
 \label{fig:app_evidence_leakage}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=\columnwidth]{figures/evidence_gate_heldout_confusion_matrix.png}
 \caption{Independent held-out EvidenceGate confusion matrix. The associated metrics show weak generalization, especially for needs-review routing.}
 \label{fig:app_evidence_confusion}
 \end{figure}
 
-\begin{table}[h]
+\begin{table}[!htbp]
 \centering
 \scriptsize
 \begin{tabular}{llrrrr}
@@ -90,18 +94,22 @@ evidence-only LR & independent & 0.316 & 0.100 & 0.067 & 0.000 \\
 \label{tab:app_evidence_gate}
 \end{table}
 
+\FloatBarrier
+
 \subsection{Binary Safe-to-Apply Stress Test}
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=\columnwidth]{figures/binary_safe_apply_macro_f1.png}
 \caption{Binary safe-to-apply macro F1. The benchmark is controlled/pilot, not real-audio generalization.}
 \label{fig:app_binary_f1}
 \end{figure}
 
-\begin{table}[h]
+\begin{table}[!htbp]
 \centering
 \scriptsize
+\renewcommand{\arraystretch}{1.0} % 收紧行间距
+\setlength{\tabcolsep}{3pt}      % 收紧列间距
 \begin{tabular}{lrrrr}
 \toprule
 Method & Examples & Macro F1 & Unsafe apply & Coverage \\
@@ -113,13 +121,16 @@ binary EccoGate & 327 & 0.883 & 0.053 & 0.239 \\
 LLM judge with evidence & 327 & 0.596 & 0.324 & 0.385 \\
 \bottomrule
 \end{tabular}
+\vspace{-3mm} % 缩小表格下方空白
 \caption{Selected binary safe-to-apply rows.}
 \label{tab:app_binary}
 \end{table}
+\FloatBarrier
+
 
 \subsection{Interruption Candidate Review}
 
-\begin{table}[h]
+\begin{table}[!htbp]
 \centering
 \scriptsize
 \begin{tabular}{lrrrrr}
@@ -133,16 +144,18 @@ Candidates & Reviewed & Interruption & Other labels & Precision & Recall/F1 \\
 \label{tab:app_interruption}
 \end{table}
 
+\FloatBarrier
+
 \subsection{Runtime and Mobile-Style Evidence}
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=\columnwidth]{figures/asr_rtf_by_model.png}
 \caption{ASR real-time factor chart. This figure supports local runtime trade-off discussion only.}
 \label{fig:app_rtf}
 \end{figure}
 
-\begin{table}[h]
+\begin{table}[!htbp]
 \centering
 \scriptsize
 \begin{tabular}{llrrrr}
@@ -158,3 +171,5 @@ FLEURS en & base & 10 & 0.134 & 0.134 & 0.140 \\
 \caption{Selected local-machine whisper.cpp Level 1 rows. These are not phone-device measurements.}
 \label{tab:app_mobile}
 \end{table}
+
+\FloatBarrier

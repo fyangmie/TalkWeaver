@@ -38,8 +38,6 @@ This audit lists the quantitative claims reported in `paper_v2/main.tex` and `pa
 
 | Claim in draft | Value(s) | Source path | Level | Notes |
 | --- | ---: | --- | --- | --- |
-| FLEURS English base WER | `0.114374`; RTF `0.084529`; `10` clips | `experiments/results/asr_benchmark_summary_real.csv` | Real-public diagnostic | Read-speech multilingual coverage. |
-| FLEURS French base WER | `0.227136`; RTF `0.078337`; `10` clips | `experiments/results/asr_benchmark_summary_real.csv` | Real-public diagnostic | Read-speech multilingual coverage. |
 | FLEURS zh-CN base CER | `0.113336`; RTF `0.060634`; `10` clips | `experiments/results/asr_benchmark_summary_real.csv` | Real-public diagnostic | Read-speech contrast. |
 | AISHELL-4 formal base CER | `0.609966`; RTF `0.049883`; `12` clips | `experiments/results/asr_benchmark_summary_real.csv` | Real-public diagnostic | Mandarin meeting sanity subset. |
 | AISHELL-4 60x20 base CER | `0.536940`; RTF `0.071076`; `60` clips | `experiments/results/asr_benchmark_aishell4_60x20_summary_real.csv` | Held-out real | 60 clips, not full AISHELL-4. |
